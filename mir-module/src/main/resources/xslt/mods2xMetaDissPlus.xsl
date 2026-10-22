@@ -616,14 +616,14 @@
     <xsl:variable name="publisher_name">
       <xsl:choose>
         <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-          <xsl:value-of select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          <xsl:value-of select="($mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher)[1]" />
         </xsl:when>
         <!-- removed cause of missed Place
         <xsl:when test="$mods/mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
-          <xsl:value-of select="$mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          <xsl:value-of select="($mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
         </xsl:when>
         <xsl:when test="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
-          <xsl:value-of select="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+          <xsl:value-of select="($mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name)[1]" />
         </xsl:when>
          -->
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
@@ -632,7 +632,7 @@
         </xsl:when>
         <!-- removed cause of missed Place
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-          <xsl:value-of select="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          <xsl:value-of select="($mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
         </xsl:when>
         -->
       </xsl:choose>
@@ -640,7 +640,7 @@
     <xsl:variable name="publisher_place">
       <xsl:choose>
         <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-          <xsl:value-of select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          <xsl:value-of select="($mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text'])[1]" />
         </xsl:when>
         <xsl:when
           test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
@@ -756,10 +756,10 @@
     <xsl:variable name="dateIssued"> 
       <xsl:choose>
         <xsl:when test="$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-          <xsl:value-of select="$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"/>
+          <xsl:value-of select="($mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])[1]"/>
         </xsl:when>
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-          <xsl:value-of select="$mods/mods:relatedItem[@type='host']/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"/>
+          <xsl:value-of select="($mods/mods:relatedItem[@type='host']/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])[1]"/>
         </xsl:when>  
       </xsl:choose>
     </xsl:variable>                                
@@ -806,7 +806,7 @@
       <xsl:when test="$mods/mods:identifier[@type='hdl']">
         <!-- No URN, DOI is given, Handle is main identifier to DNB -->
         <dc:identifier xsi:type="hdl:hdl">
-          <xsl:value-of select="$mods/mods:identifier[@type='hdl']" />
+          <xsl:value-of select="($mods/mods:identifier[@type='hdl'])[1]" />
         </dc:identifier>
       </xsl:when>
     </xsl:choose>
@@ -853,7 +853,7 @@
   <xsl:template name="extent">
     <xsl:if test="$mods/mods:physicalDescription/mods:extent">
       <dcterms:extent>
-        <xsl:value-of select="$mods/mods:physicalDescription/mods:extent"/>
+        <xsl:value-of select="($mods/mods:physicalDescription/mods:extent)[1]"/>
       </dcterms:extent>
     </xsl:if>
   </xsl:template>
@@ -920,27 +920,27 @@
     <xsl:variable name="publisher_name">
       <xsl:choose>
         <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-          <xsl:value-of select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          <xsl:value-of select="($mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher)[1]" />
         </xsl:when>
         <xsl:when test="$mods/mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
-          <xsl:value-of select="$mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          <xsl:value-of select="($mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
         </xsl:when>
         <xsl:when test="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
-          <xsl:value-of select="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+          <xsl:value-of select="($mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name)[1]" />
         </xsl:when>
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
           <xsl:value-of
             select="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
         </xsl:when>
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-          <xsl:value-of select="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          <xsl:value-of select="($mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="publisher_place">
       <xsl:choose>
         <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-          <xsl:value-of select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          <xsl:value-of select="($mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text'])[1]" />
         </xsl:when>
         <xsl:when
           test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
@@ -1064,10 +1064,10 @@
             <xsl:choose>
               <xsl:when test="$mods/mods:originInfo[@eventType='creation']/mods:publisher">
                 <cc:name>
-                  <xsl:value-of select="$mods/mods:originInfo[@eventType='creation']/mods:publisher" />
+                  <xsl:value-of select="($mods/mods:originInfo[@eventType='creation']/mods:publisher)[1]" />
                 </cc:name>
                 <cc:place>
-                  <xsl:value-of select="$mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm" />
+                  <xsl:value-of select="($mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm)[1]" />
                 </cc:place>
               </xsl:when>
               <xsl:otherwise>
