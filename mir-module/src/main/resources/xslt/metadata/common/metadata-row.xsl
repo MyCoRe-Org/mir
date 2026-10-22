@@ -42,7 +42,11 @@
     <xsl:param name="value-title" as="xs:string?" />
     <xsl:param name="field-name" as="xs:string?" tunnel="yes" />
 
-    <xsl:if test="exists($value)">
+    <xsl:if test="some $item in $value satisfies (
+      if ($item instance of node())
+      then normalize-space($item) != '' or exists($item/descendant::*)
+      else string($item) != ''
+    )">
       <xsl:if test="not($label) and not($label-key)">
         <xsl:message>WARN: meta-row without label</xsl:message>
       </xsl:if>

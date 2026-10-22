@@ -25,10 +25,7 @@
 
     <xsl:variable name="publication-date-issued" select="
       if (@type='host' or @type='series')
-      then (
-        ../../mods:originInfo[@eventType='publication']/mods:dateIssued,
-        ../mods:originInfo[@eventType='publication']/mods:dateIssued
-      )
+      then ../mods:originInfo[@eventType='publication']/mods:dateIssued
       else ()
     " />
     <xsl:variable name="date-node" select="(

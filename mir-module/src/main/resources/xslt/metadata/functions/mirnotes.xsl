@@ -26,7 +26,7 @@
     <xsl:variable name="x-access" select="
       mirnotes:category($note)/label[@xml:lang='x-access']/@text
     " />
-    <xsl:sequence select="$access = tokenize(normalize-space($x-access[1]), ' ')" />
+    <xsl:sequence select="$access = tokenize(normalize-space($x-access[1]), '[\s,;]+')" />
   </xsl:function>
 
   <xsl:function name="mirnotes:label" as="xs:string">
