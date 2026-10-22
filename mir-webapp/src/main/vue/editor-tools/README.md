@@ -59,3 +59,14 @@ you can seperate them with "|". Alternatively multiple providers of the same typ
 Other providers may be added from your project using the SearchProviderRegistry.
 When using the DanteSearchProvider you can add additional properties from the result that should be displayed.
 To display them they need a message language property.
+
+To add a new provider using your own webapp, you need to create your provider using Javascript or Typescript and make sure it is loaded.
+You then have to add the provider in both you editorToolsApp and register it in the SearchProviderRegistry.
+Make sure your provider has a search() function similiar to Dante or Lobid. 
+
+
+Example:
+```javascript
+window.SearchProviderRegistry = window.SearchProviderRegistry || {};
+window.SearchProviderRegistry.reposis =ReposisSearchProvider;
+```
