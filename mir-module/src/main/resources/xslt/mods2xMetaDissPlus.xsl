@@ -62,7 +62,7 @@
     <xsl:choose>
       <xsl:when test="$lang">
         <xsl:call-template name="translate_Lang">
-          <xsl:with-param name="lang_code" select="$lang" />
+          <xsl:with-param name="lang_code" select="$lang[1]" />
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
