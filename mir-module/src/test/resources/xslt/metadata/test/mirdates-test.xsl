@@ -7,7 +7,6 @@
 
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
-  <xsl:include href="resource:xslt/metadata/functions/mirdates.xsl" />
 
   <xsl:param name="value" />
 

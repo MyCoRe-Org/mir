@@ -4,8 +4,6 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="resource:xslt/metadata/common/metadata-row.xsl" />
-  <xsl:import href="resource:xslt/metadata/functions/mirboxfields.xsl" />
-  <xsl:import href="resource:xslt/metadata/functions/mirnotes.xsl" />
   <xsl:import href="resource:xslt/metadata/admindata-box/common/fields.xsl" />
   <xsl:import href="resource:xslt/metadata/admindata-box/common/fields-fallback.xsl" />
   <xsl:import href="resource:xslt/metadata/admindata-box/shared/date.xsl" />

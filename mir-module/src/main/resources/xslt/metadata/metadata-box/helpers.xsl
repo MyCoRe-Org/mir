@@ -6,9 +6,6 @@
   <xsl:import href="resource:xslt/layout/mir-layout-utils.xsl" />
   <xsl:import href="resource:xslt/utils/mods-utils.xsl" />
   <xsl:import href="resource:xslt/mir-mods-utils.xsl" />
-  <xsl:import href="resource:xslt/metadata/functions/mirboxfields.xsl" />
-  <xsl:import href="resource:xslt/metadata/functions/mirdates.xsl" />
-  <xsl:import href="resource:xslt/metadata/functions/mirnotes.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/common/fields.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/common/fields-fallback.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/shared/metadata-row.xsl" />
