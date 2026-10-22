@@ -1,0 +1,125 @@
+{
+  "totalItems": 3,
+  "member": [
+    {
+      "id": "https://d-nb.info/gnd/135799082",
+      "type": [
+        "Person",
+        "DifferentiatedPerson",
+        "AuthorityResource"
+      ],
+      "gndIdentifier": "135799082",
+      "preferredName": "Neumann, Kathleen",
+      "professionOrOccupation": [
+        {
+          "id": "https://d-nb.info/gnd/4219059-9",
+          "label": "Informatikerin"
+        }
+      ],
+      "variantName": [
+        "Krebs, Kathleen"
+      ],
+      "gender": [
+        {
+          "id": "https://d-nb.info/standards/vocab/gnd/gender#female",
+          "label": "Weiblich"
+        }
+      ],
+      "dateOfBirth": [
+        "1979"
+      ],
+      "sameAs": [
+        {
+          "id": "http://viaf.org/viaf/80256051"
+        },
+        {
+          "id": "http://www.wikidata.org/entity/Q63391552"
+        },
+        {
+          "id": "https://d-nb.info/gnd/135799082/about"
+        },
+        {
+          "id": "https://orcid.org/0000-0002-4433-1464"
+        },
+        {
+          "id": "https://www.deutsche-digitale-bibliothek.de/person/gnd/135799082"
+        }
+      ]
+    },
+    {
+      "id": "https://d-nb.info/gnd/1275619924",
+      "type": [
+        "DifferentiatedPerson",
+        "Person",
+        "AuthorityResource"
+      ],
+      "gndIdentifier": "1275619924",
+      "preferredName": "Hermans, Kathleen",
+      "professionOrOccupation": [
+        {
+          "id": "https://d-nb.info/gnd/4365294-3",
+          "label": "Dozentin"
+        }
+      ],
+      "variantName": [
+        "Neumann, Kathleen"
+      ],
+      "gender": [
+        {
+          "id": "https://d-nb.info/standards/vocab/gnd/gender#notKnown",
+          "label": "Unbekannt"
+        }
+      ],
+      "sameAs": [
+        {
+          "id": "http://viaf.org/viaf/2286167202632467930003"
+        },
+        {
+          "id": "https://d-nb.info/gnd/1275619924/about"
+        },
+        {
+          "id": "https://www.deutsche-digitale-bibliothek.de/person/gnd/1275619924"
+        }
+      ]
+    },
+    {
+      "id": "https://d-nb.info/gnd/1171494327",
+      "type": [
+        "DifferentiatedPerson",
+        "Person",
+        "AuthorityResource"
+      ],
+      "gndIdentifier": "1171494327",
+      "preferredName": "Neumann, Julia Kathleen",
+      "professionOrOccupation": [
+        {
+          "id": "https://d-nb.info/gnd/4270482-0",
+          "label": "Wirtschaftswissenschaftlerin"
+        }
+      ],
+      "gender": [
+        {
+          "id": "https://d-nb.info/standards/vocab/gnd/gender#notKnown",
+          "label": "Unbekannt"
+        }
+      ],
+      "dateOfBirth": [
+        "1987"
+      ],
+      "sameAs": [
+        {
+          "id": "http://viaf.org/viaf/4564154260565024480001"
+        },
+        {
+          "id": "http://www.wikidata.org/entity/Q133494342"
+        },
+        {
+          "id": "https://d-nb.info/gnd/1171494327/about"
+        },
+        {
+          "id": "https://www.deutsche-digitale-bibliothek.de/person/gnd/1171494327"
+        }
+      ]
+    }
+  ]
+}

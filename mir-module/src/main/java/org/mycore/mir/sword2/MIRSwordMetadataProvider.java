@@ -27,7 +27,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.mycore.common.content.MCRBaseContent;
 import org.mycore.common.content.MCRContent;
-import org.mycore.common.content.transformer.MCRXSL2XMLTransformer;
+import org.mycore.common.content.transformer.MCRContentTransformerFactory;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -43,8 +43,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
 
-    private static final MCRXSL2XMLTransformer XSL_MODS_DC_TRANSFORMER = new MCRXSL2XMLTransformer(
-        "xsl/mycoreobject-mods.xsl", "xsl/mods2dc.xsl");
+    private static final String MODS_DC_TRANSFORMER_ID = "mods2dc";
 
     private MCRSwordLifecycleConfiguration lifecycleConfiguration;
 
@@ -76,7 +75,8 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
         final MCRBaseContent mcrBaseContent = new MCRBaseContent(object);
         final MCRContent mcrContent;
         try {
-            mcrContent = XSL_MODS_DC_TRANSFORMER.transform(mcrBaseContent);
+            mcrContent = MCRContentTransformerFactory.getTransformer(MODS_DC_TRANSFORMER_ID)
+                .transform(mcrBaseContent);
         } catch (IOException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                 "Error while transforming mods2dc!", e);
