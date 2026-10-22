@@ -77,7 +77,7 @@
   <xsl:variable name="mods" select="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
   <xsl:variable name="type">
-    <xsl:variable name="diniPublType" select="substring-after($mods/mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))"/>
+    <xsl:variable name="diniPublType" select="substring-after(($mods/mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI)[1], concat($diniPublTypeAuthorityURI, '#'))"/>
     <xsl:choose>
       <xsl:when test="string-length($diniPublType)!=0">
         <xsl:value-of select="$diniPublType"/>

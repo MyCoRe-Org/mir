@@ -195,7 +195,7 @@
             </strong>
             <br />
             <xsl:variable name="trimmed"
-              select="substring-after(normalize-space(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
+              select="substring-after(normalize-space((mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href)[1]), '#')" />
             <xsl:choose>
               <xsl:when test="contains($trimmed, 'cc_')">
                 <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']"
