@@ -11,13 +11,13 @@
   <xsl:import href="resource:xslt/metadata/functions/mirnotes.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/common/fields.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/common/fields-fallback.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/metadata-row.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/metadata-row.xsl" />
   <xsl:import href="resource:xslt/metadata/common/metadata-row-defaults.xsl" />
   <xsl:import href="resource:xslt/metadata/metadata-box/shared/ui-helpers.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/classification-link.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/extent.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/name.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/related-item.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/gnd.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/classification-link.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/extent.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/name.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/related-item.xsl" />
+  <xsl:import href="resource:xslt/metadata/metadata-box/shared/gnd.xsl" />
 
 </xsl:stylesheet>

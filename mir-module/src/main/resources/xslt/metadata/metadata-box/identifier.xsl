@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:local="http://www.mycore.de/xslt/mirlocal/metadata-box/mods/identifier"
+  xmlns:local="http://www.mycore.de/xslt/mirlocal/metadata-box/identifier"
   xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcrclass="http://www.mycore.de/xslt/classification"

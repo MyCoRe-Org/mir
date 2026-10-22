@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:local="http://www.mycore.de/xslt/mirlocal/metadata-box/mods/corporate"
+  xmlns:local="http://www.mycore.de/xslt/mirlocal/metadata-box/corporate"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
