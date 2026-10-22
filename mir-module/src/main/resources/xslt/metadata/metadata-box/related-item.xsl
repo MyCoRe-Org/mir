@@ -14,20 +14,10 @@
     <xsl:variable name="mods" select="mirobject:mods($object)" />
 
     <xsl:for-each select="$mods/mods:relatedItem[not(@type='host' and @xlink:href)]">
-      <xsl:choose>
-        <xsl:when test="@xlink:href">
-          <xsl:call-template name="related-item-row">
-            <xsl:with-param name="parentID" select="@xlink:href" />
-            <xsl:with-param name="label" select="local:related-item-label(.)" />
-          </xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:call-template name="related-item-row">
-            <xsl:with-param name="parentID" select="''" />
-            <xsl:with-param name="label" select="local:related-item-label(.)" />
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:call-template name="related-item-row">
+        <xsl:with-param name="parentID" select="string(@xlink:href)" />
+        <xsl:with-param name="label" select="local:related-item-label(.)" />
+      </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
 

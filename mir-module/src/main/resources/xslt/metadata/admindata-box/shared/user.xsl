@@ -6,6 +6,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
+  <xsl:variable name="show-real-user-name" select="mcrproperty:get('MIR.AdmindataBox.ShowRealUserName') = 'true'" />
+
   <xsl:template name="user-info-row">
     <xsl:param name="userid" as="xs:string?" />
     <xsl:param name="label-key" select="'mir.metaData.detailBox.by'" as="xs:string" />
@@ -27,8 +29,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="display-name" select="
-              if (string-length($user/realName) &gt; 0
-                and mcrproperty:get('MIR.AdmindataBox.ShowRealUserName') = 'true')
+              if (string-length($user/realName) &gt; 0 and $show-real-user-name)
               then string($user/realName)
               else string($user/@name)
             " />

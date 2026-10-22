@@ -50,12 +50,7 @@
     <xsl:variable name="category" select="mcrclass:category('identifier', $type)" />
     <xsl:variable name="category-label" select="string(mcrclass:current-label-text($category))" />
     <xsl:call-template name="meta-row">
-      <xsl:with-param name="label" select="
-        if (empty($category))
-        then mcri18n:translate-with-params('component.mods.metaData.dictionary.identifier.other', $type)
-        else if ($category-label) then $category-label
-        else $type
-      " />
+      <xsl:with-param name="label" select="if ($category-label) then $category-label else $type" />
       <xsl:with-param name="value" select="." />
     </xsl:call-template>
   </xsl:template>
