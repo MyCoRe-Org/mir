@@ -12,9 +12,10 @@
     <xsl:param name="sep" select="''" as="xs:string" />
     <xsl:param name="filter" select="true()" as="xs:boolean" />
 
+    <xsl:variable name="lang" select="if ($filter) then mcri18n:select-present-lang($nodes) else ()" />
     <xsl:variable name="filtered" select="
       if ($filter)
-      then $nodes[not(@xml:lang) or @xml:lang = mcri18n:select-present-lang($nodes)]
+      then $nodes[not(@xml:lang) or @xml:lang = $lang]
       else $nodes
     " />
 
