@@ -102,7 +102,7 @@
 
     <!-- Genre -->
     <xsl:variable name="modsType">
-      <xsl:value-of select="substring-after(mods:genre[@type='intern']/@valueURI,'#')" />
+      <xsl:value-of select="substring-after((mods:genre[@type='intern']/@valueURI)[1], '#')" />
     </xsl:variable>
     <xsl:call-template name="convertStringToCsv">
       <xsl:with-param name="cstring" select="document(concat('classification:metadata:0:children:mir_genres:',$modsType))//category/label[@xml:lang=$CurrentLang]/@text" />
@@ -127,13 +127,13 @@
     <xsl:variable name="issue">
       <xsl:if test="mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number">
         <xsl:value-of
-          select="concat(mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:caption,' ',mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number)" />
+          select="concat((mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:caption)[1], ' ', (mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number)[1])" />
       </xsl:if>
       <xsl:if test="mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number and mods:relatedItem[@type='host']/mods:part/mods:date">
         <xsl:text>/</xsl:text>
       </xsl:if>
       <xsl:if test="mods:relatedItem[@type='host']/mods:part/mods:date">
-        <xsl:value-of select="concat(mods:relatedItem[@type='host']/mods:part/mods:date,' ')" />
+        <xsl:value-of select="concat((mods:relatedItem[@type='host']/mods:part/mods:date)[1], ' ')" />
       </xsl:if>
     </xsl:variable>
     <xsl:call-template name="convertStringToCsv">

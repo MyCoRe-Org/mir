@@ -116,11 +116,11 @@
   
   <xsl:variable name="mods_periodical">
     <xsl:choose>
-      <xsl:when test="$mods/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']">
-        <xsl:copy-of select="$mods/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']"/>
+      <xsl:when test="$mods/mods:relatedItem[(@type='host' and (mods:genre/@valueURI[contains(., '#journal') or contains(., '#series')])) or @type='series']">
+        <xsl:copy-of select="$mods/mods:relatedItem[(@type='host' and (mods:genre/@valueURI[contains(., '#journal') or contains(., '#series')])) or @type='series']"/>
       </xsl:when>
-      <xsl:when test="$mods/mods:relatedItem[(@type='host')]/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']">
-        <xsl:copy-of select="$mods/mods:relatedItem[(@type='host')]/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']"/>
+      <xsl:when test="$mods/mods:relatedItem[(@type='host')]/mods:relatedItem[(@type='host' and (mods:genre/@valueURI[contains(., '#journal') or contains(., '#series')])) or @type='series']">
+        <xsl:copy-of select="$mods/mods:relatedItem[(@type='host')]/mods:relatedItem[(@type='host' and (mods:genre/@valueURI[contains(., '#journal') or contains(., '#series')])) or @type='series']"/>
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
@@ -977,7 +977,7 @@
   </xsl:template>
 
   <xsl:template name="relatedItem2ispartof">
-    <xsl:variable name="firstPeriodical" select="$mods_periodical/mods:relatedItem"/>
+    <xsl:variable name="firstPeriodical" select="($mods_periodical/mods:relatedItem[@type='host'], $mods_periodical/mods:relatedItem)[1]"/>
     <xsl:if test="$firstPeriodical">
       <xsl:choose>
         <xsl:when test="$firstPeriodical/@type='host'">
