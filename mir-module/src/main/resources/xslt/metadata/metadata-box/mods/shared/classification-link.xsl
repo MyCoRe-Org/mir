@@ -2,11 +2,13 @@
 <xsl:stylesheet version="3.0"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
+
+  <!-- keep as xsl:param: may be overridden by session/request (XSL.wcms.useTargets), not only by property -->
+  <xsl:param name="wcms.useTargets" select="'no'" />
 
   <xsl:template match="category" mode="classification">
     <xsl:variable name="categurl">
@@ -27,7 +29,7 @@
       <xsl:choose>
         <xsl:when test="string-length($categurl) != 0">
           <a href="{$categurl}">
-            <xsl:if test="mcrproperty:get('wcms.useTargets') = 'yes'">
+            <xsl:if test="$wcms.useTargets = 'yes'">
               <xsl:attribute name="target">_blank</xsl:attribute>
             </xsl:if>
             <xsl:value-of select="@text" />
