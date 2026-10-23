@@ -985,15 +985,15 @@
             <xsl:value-of select="$firstPeriodical/@xlink:href" />
           </dcterms:isPartOf>
           <xsl:variable name="ZSIssue">
-            <xsl:value-of select="normalize-space($firstPeriodical/mods:part/mods:detail[@type='issue'])" />
+            <xsl:value-of select="normalize-space(($firstPeriodical/mods:part/mods:detail[@type='issue'])[1])" />
           </xsl:variable>
           <xsl:variable name="ZSVolume">
-            <xsl:value-of select="normalize-space($firstPeriodical/mods:part/mods:detail[@type='volume'])" />
+            <xsl:value-of select="normalize-space(($firstPeriodical/mods:part/mods:detail[@type='volume'])[1])" />
           </xsl:variable>
           <xsl:variable name="ZSAusgabe">
             <!-- ToDO Name of journal-suplement -->
             <xsl:if test="$firstPeriodical/mods:part/mods:detail[@type='volume']">
-              <xsl:value-of select="normalize-space($firstPeriodical/mods:part/mods:detail[@type='volume'])"/>
+              <xsl:value-of select="normalize-space(($firstPeriodical/mods:part/mods:detail[@type='volume'])[1])"/>
             </xsl:if>
             <xsl:if test="$firstPeriodical/mods:part/mods:detail[@type='volume'] and $firstPeriodical/mods:part/mods:detail[@type='issue']">
               <xsl:value-of select="', '"/>
@@ -1003,7 +1003,7 @@
                 select="concat(
                   mcri18n:translate('component.mods.metaData.dictionary.issue'),
                   ' ',
-                  normalize-space($firstPeriodical/mods:part/mods:detail[@type='issue']))" />
+                  normalize-space(($firstPeriodical/mods:part/mods:detail[@type='issue'])[1]))" />
             </xsl:if>
             <xsl:if test="$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
               <xsl:value-of select="concat(' (', ($mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])[1], ')')" />
