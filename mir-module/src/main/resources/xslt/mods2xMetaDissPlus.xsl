@@ -628,7 +628,7 @@
          -->
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
           <xsl:value-of
-            select="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+            select="($mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher)[1]" />
         </xsl:when>
         <!-- removed cause of missed Place
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
@@ -645,7 +645,7 @@
         <xsl:when
           test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
           <xsl:value-of
-            select="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+            select="($mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text'])[1]" />
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
@@ -930,7 +930,7 @@
         </xsl:when>
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
           <xsl:value-of
-            select="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+            select="($mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher)[1]" />
         </xsl:when>
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
           <xsl:value-of select="($mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
@@ -945,7 +945,7 @@
         <xsl:when
           test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
           <xsl:value-of
-            select="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+            select="($mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text'])[1]" />
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
