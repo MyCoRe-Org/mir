@@ -135,7 +135,7 @@
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of
-                          select="document(concat('classification:metadata:0:children:rfc5646:',$mods/mods:language/mods:languageTerm[@authority='rfc5646'][@type='code']))//category/label[@xml:lang=$CurrentLang]/@text" />
+                          select="document(concat('classification:metadata:0:children:rfc5646:', ($mods/mods:language/mods:languageTerm[@authority='rfc5646'][@type='code'])[1]))//category/label[@xml:lang=$CurrentLang]/@text" />
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
@@ -379,7 +379,7 @@
       </xsl:when>
       <xsl:when test="$asHTML and $hasAlternateFormat and (string-length(@altFormat) &gt; 0)">
         <xsl:variable name="alternateContent"
-                      select="document(concat('unescape-html-content:',..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]/@altFormat))/*[local-name()='titleInfo']" />
+                      select="document(concat('unescape-html-content:', (..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]/@altFormat)[1]))/*[local-name()='titleInfo']" />
 
         <xsl:if test="$alternateContent/nonSort">
           <xsl:copy-of select="$alternateContent/nonSort/node()" />

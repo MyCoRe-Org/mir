@@ -71,7 +71,7 @@
       <mods:roleTerm authority="marcrelator" type="code">
         <xsl:choose>
           <xsl:when test="mab:subfield[@code='4']='edt'">edt</xsl:when>
-          <xsl:when test="contains(mab:subfield[@code='b'],'Hrsg')">edt</xsl:when>
+          <xsl:when test="mab:subfield[@code='b'][contains(., 'Hrsg')]">edt</xsl:when>
           <xsl:otherwise>aut</xsl:otherwise>
         </xsl:choose>
       </mods:roleTerm>
@@ -159,7 +159,7 @@
         <xsl:when test="../mab:subfield[@code='v']"> <!-- RDA -->
           <xsl:call-template name="series.volume">
             <xsl:with-param name="series" select="text()" />
-            <xsl:with-param name="volume" select="normalize-space(replace(../mab:subfield[@code='v'], 'Band ', ''))" />
+            <xsl:with-param name="volume" select="normalize-space(replace((../mab:subfield[@code='v'])[1], 'Band ', ''))" />
           </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>

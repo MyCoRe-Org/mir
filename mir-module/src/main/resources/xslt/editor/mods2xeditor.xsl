@@ -126,7 +126,7 @@
         </xsl:when>
         <xsl:when test="@type='personal' and mods:namePart[@type='family'] and mods:namePart[@type='given'] and not(mods:displayForm)">
           <mods:displayForm>
-            <xsl:value-of select="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
+            <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
           </mods:displayForm>
         </xsl:when>
       </xsl:choose>

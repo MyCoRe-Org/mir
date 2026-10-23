@@ -312,7 +312,7 @@
     <xsl:variable name="modsType">
       <xsl:choose>
         <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']">
-          <xsl:value-of select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']/@valueURI,'#')" />
+          <xsl:value-of select="substring-after((./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']/@valueURI)[1], '#')" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates mode="mods-type" select="." />
@@ -339,7 +339,7 @@
                     </xsl:when>
                     <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
                       <xsl:value-of
-                        select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                        select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.', (mods:role/mods:roleTerm[@authority='marcrelator'])[1])), ':')" />
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.name'),':')" />
@@ -511,7 +511,7 @@
         <xsl:when test="mods:namePart">
           <xsl:choose>
             <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-              <xsl:value-of select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])" />
+              <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="mods:namePart" />
@@ -577,7 +577,7 @@
           </xsl:when>
           <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
             <xsl:value-of
-              select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+              select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.', (mods:role/mods:roleTerm[@authority='marcrelator'])[1])), ':')" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.name'),':')" />
@@ -625,7 +625,7 @@
       <td valign="top" class="metaname">
         <xsl:choose>
           <xsl:when test="mods:role/mods:roleTerm[@type='code' and @authority='marcrelator']">
-            <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.institution.', mods:role/mods:roleTerm[@type='code' and @authority='marcrelator'], '.label')),':')" />
+            <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.institution.', (mods:role/mods:roleTerm[@type='code' and @authority='marcrelator'])[1], '.label')), ':')" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.institution.label'),':')" />
@@ -942,7 +942,7 @@
       <!-- Volume -->
       <xsl:if test="mods:part/mods:detail[@type='volume']/mods:number">
         <xsl:value-of
-          select="concat(mcri18n:translate('component.mods.metaData.dictionary.volume.shortcut'),' ',mods:part/mods:detail[@type='volume']/mods:number)" />
+          select="concat(mcri18n:translate('component.mods.metaData.dictionary.volume.shortcut'), ' ', (mods:part/mods:detail[@type='volume']/mods:number)[1])" />
         <xsl:if test="mods:part/mods:detail[@type='issue']/mods:number">
           <xsl:text>, </xsl:text>
         </xsl:if>
@@ -950,7 +950,7 @@
       <!-- Issue -->
       <xsl:if test="mods:part/mods:detail[@type='issue']/mods:number">
         <xsl:value-of
-          select="concat(mcri18n:translate('component.mods.metaData.dictionary.issue.shortcut'),' ',mods:part/mods:detail[@type='issue']/mods:number)" />
+          select="concat(mcri18n:translate('component.mods.metaData.dictionary.issue.shortcut'), ' ', (mods:part/mods:detail[@type='issue']/mods:number)[1])" />
       </xsl:if>
       <xsl:if test="mods:part/mods:detail[@type='issue']/mods:number or mods:part/mods:detail[@type='volume']/mods:number and string-length($dateIssued) &gt; 0">
         <xsl:text> </xsl:text>
