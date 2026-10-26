@@ -69,9 +69,9 @@
   </xsl:function>
 
   <xsl:function name="local:role-code-label" as="xs:string?">
-    <xsl:param name="roleTerm" as="element(mods:roleTerm)" />
+    <xsl:param name="role-term" as="element(mods:roleTerm)" />
 
-    <xsl:variable name="category" select="mcrclassification:category($roleTerm/@authority, string($roleTerm))" />
+    <xsl:variable name="category" select="mcrclassification:category($role-term/@authority, string($role-term))" />
     <xsl:sequence select="mcrclassification:current-label-text($category)" />
   </xsl:function>
 

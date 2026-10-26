@@ -9,11 +9,11 @@
   <xsl:template match="mods:name" mode="name">
     <xsl:choose>
       <xsl:when test="mods:role/mods:roleTerm = 'aut'">
-        <xsl:variable name="propType" select="if (@type='corporate') then 'Organisation' else 'Person'" />
+        <xsl:variable name="prop-type" select="if (@type='corporate') then 'Organisation' else 'Person'" />
         <xsl:variable name="name-value">
           <xsl:apply-templates select="." mode="name-value" />
         </xsl:variable>
-        <span property="author" typeof="{$propType}">
+        <span property="author" typeof="{$prop-type}">
           <xsl:copy-of select="$name-value" />
           <meta property="name" content="{$name-value}" />
         </span>
@@ -73,11 +73,11 @@
         /mycoreclass/categories/category[@ID=$identifier-type]
     " />
     <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
-    <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+    <xsl:variable name="id-type" select="$classi/label[@xml:lang='de']/@text" />
     <xsl:text>&#160;</xsl:text>
-    <a href="{$uri}{$identifier}" title="Link zu {$idType}">
+    <a href="{$uri}{$identifier}" title="Link zu {$id-type}">
       <sup>
-        <xsl:value-of select="$idType" />
+        <xsl:value-of select="$id-type" />
       </sup>
     </a>
   </xsl:template>

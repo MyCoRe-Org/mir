@@ -15,7 +15,7 @@
 
     <xsl:for-each select="$mods/mods:relatedItem[not(@type='host' and @xlink:href)]">
       <xsl:call-template name="related-item-row">
-        <xsl:with-param name="parentID" select="string(@xlink:href)" />
+        <xsl:with-param name="parent-id" select="string(@xlink:href)" />
         <xsl:with-param name="label" select="local:related-item-label(.)" />
       </xsl:call-template>
     </xsl:for-each>

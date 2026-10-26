@@ -10,7 +10,7 @@
 
     <xsl:for-each select="$object[structure/parents/parent/@xlink:href]">
       <xsl:call-template name="related-item-by-id">
-        <xsl:with-param name="parentID" select="structure/parents/parent/@xlink:href" />
+        <xsl:with-param name="parent-id" select="structure/parents/parent/@xlink:href" />
         <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.confpubIn')" />
       </xsl:call-template>
     </xsl:for-each>

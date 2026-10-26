@@ -24,8 +24,8 @@
       </xsl:if>
     </xsl:variable>
 
-    <xsl:variable name="selectLang" select="mcri18n:select-lang(label)" />
-    <xsl:for-each select="label[lang($selectLang)]">
+    <xsl:variable name="selected-lang" select="mcri18n:select-lang(label)" />
+    <xsl:for-each select="label[lang($selected-lang)]">
       <xsl:choose>
         <xsl:when test="string-length($categurl) != 0">
           <a href="{$categurl}">
