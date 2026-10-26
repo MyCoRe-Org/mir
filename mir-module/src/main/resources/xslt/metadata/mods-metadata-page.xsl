@@ -174,7 +174,7 @@
                 <h3 class="card-title">
                   <xsl:variable name="icon" select="$icons(concat('MIR.Layout.Display.Panel.Icon.', $boxID))" />
                   <xsl:if test="$icon">
-                    <i class="{$icon/text()}" style="margin-right:1ex;" aria-hidden="true" />
+                    <i class="{$icon}" style="margin-right:1ex;" aria-hidden="true" />
                   </xsl:if>
                   <xsl:value-of select="mcri18n:translate(concat('mir.metaData.panel.heading.', $boxID))"/>
                 </h3>
