@@ -9,14 +9,18 @@
   <xsl:include href="xslInclude:admindatabox" />
 
   <xsl:template match="/">
-    <div id="mir-admindata">
-      <dl>
-        <xsl:call-template name="admindata-box-fields">
-          <xsl:with-param name="object" select="mycoreobject" />
-          <xsl:with-param name="names" select="mirboxfields:get('MIR.AdmindataBox.Fields', ())" />
-        </xsl:call-template>
-      </dl>
-    </div>
+    <xsl:variable name="names" select="mirboxfields:get('MIR.AdmindataBox.Fields', ())" />
+
+    <xsl:if test="exists($names)">
+      <div id="mir-admindata">
+        <dl>
+          <xsl:call-template name="admindata-box-fields">
+            <xsl:with-param name="object" select="mycoreobject" />
+            <xsl:with-param name="names" select="$names" />
+          </xsl:call-template>
+        </dl>
+      </div>
+    </xsl:if>
 
     <xsl:apply-imports />
   </xsl:template>

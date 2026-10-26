@@ -37,7 +37,7 @@
               </xsl:when>
               <xsl:when test="$role-term[@authority = 'marcrelator']">
                 <xsl:variable name="i18n-key" select="
-                  'component.mods.metaData.dictionary.' || $role-term[@authority = 'marcrelator']
+                  'component.mods.metaData.dictionary.' || $role-term[@authority = 'marcrelator'][1]
                 " />
                 <xsl:value-of select="mcri18n:translate($i18n-key)" />
               </xsl:when>

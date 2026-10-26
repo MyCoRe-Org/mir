@@ -122,7 +122,7 @@
             </div>
           </xsl:when>
           <xsl:when test="$boxID='mir-admindata'">
-            <xsl:if test="$originalContent/@write or $canViewSystembox">
+            <xsl:if test="$originalContent/div[@id=$boxID] and ($originalContent/@write or $canViewSystembox)">
               <div id="mir_admindata_panel" class="card system">
                 <div class="card-header">
                   <h3 class="card-title">

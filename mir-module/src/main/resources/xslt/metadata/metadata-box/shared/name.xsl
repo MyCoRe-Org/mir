@@ -31,6 +31,36 @@
     </xsl:for-each>
   </xsl:template>
 
+  <xsl:template match="mods:name[@valueURI]" mode="external-link">
+    <a href="{@valueURI}">
+      <xsl:choose>
+        <xsl:when test="mods:displayForm">
+          <xsl:value-of select="mods:displayForm" />
+        </xsl:when>
+        <xsl:when test="mods:namePart">
+          <xsl:apply-templates select="." mode="name-parts" />
+        </xsl:when>
+        <xsl:when test="@displayLabel">
+          <xsl:value-of select="@displayLabel" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="@valueURI" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </a>
+  </xsl:template>
+
+  <xsl:template match="mods:name" mode="name-parts">
+    <xsl:choose>
+      <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
+        <xsl:value-of select="concat(mods:namePart[@type='family'], ', ', mods:namePart[@type='given'])" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="mods:namePart" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template match="mods:name" mode="name-value">
     <xsl:choose>
       <xsl:when test="@valueURI">
@@ -49,11 +79,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-        <xsl:value-of select="concat(mods:namePart[@type='family'], ', ', mods:namePart[@type='given'])" />
-      </xsl:when>
       <xsl:when test="mods:namePart">
-        <xsl:value-of select="mods:namePart" />
+        <xsl:apply-templates select="." mode="name-parts" />
       </xsl:when>
       <xsl:when test="mods:displayForm">
         <xsl:value-of select="mods:displayForm" />
