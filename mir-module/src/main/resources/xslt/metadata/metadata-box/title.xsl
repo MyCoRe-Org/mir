@@ -14,28 +14,22 @@
     <xsl:variable name="mods" select="mirobject:mods($object)" />
 
     <xsl:for-each-group select="$mods/mods:titleInfo[@type]" group-by="@type">
-      <xsl:variable name="schema-property" select="
-        if (@type = 'translated' or @type = 'alternative') then 'alternativeHeadline' else 'headline'
-      " />
-
       <xsl:call-template name="meta-row">
         <xsl:with-param name="label" select="local:title-label(.)" />
         <xsl:with-param name="value">
-          <span property="{$schema-property}">
-            <xsl:for-each select="current-group()">
-              <xsl:if test="position() != 1">
-                <br />
-              </xsl:if>
-              <xsl:apply-templates select="." mode="mods.printTitle">
-                <xsl:with-param name="asHTML" select="true()" />
-                <xsl:with-param name="withSubtitle" select="true()" />
-              </xsl:apply-templates>
-              <xsl:if test="@type='translated'">
-                <xsl:variable name="category" select="mcrclassification:category('rfc5646', @xml:lang)" />
-                <xsl:value-of select="' (' || mcrclassification:current-label-text($category) || ')'" />
-              </xsl:if>
-            </xsl:for-each>
-          </span>
+          <xsl:for-each select="current-group()">
+            <xsl:if test="position() != 1">
+              <br />
+            </xsl:if>
+            <xsl:apply-templates select="." mode="mods.printTitle">
+              <xsl:with-param name="asHTML" select="true()" />
+              <xsl:with-param name="withSubtitle" select="true()" />
+            </xsl:apply-templates>
+            <xsl:if test="@type='translated'">
+              <xsl:variable name="category" select="mcrclassification:category('rfc5646', @xml:lang)" />
+              <xsl:value-of select="' (' || mcrclassification:current-label-text($category) || ')'" />
+            </xsl:if>
+          </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each-group>
