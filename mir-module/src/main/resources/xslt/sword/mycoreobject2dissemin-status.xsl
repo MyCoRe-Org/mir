@@ -45,9 +45,9 @@
                         </fn:string>
                     </xsl:when>
                 </xsl:choose>
-                <xsl:if test="count(/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')])&gt;0">
-                    <xsl:variable name="derivate"
-                                  select="/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')]"/>
+                <xsl:variable name="derivate"
+                              select="(/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')])[1]"/>
+                <xsl:if test="$derivate">
                     <fn:string key="pdf_url">
                         <xsl:value-of select="concat($WebApplicationBaseURL,
                         'api/v2/objects/',
@@ -55,7 +55,7 @@
                         '/derivates/',
                         $derivate/@xlink:href,
                         '/contents/',
-                        $derivate/maindoc/text())"/>
+                        fn:string-join(fn:tokenize($derivate/maindoc/text(), '/') ! fn:encode-for-uri(.), '/'))"/>
                     </fn:string>
                 </xsl:if>
             </fn:map>
