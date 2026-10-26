@@ -118,6 +118,10 @@
         <label xml:lang="de">ACL-Editor</label>
         <label xml:lang="en">ACL Editor</label>
       </item>
+      <item href="/dedup/" type="intern">
+        <label xml:lang="de">Dublettenverwaltung</label>
+        <label xml:lang="en">Duplicate Management</label>
+      </item>
     </group>
     <group id="useradmin">
       <item href="/servlets/MCRUserServlet" type="extern">
