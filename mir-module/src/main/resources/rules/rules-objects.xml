@@ -24,14 +24,10 @@
             <target>metadata</target>
             <!-- this should be fixed in acl module -->
             <action>create-mods</action>
-            <action>create-derivate</action>
         </or>
         <or>
             <and>
-                <or>
-                    <action>create-mods</action>
-                    <action>create-derivate</action>
-                </or>
+                <action>create-mods</action>
                 <or>
                     <role>editor</role>
                     <role>submitter</role>
@@ -150,6 +146,32 @@
                         <or>
                             <status>new</status>
                         </or>
+                        <or>
+                            <createdby/>
+                            <role>editor</role>
+                            <role>admin</role>
+                        </or>
+                    </and>
+                    <and>
+                        <or>
+                            <status>blocked</status>
+                            <status>deleted</status>
+                            <status>submitted</status>
+                            <status>published</status>
+                        </or>
+                        <or>
+                            <role>editor</role>
+                            <role>admin</role>
+                        </or>
+                    </and>
+                </or>
+            </and>
+            <!-- adding derivates, checked on the parent object -->
+            <and>
+                <action>create-derivate</action>
+                <or>
+                    <and>
+                        <status>new</status>
                         <or>
                             <createdby/>
                             <role>editor</role>
