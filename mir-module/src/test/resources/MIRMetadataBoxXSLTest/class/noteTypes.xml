@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="noteTypes">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/noteTypes" />
+  <label xml:lang="en" text="noteTypes" />
+  <categories>
+    <category ID="admin">
+      <label xml:lang="en" text="Admin note" />
+      <label xml:lang="x-access" text="editor admin" />
+    </category>
+    <category ID="public">
+      <label xml:lang="en" text="Public note" />
+      <label xml:lang="x-access" text="guest" />
+    </category>
+  </categories>
+</mycoreclass>

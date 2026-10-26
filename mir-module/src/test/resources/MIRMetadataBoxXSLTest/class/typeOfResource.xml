@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="typeOfResource">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/typeOfResource" />
+  <label xml:lang="en" text="typeOfResource" />
+  <categories>
+    <category ID="text">
+      <label xml:lang="de" text="Text" />
+      <label xml:lang="en" text="Text" />
+    </category>
+  </categories>
+</mycoreclass>
