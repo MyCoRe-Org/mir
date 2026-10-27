@@ -13,7 +13,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/metadata/metadata-box/shared/classification-link.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
 
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />

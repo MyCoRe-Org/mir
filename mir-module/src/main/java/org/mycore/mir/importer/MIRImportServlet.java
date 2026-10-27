@@ -242,7 +242,7 @@ public class MIRImportServlet extends MCRServlet {
         continueParams.put("genre", genre);
         continueParams.put("host", host);
 
-        // The page is rendered by xslt/duplicatecheck.xsl, which displays every referenced object with
+        // The page is rendered by xslt/mir/import/duplicate-check.xsl, which displays every referenced object with
         // the same object display as the search result list (mode "basketContent"). The actual text is
         // resolved via i18n there, so only ids and the navigation urls are passed.
         Element page = new Element("duplicatecheck");

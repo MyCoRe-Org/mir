@@ -36,11 +36,11 @@ import org.mycore.test.MyCoReTest;
 @ExtendWith(MCRJPAExtension.class)
 @MCRTestConfiguration(properties = {
     @MCRTestProperty(key = "MCR.URIResolver.xslImports.modsmeta",
-        string = "metadata/test/modsmeta-test-base.xsl,mir/object-page/boxes/metadata.xsl,mir/object-page/boxes/admindata.xsl")
+        string = "mir/object-page/boxes/modsmeta-test-base.xsl,mir/object-page/boxes/metadata/box.xsl,mir/object-page/boxes/admindata/box.xsl")
 })
 public class MIRMetadataBoxXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/metadata/test/metadata-boxes-test.xsl";
+    private static final String XSL = "/xslt/mir/object-page/boxes/metadata-boxes-test.xsl";
 
     private static final String RESOURCES = "/" + MIRMetadataBoxXSLTest.class.getSimpleName();
 
@@ -113,8 +113,8 @@ public class MIRMetadataBoxXSLTest extends MIRXSLTFunctionTestCase {
         @MCRTestProperty(key = "MIR.MetadataBox.Fields.thesis", string = "title")
     })
     void testFieldOverrideWithPriorityReplacesFieldForGenre() throws Exception {
-        Document thesis = withIncludedModule("metadata/test/thesis-title-override.xsl", () -> render("dissertation"));
-        Document other = withIncludedModule("metadata/test/thesis-title-override.xsl", () -> render(null));
+        Document thesis = withIncludedModule("mir/object-page/boxes/thesis-title-override.xsl", () -> render("dissertation"));
+        Document other = withIncludedModule("mir/object-page/boxes/thesis-title-override.xsl", () -> render(null));
 
         assertEquals(List.of("Thesis"), labels(thesis, METADATA));
         assertEquals("alternativ:", labels(other, METADATA).get(0));
@@ -123,7 +123,7 @@ public class MIRMetadataBoxXSLTest extends MIRXSLTFunctionTestCase {
     @Test
     void testDuplicateFieldRuleFails() {
         TransformerException exception = assertThrows(TransformerException.class,
-            () -> withIncludedModule("metadata/test/duplicate-title.xsl", () -> render(null)));
+            () -> withIncludedModule("mir/object-page/boxes/duplicate-title.xsl", () -> render(null)));
 
         assertTrue(String.valueOf(exception.getMessage()).contains("Ambiguous rule match"), exception::getMessage);
     }

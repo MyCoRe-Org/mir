@@ -3,7 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/mir/object-page/boxes/admindata.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/admindata/box.xsl" />
 
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />

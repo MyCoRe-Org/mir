@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/metadata/common/metadata-row.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/common/metadata-row.xsl" />
 
   <xsl:template name="mods-meta-row">
     <xsl:param name="nodes" as="node()*" />

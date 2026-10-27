@@ -6,8 +6,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/metadata.xsl" />
-  <xsl:import href="resource:xslt/metadata/metadata-box/helpers.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/metadata/box.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/helpers.xsl" />
   <xsl:include href="xslInclude:metadatabox" />
 
   <xsl:template match="/">
