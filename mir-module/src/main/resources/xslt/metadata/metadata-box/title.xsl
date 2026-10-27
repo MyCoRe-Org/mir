@@ -25,7 +25,7 @@
               <xsl:with-param name="asHTML" select="true()" />
               <xsl:with-param name="withSubtitle" select="true()" />
             </xsl:apply-templates>
-            <xsl:if test="@type='translated'">
+            <xsl:if test="@type='translated' and @xml:lang">
               <xsl:variable name="category" select="mcrclassification:category('rfc5646', @xml:lang)" />
               <xsl:value-of select="' (' || mcrclassification:current-label-text($category) || ')'" />
             </xsl:if>

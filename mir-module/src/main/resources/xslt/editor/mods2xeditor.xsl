@@ -200,7 +200,8 @@
 
   <!-- to @mcr:categId -->
   <xsl:template match="mods:classification[@generator='user selected']">
-    <xsl:variable name="category-id" select="mcrmods:to-category(.)/@ID" />
+    <xsl:variable name="class" select="mcrmods:to-mycoreclass(., 'single')" />
+    <xsl:variable name="category-id" select="$class/categories/category/@ID ! concat($class/@ID, ':', .)" />
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:if test="$category-id">
@@ -211,7 +212,8 @@
   </xsl:template>
 
   <xsl:template match="mods:typeOfResource">
-    <xsl:variable name="category-id" select="mcrmods:to-category(.)/@ID" />
+    <xsl:variable name="class" select="mcrmods:to-mycoreclass(., 'single')" />
+    <xsl:variable name="category-id" select="$class/categories/category/@ID ! concat($class/@ID, ':', .)" />
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:if test="$category-id">
