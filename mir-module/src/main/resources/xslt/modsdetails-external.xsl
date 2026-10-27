@@ -317,7 +317,7 @@
                     </xsl:if>
                   </xsl:for-each>
                 </xsl:variable>
-                <xsl:if test="$displayAddDerivate='true' and key('rights', @ID)/@write and mcracl:check-permission('', 'create-derivate') and (not(mcrpi:has-managed-pi($id)) or contains($isAllowedToEditPI, 'true'))">
+                <xsl:if test="$displayAddDerivate='true' and key('rights', @ID)/@write and mcracl:check-permission($id, 'create-derivate') and (not(mcrpi:has-managed-pi($id)) or contains($isAllowedToEditPI, 'true'))">
                   <li class="mir-action-item mir-action-item-add-derivate">
                     <a onclick="javascript: $('.drop-to-object-optional').toggle();" class="dropdown-item">
                       <xsl:value-of select="mcri18n:translate('mir.upload.addDerivate')" />
