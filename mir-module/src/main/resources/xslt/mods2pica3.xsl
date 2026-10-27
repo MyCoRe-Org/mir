@@ -18,18 +18,20 @@
           <xsl:text>000K  utf8</xsl:text>
         </line>
         <xsl:for-each select="mods:mods">
-          <xsl:if test="contains(mods:identifier[@type='uri']/text(),'ppn:')">
-            <line>
-              <xsl:text>0100  </xsl:text>
-              <xsl:value-of select="substring-after(mods:identifier[@type='uri']/text(), 'ppn:')" />
-            </line>
-          </xsl:if>
-          <xsl:if test="contains(mods:recordInfo/mods:recordIdentifier[@source], 'DE-601')">
-            <line>
-              <xsl:text>0100  </xsl:text>
-              <xsl:value-of select="." />
-            </line>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="contains(mods:identifier[@type='uri']/text(),'ppn:')">
+              <line>
+                <xsl:text>0100  </xsl:text>
+                <xsl:value-of select="substring-after(mods:identifier[@type='uri']/text(), 'ppn:')" />
+              </line>
+            </xsl:when>
+            <xsl:when test="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]">
+              <line>
+                <xsl:text>0100  </xsl:text>
+                <xsl:value-of select="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]" />
+              </line>
+            </xsl:when>
+          </xsl:choose>
           <xsl:apply-templates select="." mode="pica3" />
           <xsl:call-template name="subject.topic" />
           <xsl:if test="not(mods:originInfo[mods:publisher or mods:placeTerm[@type='text']])">
