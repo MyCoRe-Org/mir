@@ -3,15 +3,14 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/mir/object-page/boxes/common/functions/mirboxfields.xsl" />
-  <xsl:import href="resource:xslt/mir/object-page/boxes/common/functions/mirnotes.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/shared/functions.xsl" />
   <xsl:import href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:import href="resource:xslt/utils/mods-utils.xsl" />
   <xsl:import href="resource:xslt/mir/mods/utils.xsl" />
-  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/common/fields.xsl" />
-  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/common/fields-fallback.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/fields/dispatch.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/fields/fallback.xsl" />
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/metadata-row.xsl" />
-  <xsl:import href="resource:xslt/mir/object-page/boxes/common/metadata-row-defaults.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/shared/metadata-row-defaults.xsl" />
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/ui-helpers.xsl" />
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/extent.xsl" />

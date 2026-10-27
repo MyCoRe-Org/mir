@@ -287,7 +287,7 @@
       });
     });
 
-    // Input element in the layout/flatmir-utils.xsl search
+    // Input element in the mir/layout/flatmir-utils.xsl search
     const mirFlatmirLayoutSearchInputElement = "#searchInput";
     // Selector for the second search form
     const subSearchFormName = "form.search_form";
@@ -303,14 +303,14 @@
     const selectModsItem = ".select_mods_type .dropdown-item";
     // ID of the hidden element with the fq parameter
     const fqElement = "#fq";
-    // ID of the hidden element with the initial condQuery parameter in the layout/flatmir-utils.xsl search form
+    // ID of the hidden element with the initial condQuery parameter in the mir/layout/flatmir-utils.xsl search form
     const initialCondQueryMirFlatmirLayout = "#initialCondQueryMirFlatmirLayout";
     // ID of the hidden element with the initial condQuery parameter in the second search form
     const initialCondQuerySecond = "#initialCondQuerySecond";
     // ID of the hidden element 'condQuery' for the query parameter 'condQuery'
     const condQuery = "#condQuery";
 
-    // Input element's changes in the layout/flatmir-utils.xsl search
+    // Input element's changes in the mir/layout/flatmir-utils.xsl search
     $(mirFlatmirLayoutSearchInputElement).change(() => {
         if ($(initialCondQueryMirFlatmirLayout).length) {
             let initialCondQueryValue = $(mirFlatmirLayoutSearchInputElement).val().trim();
@@ -389,7 +389,7 @@
                 if (selectModsValue === 'mods.nameIdentifier' && preparedQueryText) {
                     // Search in both fields for backward compatibility: mods.nameIdentifier.id (also matches the
                     // plain value without type prefix) only exists with the updated Solr schema. Without it, the
-                    // exact search in mods.nameIdentifier still works. See also response-mir.xsl.
+                    // exact search in mods.nameIdentifier still works. See also mir/solr/response/results.xsl.
                     filterQuery += ' OR mods.nameIdentifier.id:' + preparedQueryText;
                 }
                 $(fqElement).attr('value', filterQuery);

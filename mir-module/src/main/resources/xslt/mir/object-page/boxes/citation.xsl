@@ -10,9 +10,9 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/citation.xsl" />
-  <xsl:include href="resource:xslt/mir/object-page/head/mods-dc-meta.xsl"/>
-  <xsl:include href="resource:xslt/mir/object-page/head/mods-seo-meta.xsl"/>
-  <xsl:include href="resource:xslt/mir/object-page/head/mods-highwire.xsl" />
+  <xsl:include href="resource:xslt/mir/object-page/head/dc-meta.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/head/seo-meta.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/head/highwire.xsl" />
   
   <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:param name="MIR.defaultCitationStyle" select="''" />

@@ -2,7 +2,7 @@
 
 <!--
   Table of contents layouts. Each layout has its own ID.
-  Use object-page/boxes/toc/custom-layouts.xsl to customize HTML output of level labels and publications.
+  Use mir/object-page/boxes/toc/custom-layouts.xsl to customize HTML output of level labels and publications.
 
   toc-layout : a layout for table of contents
     @id      : a unique ID used to select this layout

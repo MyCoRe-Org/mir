@@ -162,7 +162,7 @@ public class MIRImageWarePacker extends MCRPacker {
         return Optional.empty();
     }
 
-    // used in mods/details-external.xsl
+    // used in mir/mods/details-external.xsl
     public static final boolean displayPackerButton(String objectIDString, String packerId) {
         MCRObjectID objectID = MCRObjectID.getInstance(objectIDString);
         MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);

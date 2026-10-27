@@ -42,7 +42,7 @@
     </xsl:variable>
 
     <xsl:comment>
-      Start amdSec - mets-amd.xsl
+      Start amdSec - mir/mets/amd.xsl
     </xsl:comment>
     <xsl:variable name="entity" select="document(concat('mcrobject:', $derivateOwnerId))" />
     <mets:amdSec ID="amd_{$sectionID}">
@@ -102,7 +102,7 @@
       </mets:digiprovMD>
     </mets:amdSec>
     <xsl:comment>
-      End amdSec - mets-amd.xsl
+      End amdSec - mir/mets/amd.xsl
     </xsl:comment>
   </xsl:template>
 
