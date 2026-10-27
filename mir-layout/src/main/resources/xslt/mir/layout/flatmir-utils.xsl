@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrversion="http://www.mycore.de/xslt/mcrversion"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -95,15 +94,6 @@
                   </xsl:choose>
                 </xsl:attribute>
               </input>
-
-              <xsl:choose>
-                <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
-                  <input name="owner" type="hidden" value="createdby:*" />
-                </xsl:when>
-                <xsl:when test="not(mcracl:is-current-user-guest-user())">
-                  <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
-                </xsl:when>
-              </xsl:choose>
 
               <button type="submit" aria-label="{mcri18n:translate('editor.search.search')}" class="btn btn-primary my-2 my-sm-0">
                 <i class="fas fa-search"></i>

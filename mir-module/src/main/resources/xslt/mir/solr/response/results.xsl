@@ -119,9 +119,6 @@
               </xsl:choose>
             </xsl:variable>
 
-            <!-- Check if 'owner' exists and extract its value if it does -->
-            <xsl:variable name="owner" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='owner']" />
-
             <!-- Check if 'version' exists and extract its value if it does -->
             <xsl:variable name="version" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='version']" />
 
@@ -172,7 +169,6 @@
 
               <!-- Hidden elements with request parameters -->
               <input type="hidden" id="initialCondQuerySecond" name="initialCondQuery" value="{$initialCondQuery}"/>
-              <input type="hidden" id="owner" name="owner" value="{$owner}"/>
               <input type="hidden" id="version" name="version" value="{$version}"/>
 
               <div class="input-group">
@@ -870,7 +866,7 @@
                     <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
                     <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
                     <a
-                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}&amp;owner=createdby:{$owner}"
+                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}"
                       title="Suche nach allen Publikationen"
                     >
                       <xsl:value-of select="$author_name" />
@@ -883,7 +879,7 @@
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                   </xsl:otherwise>

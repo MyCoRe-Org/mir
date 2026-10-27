@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -14,18 +13,6 @@
             </xsl:call-template>
         </xsl:variable>
         <xsl:variable name="nameIdentifiers" select="$nameIds/nameIdentifier"/>
-
-        <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-        <xsl:variable name="owner">
-            <xsl:choose>
-                <xsl:when test="mcracl:is-current-user-in-role('admin') or mcracl:is-current-user-in-role('editor')">
-                    <xsl:text>*</xsl:text>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$CurrentUser"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
 
         <xsl:variable name="query">
             <xsl:choose>
@@ -74,7 +61,7 @@
                 </dl>
             </div>
         </xsl:if>
-        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encode-for-uri($query),'&amp;owner=',encode-for-uri(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
+        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encode-for-uri($query))}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="$nameIdentifiers or $affiliations">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{mcri18n:translate('mir.details.personpopover.title')}">
