@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.common.MCRSessionUtils;
 import org.mycore.common.MCRUserInformation;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.annotation.MCRConfigurationProxy;
@@ -80,7 +80,7 @@ public class MIROwnerSolrQueryParameterFilter implements MCRSolrQueryParameterFi
         if (allowedToSeeAll) {
             return ALL_OWNERS_QUERY;
         }
-        if (MCRSystemUserInformation.GUEST.equals(user)) {
+        if (MCRSessionUtils.isGuest(user)) {
             return NO_OWNER_QUERY;
         }
         return "createdby:" + ClientUtils.escapeQueryChars(user.getUserID());

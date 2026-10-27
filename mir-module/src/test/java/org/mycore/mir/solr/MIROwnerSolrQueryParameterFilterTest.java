@@ -55,6 +55,15 @@ public class MIROwnerSolrQueryParameterFilterTest {
     }
 
     @Test
+    public void testGuestByUserId() {
+        setUser("guest");
+
+        ModifiableSolrParams params = filterUserParams("/find");
+
+        assertArrayEquals(new String[] { "-*:*" }, params.getParams("owner"));
+    }
+
+    @Test
     public void testUser() {
         setUser("anna");
 
