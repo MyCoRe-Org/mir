@@ -33,14 +33,14 @@
     <xsl:if test="$navigation">
       <xsl:variable name="title" select="string($navigation/label[lang($CurrentLang)][1])" />
       <div class="mir-guidance-panel">
-        <xsl:if test="normalize-space($navigation/@banner)">
-          <xsl:call-template name="render-guidance-panel-banner">
-            <xsl:with-param name="object-id" select="$object-id" />
-            <xsl:with-param name="banner" select="string($navigation/@banner)" />
-            <xsl:with-param name="title" select="$title" />
-          </xsl:call-template>
-        </xsl:if>
         <div class="card">
+          <xsl:if test="normalize-space($navigation/@banner)">
+            <xsl:call-template name="render-guidance-panel-banner">
+              <xsl:with-param name="object-id" select="$object-id" />
+              <xsl:with-param name="banner" select="string($navigation/@banner)" />
+              <xsl:with-param name="title" select="$title" />
+            </xsl:call-template>
+          </xsl:if>
           <div class="card-header">
             <h3 class="card-title">
               <xsl:value-of select="$title" />
