@@ -19,16 +19,16 @@
         </line>
         <xsl:for-each select="mods:mods">
           <xsl:choose>
-            <xsl:when test="contains(mods:identifier[@type='uri']/text(),'ppn:')">
+            <xsl:when test="mods:identifier[@type='uri'][contains(., 'ppn:')]">
               <line>
                 <xsl:text>0100  </xsl:text>
-                <xsl:value-of select="substring-after(mods:identifier[@type='uri']/text(), 'ppn:')" />
+                <xsl:value-of select="substring-after(mods:identifier[@type='uri'][contains(., 'ppn:')][1], 'ppn:')" />
               </line>
             </xsl:when>
             <xsl:when test="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]">
               <line>
                 <xsl:text>0100  </xsl:text>
-                <xsl:value-of select="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]" />
+                <xsl:value-of select="(mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')])[1]" />
               </line>
             </xsl:when>
           </xsl:choose>
@@ -231,7 +231,7 @@
       <xsl:choose>
         <xsl:when test="mods:namePart[@type='family']">
           <xsl:text>3110  </xsl:text> <!--If you place the elemnet directly under die <line> it will create an empty 3110 tag -->
-          <xsl:value-of select="concat(mods:namePart[@type='family'], ', ', mods:namePart[@type='given'])" />
+          <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
         </xsl:when>
         <xsl:when test="mods:namePart[not(@type='family')]">
           <xsl:text>3110  </xsl:text>
@@ -409,7 +409,7 @@
   <xsl:template match="mods:originInfo/mods:publisher" mode="pica3">
     <line>
       <xsl:text>4030  </xsl:text>
-      <xsl:value-of select="concat(../mods:place/mods:placeTerm[@type='text'], '$n', text())" />
+      <xsl:value-of select="concat((../mods:place/mods:placeTerm[@type='text'])[1], '$n', text())" />
     </line>
   </xsl:template>
 

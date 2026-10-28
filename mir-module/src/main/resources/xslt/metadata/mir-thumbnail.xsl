@@ -10,7 +10,7 @@
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject[classification/@categid='thumbnail']">
       <xsl:variable name="defaultAlt"
-        select="concat(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title,' ',mcri18n:translate('mir.metaData.panel.heading.mir-thumbnail'))"/>
+        select="concat((mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title)[1], ' ', mcri18n:translate('mir.metaData.panel.heading.mir-thumbnail'))"/>
       <xsl:variable name="identifier" select="mycoreobject/@ID"/>
       <xsl:variable name="pictureURL"
         select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!400,400/0/default.jpg')"/>
