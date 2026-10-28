@@ -53,7 +53,7 @@
   <xsl:template match="mods:name" mode="name-parts">
     <xsl:choose>
       <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-        <xsl:value-of select="concat(mods:namePart[@type='family'], ', ', mods:namePart[@type='given'])" />
+        <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="mods:namePart" />

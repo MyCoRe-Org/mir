@@ -611,10 +611,10 @@
         <xsl:otherwise>
           <xsl:value-of select="mods:namePart[@type='family']" />
           <xsl:if test="mods:namePart[@type='given']">
-            <xsl:value-of select="concat(', ',mods:namePart[@type='given'])" />
+            <xsl:value-of select="concat(', ', mods:namePart[@type='given'][1])" />
           </xsl:if>
           <xsl:if test="mods:namePart[@type='date']">
-            <xsl:value-of select="concat(' (',mods:namePart[@type='date'],')')" />
+            <xsl:value-of select="concat(' (', mods:namePart[@type='date'][1], ')')" />
           </xsl:if>
         </xsl:otherwise>
       </xsl:choose>

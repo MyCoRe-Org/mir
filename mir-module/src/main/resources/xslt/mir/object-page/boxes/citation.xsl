@@ -45,10 +45,10 @@
         <xsl:variable name="shariffURL">
           <xsl:choose>
             <xsl:when test="$piServiceInformation[@type='doi'][@inscribed='true']">
-              <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, //mods:mods/mods:identifier[@type='doi'])" />
+              <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, (//mods:mods/mods:identifier[@type='doi'])[1])" />
             </xsl:when>
             <xsl:when test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
-              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, //mods:mods/mods:identifier[@type='urn'])"/>
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, (//mods:mods/mods:identifier[@type='urn'])[1])"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', //mycoreobject/@ID)" />
@@ -195,7 +195,7 @@
             </strong>
             <br />
             <xsl:variable name="trimmed"
-              select="substring-after(normalize-space(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
+              select="substring-after(normalize-space((mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href)[1]), '#')" />
             <xsl:choose>
               <xsl:when test="contains($trimmed, 'cc_')">
                 <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']"

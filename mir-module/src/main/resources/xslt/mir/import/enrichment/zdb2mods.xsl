@@ -90,12 +90,14 @@
   </xsl:template>
 
   <xsl:template match="marc:datafield[@tag='041']">
-    <mods:language>
-      <mods:languageTerm type="code" authority="rfc5646">
-        <xsl:variable name="given" select="lower-case(marc:subfield[@code='a'])" />
-        <xsl:value-of select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[lower-case(@text)=$given]][1]/@ID" />
-      </mods:languageTerm>
-    </mods:language>
+    <xsl:for-each select="marc:subfield[@code='a']">
+      <mods:language>
+        <mods:languageTerm type="code" authority="rfc5646">
+          <xsl:variable name="given" select="lower-case(.)" />
+          <xsl:value-of select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[lower-case(@text)=$given]][1]/@ID" />
+        </mods:languageTerm>
+      </mods:language>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="marc:datafield[@tag='082']">

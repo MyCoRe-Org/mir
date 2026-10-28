@@ -58,7 +58,7 @@
                 <xsl:choose>
                   <xsl:when test="$entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']">
                     <xsl:variable name="licenseId"
-                      select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href, '#')" />
+                      select="substring-after(($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href)[1], '#')" />
                     <xsl:value-of
                       select="mcrclassification:current-label-text(mcrclassification:category('mir_licenses', $licenseId))" />
                   </xsl:when>
@@ -76,7 +76,7 @@
           <mets:xmlData>
             <dv:links xmlns:dv="http://dfg-viewer.de/">
               <xsl:variable name="ppn"
-                select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
+                select="substring-after(($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'][contains(., ':ppn:')])[1], ':ppn:')" />
               <xsl:if test="$ppn">
                 <dv:reference>
                   <xsl:variable name="catalogURL"
