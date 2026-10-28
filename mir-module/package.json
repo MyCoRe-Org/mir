@@ -32,7 +32,7 @@
         "video.js": "8.23.9"
     },
     "dependencies": {
-        "tinymce": "^7.9.3",
+        "tinymce": "^8.9.3",
         "tinymce-i18n": "^24.12.9",
         "vue": "3.5.40"
     }

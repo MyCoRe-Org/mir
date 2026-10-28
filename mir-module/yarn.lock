@@ -2694,10 +2694,10 @@ tinymce-i18n@^24.12.9:
   resolved "https://registry.yarnpkg.com/tinymce-i18n/-/tinymce-i18n-24.12.30.tgz#33b9d78f10a834d19b373504a2bf13b98e6a8ba2"
   integrity sha512-OOtJfr9plrXT5fuvCEXJ56QFKyFPCaaVcalj0UgJGv2AK8PNWhDVqzPef6MPlBkvVA1qgrZb7ZvfJC63wmkWjg==
 
-tinymce@^7.9.3:
-  version "7.9.3"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-7.9.3.tgz#74f0a04bdf662f90910512d3fe792f0d5f1111e3"
-  integrity sha512-Mtm54U5YJ6Pyo/GaAx+JSHXTGEuxrg2AowVWCD9zy1eBolp5Ub7S1rTtsyQdxhPegfhLuR3VLiTKGw1tacv09g==
+tinymce@^8.9.3:
+  version "8.9.3"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-8.9.3.tgz#7fdab6588e99cd1fc5a849b881ec4a00e9c594cb"
+  integrity sha512-T6Z541dm8R34/rgotB40/j2lwrE3eKARbaoet37/I4d3jq+S7Ul3Q7bNZUQY2WtXOvD9P5aTVbgcYI1nKQoGqg==
 
 tmp@0.0.31:
   version "0.0.31"
