@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --formats umd-min --name editor-tools --dist --dest ",
+    "build": "vue-cli-service build --target lib --formats umd-min --name editor-tools",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
