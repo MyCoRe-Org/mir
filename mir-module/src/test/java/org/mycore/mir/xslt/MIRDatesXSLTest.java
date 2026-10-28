@@ -10,7 +10,7 @@ import org.mycore.test.MyCoReTest;
 @MyCoReTest
 public class MIRDatesXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/metadata/test/mirdates-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mirdates-test.xsl";
 
     @Test
     void testFormat() throws Exception {
