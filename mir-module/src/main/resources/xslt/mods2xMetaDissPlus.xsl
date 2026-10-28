@@ -620,10 +620,10 @@
         </xsl:when>
         <!-- removed cause of missed Place
         <xsl:when test="$mods/mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
-          <xsl:value-of select="($mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
+          <xsl:value-of select="$mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
         </xsl:when>
         <xsl:when test="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
-          <xsl:value-of select="($mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name)[1]" />
+          <xsl:value-of select="$mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
         </xsl:when>
          -->
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
@@ -632,7 +632,7 @@
         </xsl:when>
         <!-- removed cause of missed Place
         <xsl:when test="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-          <xsl:value-of select="($mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm)[1]" />
+          <xsl:value-of select="$mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
         </xsl:when>
         -->
       </xsl:choose>
