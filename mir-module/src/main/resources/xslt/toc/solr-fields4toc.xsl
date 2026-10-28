@@ -19,7 +19,8 @@
 
     <xsl:for-each select="metadata/def.modsContainer/modsContainer/mods:mods">
       <xsl:apply-templates select="mods:titleInfo" mode="toc" />
-      <xsl:apply-templates select="(.)[mods:name[@type='personal'][contains($MIR.TableOfContents.RolesToDisplay,mods:role/mods:roleTerm)]]" mode="toc.authors" />
+      <!-- Assume at most one MARC relator code per name and skip author_roles -->
+      <xsl:apply-templates select="(.)[mods:name[@type='personal'][contains($MIR.TableOfContents.RolesToDisplay, mods:role/mods:roleTerm[@authority='marcrelator'][@type='code'])]]" mode="toc.authors" />
 
       <xsl:apply-templates select="descendant::mods:relatedItem[contains('host series',@type)]/@xlink:href" mode="toc" />
       
@@ -98,7 +99,8 @@
 
   <xsl:template match="mods:mods" mode="toc.authors">
     <field name="mir.toc.authors">
-      <xsl:for-each select="mods:name[@type='personal'][contains($MIR.TableOfContents.RolesToDisplay,mods:role/mods:roleTerm)]">
+      <!-- Assume at most one MARC relator code per name and skip author_roles -->
+      <xsl:for-each select="mods:name[@type='personal'][contains($MIR.TableOfContents.RolesToDisplay, mods:role/mods:roleTerm[@authority='marcrelator'][@type='code'])]">
         <xsl:choose>
           <xsl:when test="mods:displayForm">
             <xsl:value-of select="mods:displayForm" />
