@@ -169,7 +169,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <arguments>build ${project.build.directory}/${project.build.finalName}/vue/name-search/</arguments>
+              <arguments>build --dest ${project.build.directory}/${project.build.finalName}/vue/name-search/</arguments>
               <workingDirectory>src/main/vue/name-search/</workingDirectory>
             </configuration>
           </execution>
