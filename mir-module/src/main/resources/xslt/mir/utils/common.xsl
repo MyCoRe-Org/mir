@@ -17,17 +17,6 @@
         </xsl:for-each>
     </xsl:variable>
 
-    <xsl:variable name="owner">
-        <xsl:choose>
-            <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
-                <xsl:text>*</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$CurrentUser" />
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-
     <xsl:template name="iconLink">
         <xsl:param name="baseURL"/>
         <xsl:param name="mimeType"/>

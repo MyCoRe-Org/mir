@@ -79,7 +79,7 @@
           <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
           <li>
             <a
-              href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}&amp;owner=createdby:{$owner}"
+              href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}"
               title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
@@ -93,7 +93,7 @@
         </xsl:when>
         <xsl:otherwise>
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}"
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;"
               title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
