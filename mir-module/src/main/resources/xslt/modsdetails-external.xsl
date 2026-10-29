@@ -53,7 +53,7 @@
         <xsl:variable name="embargo" select="metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
         <xsl:choose>
 <!-- TODO:          <xsl:when test="mcracl:is-current-user-in-role('guest') and count($embargo) &gt; 0 and mcrxml:compare(string($embargo),dt:date-time()) &gt; 0">-->
-          <xsl:when test="mcracl:is-current-user-in-role('guest') and count($embargo) &gt; 0 and false()">
+          <xsl:when test="mcracl:is-current-user-guest-user() and count($embargo) &gt; 0 and false()">
             <!-- embargo is active for guest user -->
             <xsl:value-of select="mcri18n:translate-with-params('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargo)" />
           </xsl:when>
@@ -266,7 +266,7 @@
         <ul class="dropdown-menu dropdown-menu-end">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:choose>
-            <xsl:when test="not($accessedit) and mcracl:is-current-user-in-role('guest')">
+            <xsl:when test="not($accessedit) and mcracl:is-current-user-guest-user()">
               <li class="mir-action-item">
                 <a href="{concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))}" class="dropdown-item">
                   <xsl:value-of select="mcri18n:translate('mir.actions.noaccess')" />
@@ -649,7 +649,7 @@
             <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
               <div class="hit_icon">
                 <xsl:choose>
-                  <xsl:when test="not(mcracl:is-current-user-in-role('guest'))">
+                  <xsl:when test="not(mcracl:is-current-user-guest-user())">
                     <xsl:attribute name="data-iiif-jwt">
                       <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID,'/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                     </xsl:attribute>
