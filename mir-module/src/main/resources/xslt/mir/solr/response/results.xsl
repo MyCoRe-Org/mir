@@ -12,7 +12,7 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
-  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
+  <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/export.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />

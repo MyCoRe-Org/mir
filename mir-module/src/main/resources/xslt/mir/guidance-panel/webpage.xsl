@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
+  <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
 
   <xsl:param name="MCRObjectID" />
   <xsl:param name="MCRDerivateID" />
