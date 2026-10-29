@@ -19,6 +19,8 @@ import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathFactory;
 import org.junit.jupiter.api.Test;
 import org.mycore.common.MCRConstants;
+import org.mycore.common.MCRTestConfiguration;
+import org.mycore.common.MCRTestProperty;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.xsl.uriresolver.MCRURIResolver;
 import org.mycore.test.MyCoReTest;
@@ -26,12 +28,19 @@ import org.mycore.test.MyCoReTest;
 @MyCoReTest
 public class MIRCrossrefJatsAbstract2ModsAbstractResolverTest {
 
+    public static final String DATASOURCE_URI = "MCR.MODS.EnrichmentResolver.DataSource.CrossRef.doi.URI";
+
+    public static final String USE_ABSTRACTS = "MCR.MODS.EnrichmentResolver.DataSource.CrossRef.UseAbstracts";
+
     public static final String ALT_FORMAT_PREFIX = "data:text/xml;charset=UTF-8;base64,";
 
     @Test
-    public void testAbstractMapping() throws IOException, JDOMException {
+    @MCRTestConfiguration(properties = {
+        @MCRTestProperty(key = USE_ABSTRACTS, string = "true")
+    })
+    public void testEnabledAbstractMapping() throws IOException, JDOMException {
 
-        String uri = MCRConfiguration2.getStringOrThrow("MCR.MODS.EnrichmentResolver.DataSource.CrossRef.doi.URI");
+        String uri = MCRConfiguration2.getStringOrThrow(DATASOURCE_URI);
 
         String className = MIRCrossrefJatsAbstract2ModsAbstractResolverTest.class.getSimpleName();
         uri = uri.replace("https://api.crossref.org/works/{0}", "resource:" + className + "/example.json");
@@ -84,9 +93,32 @@ public class MIRCrossrefJatsAbstract2ModsAbstractResolverTest {
 
     }
 
+    @Test
+    @MCRTestConfiguration(properties = {
+        @MCRTestProperty(key = USE_ABSTRACTS, string = "false")
+    })
+    public void testDisabledAbstractMapping() throws IOException {
+
+        String uri = MCRConfiguration2.getStringOrThrow(DATASOURCE_URI);
+
+        String className = MIRCrossrefJatsAbstract2ModsAbstractResolverTest.class.getSimpleName();
+        uri = uri.replace("https://api.crossref.org/works/{0}", "resource:" + className + "/example.json");
+
+        Element element = MCRURIResolver.obtainInstance().resolve(uri);
+
+        System.out.println("MODS:");
+        new XMLOutputter(Format.getPrettyFormat()).output(element, System.out);
+        System.out.println();
+
+        List<Element> plainTextAbstractElements = evaluate(element, ".//mods:abstract[not(@contentType)]");
+        assertEquals(0, plainTextAbstractElements.size());
+
+    }
+
     private static List<Element> evaluate(Element element, String xpath) {
         return XPathFactory.instance()
             .compile(xpath, Filters.element(), null, MCRConstants.getStandardNamespaces())
             .evaluate(element);
     }
+
 }
