@@ -438,7 +438,7 @@
   </xsl:template>
 
   <xsl:template match="mods:extension[@displayLabel='characteristics']" mode="present">
-    <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+    <xsl:if test="not(mcracl:is-current-user-guest-user())">
       <tr>
         <td valign="top" class="metaname">
           <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.characteristics'),':')" />
@@ -602,11 +602,11 @@
       </td>
     </tr>
     <xsl:if
-      test="(not(mcracl:is-current-user-in-role('guest')) and ./../mods:note[@xlink:href=$id]) or (./../mods:location/mods:physicalLocation[@xlink:href=$id])">
+      test="(not(mcracl:is-current-user-guest-user()) and ./../mods:note[@xlink:href=$id]) or (./../mods:location/mods:physicalLocation[@xlink:href=$id])">
       <tr>
         <td colspan="2">
           <table class="metaData">
-            <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+            <xsl:if test="not(mcracl:is-current-user-guest-user())">
               <xsl:call-template name="printMetaDate.mods">
                 <xsl:with-param name="nodes" select="./../mods:note[@xlink:href=$id]" />
               </xsl:call-template>
@@ -673,7 +673,7 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='intern_old']" mode="present">
-    <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+    <xsl:if test="not(mcracl:is-current-user-guest-user())">
       <tr>
         <td valign="top" class="metaname">
           <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.identifier.',@type)),':')" />
@@ -1017,7 +1017,7 @@
             <td class="metavalue">
               <p>
                 <xsl:choose>
-                  <xsl:when test="not(mcracl:is-current-user-in-role('guest'))">
+                  <xsl:when test="not(mcracl:is-current-user-guest-user())">
                     <a href="{$ServletsBaseURL}solr/parent?q={$context/@ID}&amp;fq=">
                       <xsl:value-of select="mcri18n:translate('component.mods.metaData.displayAll')" />
                     </a>
