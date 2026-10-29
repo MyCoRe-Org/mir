@@ -56,7 +56,7 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='intern_old']" mode="identifier">
-    <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+    <xsl:if test="not(mcracl:is-current-user-guest-user())">
       <xsl:call-template name="meta-row">
         <xsl:with-param name="label" select="mcri18n:translate(concat('component.mods.metaData.dictionary.identifier.',@type))" />
         <xsl:with-param name="value" select="." />
