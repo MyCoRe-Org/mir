@@ -11,7 +11,7 @@
     <xsl:param name="object" as="element(mycoreobject)" />
     <xsl:variable name="mods" select="mirobject:mods($object)" />
 
-    <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+    <xsl:if test="not(mcracl:is-current-user-guest-user())">
       <!-- TODO should be @type -->
       <xsl:variable name="characteristics-extension" select="
         $mods/mods:extension[@displayLabel='characteristics']

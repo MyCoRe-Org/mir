@@ -27,7 +27,7 @@
 
       <xsl:if test="@ID">
         <xsl:variable name="ref" select="'#' || @ID" />
-        <xsl:if test="not(mcracl:is-current-user-in-role('guest'))">
+        <xsl:if test="not(mcracl:is-current-user-guest-user())">
           <xsl:call-template name="mods-meta-row">
             <xsl:with-param name="nodes" select="../mods:note[@xlink:href = $ref]" />
           </xsl:call-template>
