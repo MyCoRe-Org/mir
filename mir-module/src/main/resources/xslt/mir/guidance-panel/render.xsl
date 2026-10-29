@@ -18,19 +18,22 @@
 
   <xsl:template name="render-guidance-panels">
     <xsl:param name="object-id" as="xs:string" />
-    <xsl:for-each select="mcrobject:get($object-id)/mycoreobject/structure/derobjects
-      /derobject[classification[@classid = 'derivate_types'][@categid = 'navigation']]">
-      <xsl:call-template name="render-guidance-panel">
-        <xsl:with-param name="object-id" select="$object-id" />
-        <xsl:with-param name="derivate-id" select="string(@xlink:href)" />
-      </xsl:call-template>
-    </xsl:for-each>
+    <xsl:if test="mirguidancepanel:is-readable($object-id)">
+      <xsl:for-each select="mcrobject:get($object-id)/mycoreobject/structure/derobjects
+        /derobject[classification[@classid = 'derivate_types'][@categid = 'navigation']]">
+        <xsl:call-template name="render-guidance-panel">
+          <xsl:with-param name="object-id" select="$object-id" />
+          <xsl:with-param name="derivate-id" select="string(@xlink:href)" />
+        </xsl:call-template>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel">
     <xsl:param name="object-id" as="xs:string" />
     <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:variable name="navigation" select="mcrderivate:get-file($derivate-id, 'navigation.xml')/item" />
+    <xsl:variable name="navigation" select="if (mirguidancepanel:is-readable($object-id)
+      and mirguidancepanel:is-readable($derivate-id)) then mcrderivate:get-file($derivate-id, 'navigation.xml')/item else ()" />
     <xsl:if test="$navigation">
       <xsl:variable name="title" select="mirguidancepanel:label($navigation/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
