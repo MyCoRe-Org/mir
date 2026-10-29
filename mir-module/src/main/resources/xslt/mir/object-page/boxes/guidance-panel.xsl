@@ -8,7 +8,6 @@
 
   <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/guidance-panel.xsl" />
   <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
-  <xsl:include href="resource:xslt/mir/functions/mirmods.xsl" />
 
   <xsl:template match="/">
     <xsl:if test="mirguidancepanel:is-enabled()">
