@@ -24,7 +24,17 @@
     <channel>
       <xsl:apply-templates select="$mods/mods:titleInfo[1]" />
       <xsl:call-template name="render-rss-link" />
-      <xsl:apply-templates select="$mods/mods:abstract[normalize-space()][1]" />
+      <xsl:choose>
+        <xsl:when test="$mods/mods:abstract[normalize-space()]">
+          <xsl:apply-templates select="$mods/mods:abstract[normalize-space()][1]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- description is required for a channel -->
+          <description>
+            <xsl:apply-templates select="$mods/mods:titleInfo[1]" mode="text" />
+          </description>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates select="$mods/mods:language[mods:languageTerm[@type = 'code']][1]" />
       <xsl:if test="$generator">
         <generator>
@@ -62,15 +72,19 @@
 
   <xsl:template match="mods:titleInfo">
     <title>
-      <xsl:value-of select="mods:nonSort, mods:title" separator=" " />
-      <xsl:if test="mods:subTitle">
-        <!-- separate the subtitle by a colon, unless the title ends with a punctuation mark -->
-        <xsl:if test="not(matches(mods:title, '[?!.:,;-]$'))">
-          <xsl:text>:</xsl:text>
-        </xsl:if>
-        <xsl:value-of select="concat(' ', mods:subTitle)" />
-      </xsl:if>
+      <xsl:apply-templates select="." mode="text" />
     </title>
+  </xsl:template>
+
+  <xsl:template match="mods:titleInfo" mode="text">
+    <xsl:value-of select="mods:nonSort, mods:title" separator=" " />
+    <xsl:if test="mods:subTitle">
+      <!-- separate the subtitle by a colon, unless the title ends with a punctuation mark -->
+      <xsl:if test="not(matches(mods:title, '[?!.:,;-]$'))">
+        <xsl:text>:</xsl:text>
+      </xsl:if>
+      <xsl:value-of select="concat(' ', mods:subTitle)" />
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:abstract">
