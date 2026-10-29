@@ -453,10 +453,11 @@
         </div>
 
         <xsl:if test="mirguidancepanel:is-enabled()">
-          <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']
-            /str[@name='q'][starts-with(., 'mods.relatedItem.root:')]">
+          <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']" />
+          <xsl:for-each select="distinct-values(($params/str[@name = ('q', 'fq')], $params/arr[@name = 'fq']/str)
+            [starts-with(., 'mods.relatedItem.root:')] ! substring-after(., 'mods.relatedItem.root:'))">
             <xsl:call-template name="render-guidance-panels">
-              <xsl:with-param name="object-id" select="substring-after(., 'mods.relatedItem.root:')" />
+              <xsl:with-param name="object-id" select="." />
             </xsl:call-template>
           </xsl:for-each>
         </xsl:if>
