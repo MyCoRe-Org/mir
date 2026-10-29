@@ -8,6 +8,7 @@
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -723,11 +724,16 @@
             </xsl:variable>
             <xsl:variable name="displayDerivate" select="$derivates[str[@name='id'] = $displayDerivateID]"/>
             <xsl:variable name="displayMaindoc" select="string(($displayDerivate/str[@name='derivateMaindoc'])[1])"/>
-            <!-- files that iView does not support may still be tiled, e.g. a frame generated from a video -->
-            <xsl:variable name="displayHasTiles"
-              select="if (string-length($displayDerivateID) &gt; 0 and string-length($displayMaindoc) &gt; 0)
-                then mcriview2:has-tiles(string($displayDerivateID), concat('/', $displayMaindoc))
-                else false()"/>
+            <!-- files that iView does not support may still be tiled, e.g. a frame generated from a video;
+              a failing tile lookup must not break the result list, the hit then keeps its icon -->
+            <xsl:variable name="displayHasTiles" as="xs:boolean">
+              <xsl:try
+                select="if (string-length($displayDerivateID) &gt; 0 and string-length($displayMaindoc) &gt; 0)
+                  then mcriview2:has-tiles(string($displayDerivateID), concat('/', $displayMaindoc))
+                  else false()">
+                <xsl:catch select="false()"/>
+              </xsl:try>
+            </xsl:variable>
 
             <!-- produces the thumbnail html-->
             <xsl:variable name="imageElement">

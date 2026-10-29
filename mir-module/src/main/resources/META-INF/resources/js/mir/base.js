@@ -3,9 +3,10 @@
         const iiifSearchSelector = "data-iiif-jwt";
         let iiifTokenRequest = null;
 
-        // the token is requested at most once and shared by all IIIF images of the page
-        function getIiifToken() {
-            if (iiifTokenRequest === null) {
+        // the token is requested at most once and shared by all IIIF images of the page,
+        // a stale token request is only replaced if no other image has replaced it already
+        function getIiifToken(staleTokenRequest) {
+            if (iiifTokenRequest === null || iiifTokenRequest === staleTokenRequest) {
                 iiifTokenRequest = new Promise(function (resolve) {
                     $.ajax({
                         url: webApplicationBaseURL + "rsc/jwt",
@@ -26,17 +27,28 @@
             return iiifTokenRequest;
         }
 
-        // loads an IIIF image with the token of the logged in user and passes a blob URL to the callback
-        function loadIiifImage(url, callback) {
-            getIiifToken().then(function (token) {
+        // loads an IIIF image with the token of the logged in user and passes a blob URL to the callback,
+        // a request that is not authorized is retried once with a fresh token, as the token may have expired meanwhile
+        function loadIiifImage(url, callback, staleTokenRequest) {
+            var tokenRequest = getIiifToken(staleTokenRequest);
+            tokenRequest.then(function (token) {
                 if (token === null) {
                     return;
                 }
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
                         var urlFactory = window.URL || window.webkitURL;
                         callback(urlFactory.createObjectURL(this.response));
+                    } else if ((this.status === 401 || this.status === 403)
+                        && typeof staleTokenRequest === "undefined") {
+                        console.log("Could not load IIIF image " + url + " (status " + this.status + "), retrying.");
+                        loadIiifImage(url, callback, tokenRequest);
+                    } else {
+                        console.log("Could not load IIIF image " + url + " (status " + this.status + ").");
                     }
                 }
                 xhr.open('GET', url);

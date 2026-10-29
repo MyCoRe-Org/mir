@@ -5,6 +5,7 @@
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrmedia="http://www.mycore.de/xslt/media"
   xmlns:mcrsolr="http://www.mycore.de/xslt/solr"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -165,7 +166,14 @@
     <xsl:param name="derivateID" />
     <xsl:param name="filePath" />
 
-    <xsl:if test="mcriview2:has-tiles($derivateID, concat('/', $filePath))">
+    <!-- a failing tile lookup must not break the metadata page, the player then shows the first frame -->
+    <xsl:variable name="hasTiles" as="xs:boolean">
+      <xsl:try select="mcriview2:has-tiles($derivateID, concat('/', $filePath))">
+        <xsl:catch select="false()" />
+      </xsl:try>
+    </xsl:variable>
+
+    <xsl:if test="$hasTiles">
       <xsl:variable name="posterURL"
         select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/Iview/',
           encode-for-uri(concat($derivateID, '/', $filePath)), '/full/',
