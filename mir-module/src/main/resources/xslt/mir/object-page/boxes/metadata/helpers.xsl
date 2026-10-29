@@ -3,7 +3,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/mir/object-page/boxes/shared/functions.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/shared/functions/mirboxfields.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/shared/functions/mirnotes.xsl" />
   <xsl:import href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:import href="resource:xslt/utils/mods-utils.xsl" />
   <xsl:import href="resource:xslt/mir/mods/utils.xsl" />
