@@ -12,6 +12,7 @@
   <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl" />
 
   <xsl:param name="CurrentLang" />
+  <xsl:param name="DefaultLang" />
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="WebApplicationBaseURL" />
 
@@ -31,7 +32,7 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:variable name="navigation" select="mcrderivate:get-file($derivate-id, 'navigation.xml')/item" />
     <xsl:if test="$navigation">
-      <xsl:variable name="title" select="string($navigation/label[lang($CurrentLang)][1])" />
+      <xsl:variable name="title" select="mirguidancepanel:label($navigation/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
         <div class="card">
           <xsl:if test="normalize-space($navigation/@banner)">
@@ -116,7 +117,7 @@
     <xsl:param name="item" as="element(item)" />
     <li>
       <a href="{if (starts-with($item/@ref, 'http')) then $item/@ref else concat($WebApplicationBaseURL, $item/@ref)}">
-        <xsl:value-of select="$item/label[lang($CurrentLang)][1]" />
+        <xsl:value-of select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)" />
       </a>
     </li>
   </xsl:template>
