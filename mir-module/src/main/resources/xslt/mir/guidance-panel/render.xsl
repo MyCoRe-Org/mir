@@ -9,7 +9,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xslt/guidance-panel/mirguidancepanel.xsl" />
+  <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl" />
 
   <xsl:param name="CurrentLang" />
   <xsl:param name="ServletsBaseURL" />

@@ -6,9 +6,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:metadata/mir-guidance-panel.xsl" />
-  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
-  <xsl:include href="resource:xslt/functions/mirmods.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/guidance-panel.xsl" />
+  <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
+  <xsl:include href="resource:xslt/mir/functions/mirmods.xsl" />
 
   <xsl:template match="/">
     <xsl:if test="mirguidancepanel:is-enabled()">
