@@ -110,8 +110,8 @@
         <div class="col-2">
           <h4>Netzwerke</h4>
           <ul class="social_links">
-            <li><a href="#"><button type="button" class="social_icons social_icon_fb"></button>Facebook</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_x"></button>X</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_fb" aria-label="Facebook"></button>Facebook</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_x" aria-label="X"></button>X</a></li>
           </ul>
         </div>
         <div class="col-2">

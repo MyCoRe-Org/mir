@@ -139,7 +139,7 @@
 
   <xsl:template match="mir:dateRange">
     <div class="mir-form-group row">
-      <label class="col-md-3 col-form-label text-end form-label">
+      <label for="datetimerange_{@label}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="{@label}" />
       </label>
       <div class="col-md-6 {@class}" data-type="{@type}">
@@ -206,7 +206,7 @@
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
-          <input type="text" class="form-control {$timeClass}" autocomplete="off">
+          <input id="datetimerange_{@label}" type="text" class="form-control {$timeClass}" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
@@ -216,13 +216,13 @@
       </div>
       <div class="date-range input-group {$hiddenclassrange} input-daterange">
         <xed:bind xpath="{$xpathStart}">
-          <input type="text" class="form-control {$dateRangeWithTime} startDate" data-point="start">
+          <input type="text" class="form-control {$dateRangeWithTime} startDate" data-point="start" aria-label="mcri18n:translate('mir.date.start')">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
         <span class="fas fa-minus input-group-text" aria-hidden="true"></span>
         <xed:bind xpath="{$xpathEnd}">
-          <input type="text" class="form-control {$dateRangeWithTime} endDate" data-point="end">
+          <input type="text" class="form-control {$dateRangeWithTime} endDate" data-point="end" aria-label="mcri18n:translate('mir.date.end')">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
@@ -440,7 +440,7 @@
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="mir-form-group row {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label class="col-md-3 col-form-label text-end form-label target-person-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
@@ -472,7 +472,7 @@
               <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
                 <div class="col-md-3" style="text-align:right; font-weight:bold;">
                   <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                    <select class="form-control form-control-inline roleSelect form-select">
+                    <select aria-label="{mcri18n:translate('mir.role.select')}" class="form-control form-control-inline roleSelect form-select">
                       <xsl:apply-templates select="*" />
                     </select>
                   </xed:bind>
@@ -534,7 +534,7 @@
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                <select class="form-control form-control-inline form-select">
+                <select aria-label="{mcri18n:translate('mir.role.select')}" class="form-control form-control-inline form-select">
                   <xsl:apply-templates select="*" />
                 </select>
               </xed:bind>
@@ -559,14 +559,14 @@
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
       <div class="mir-form-group row {@class} {$xed-val-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="institutesLabel_{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="{@label}" />
           :
         </label>
         <div class="col-md-6">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
-            <select class="form-control form-control-inline mir-form__js-select--large form-select">
+            <select id="institutesLabel_{{xed:generate-id(..)}}" class="form-control form-control-inline mir-form__js-select--large form-select">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>

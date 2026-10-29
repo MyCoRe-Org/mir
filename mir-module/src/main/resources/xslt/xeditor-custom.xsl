@@ -13,30 +13,22 @@
     <!-- append insert remove up down -->
     <xsl:param name="name" /> <!-- name to submit as request parameter when button/image is clicked -->
 
-    <!-- Choose a label for the button -->
-    <xsl:variable name="symbol">
-      <xsl:choose>
-        <xsl:when test=".='append'">
-          <xsl:value-of select="'plus'" />
-        </xsl:when>
-        <xsl:when test=".='insert'">
-          <xsl:value-of select="'plus'" />
-        </xsl:when>
-        <xsl:when test=".='remove'">
-          <xsl:value-of select="'minus'" />
-        </xsl:when>
-        <xsl:when test=".='up'">
-          <xsl:value-of select="'arrow-up'" />
-        </xsl:when>
-        <xsl:when test=".='down'">
-          <xsl:value-of select="'arrow-down'" />
-        </xsl:when>
-      </xsl:choose>
-    </xsl:variable>
+    <!-- Ermittelt das dynamische Label: 'button.otherwise' wenn kein Treffer vorliegt -->
+    <xsl:variable name="isValid" select="index-of(('append', 'insert', 'remove', 'up', 'down'), .)" />
+    <xsl:variable name="buttonLabel" select="if ($isValid) then concat('button.', .) else 'button.otherwise'" />
 
-    <button type="submit" class="btn btn-secondary" name="{$name}">
-      <i class="fas fa-{$symbol}">
-      </i>
+    <!-- Ermittelt das Icon-Symbol -->
+    <xsl:variable name="symbol" select="
+      if (.='append' or .='insert') then 'plus' 
+      else if (.='remove') then 'minus' 
+      else if (.='up') then 'arrow-up' 
+      else if (.='down') then 'arrow-down' 
+      else ''" />
+
+    <button type="submit" class="btn btn-secondary" name="{$name}" aria-label="{mcri18n:translate($buttonLabel)}">
+      <xsl:if test="$symbol != ''">
+        <i class="fas fa-{$symbol}"></i>
+      </xsl:if>
     </button>
   </xsl:template>
 

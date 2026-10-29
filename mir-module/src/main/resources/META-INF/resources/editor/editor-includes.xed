@@ -39,12 +39,12 @@
   </xed:template>
 
   <xed:template id="genre.base">
-    <label class="col-md-3 col-form-label text-end form-label">
+    <label for="genre_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
       <xed:output i18n="component.mods.genre" />
     </label>
     <div class="col-md-6">
       <div class="controls">
-        <select class="form-control form-control-inline form-select">
+        <select id="genre_{xed:generate-id()}" class="form-control form-control-inline form-select">
           <option value="">
             <xed:output i18n="mir.select" />
           </option>
@@ -93,14 +93,14 @@
   <!-- ========== table of contents ========== -->
   <xed:template id="toc-layout">
     <div class="mir-form-group row">
-      <label id="tocLayoutLabel" class="col-md-3 col-form-label text-end form-label">
+      <label for="tocLayoutLabel" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="component.mods.metaData.dictionary.tocLayout" />:
       </label>
       <xed:bind xpath="../../../../service">
         <xed:bind xpath="servflags[@class='MCRMetaLangText']/servflag[@type='tocLayout']">
           <div class="col-md-6">
             <div class="controls">
-              <select aria-labelledby="tocLayoutLabel" class="form-control form-control-inline form-select">
+              <select id="tocLayoutLabel" class="form-control form-control-inline form-select">
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
@@ -118,13 +118,13 @@
 
   <xed:template id="status">
     <div class="mir-form-group row">
-      <label id="statusLabel" class="col-md-3 col-form-label text-end form-label">
+      <label id="statusLabel" for="publicationState" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
       <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="{$MIR.Editor.Default.State}">
         <div class="col-md-6">
           <div class="controls">
-            <select aria-labelledby="statusLabel" class="form-control form-control-inline form-select">
+            <select aria-labelledby="statusLabel" id="publicationState" class="form-control form-control-inline form-select">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:state" />
             </select>
           </div>
@@ -259,19 +259,19 @@
       <xed:repeat xpath="mods:titleInfo[@type='translated']" min="1" max="6">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <label id="titleTranslatedLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end mir-formgroup-label form-label">
+            <label for="titleTranslatedLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end mir-formgroup-label form-label">
               <xed:output i18n="mir.title" />
             </label>
             <div class="col-md-6">
               <xed:bind xpath="mods:title">
-                <input aria-labelledby="titleTranslatedLabel-{xed:generate-id(..)}" type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.translated}" />
+                <input id="titleTranslatedLabel-{xed:generate-id(..)}" type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.translated}" />
               </xed:bind>
             </div>
             <mir:help-pmud pmud="true" />
           </div>
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
           <div class="mir-form-group row">
-            <label class="col-md-3 col-form-label text-end mir-formgroup-label form-label">
+            <label for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end mir-formgroup-label form-label">
               <xed:output i18n="mir.language" />
             </label>
             <div class="col-md-6">
@@ -302,13 +302,13 @@
       <xed:repeat xpath="mods:titleInfo" min="1" max="6">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <label id="nonSortLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+            <label id="nonSortLabel-{xed:generate-id()}" for="nonSortLabelID-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="mir.title.nonSort" />
             </label>
             <div class="col-md-6">
               <div class="d-flex gap-1 align-items-center controls">
                 <xed:bind xpath="mods:nonSort">
-                  <input aria-labelledby="nonSortLabel-{xed:generate-id(..)}" type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das" />
+                  <input aria-labelledby="nonSortLabel-{xed:generate-id(..)}" id="nonSortLabelID-{xed:generate-id(..)}" type="text" size="9" class="form-control form-control-inline" placeholder="{i18n:mir.title.nonSort.placeholder}" />
                 </xed:bind>
                 <xed:bind xpath="@xml:lang" initially="de">
                   <xed:include ref="lang.list" />
@@ -632,12 +632,12 @@
   <xed:template id="nameType">
     <xed:bind xpath="@type" initially="personal">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="nameType_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.nameType" />
         </label>
         <div class="col-md-6">
           <div class="controls">
-            <select class="form-control form-control-inline nameType form-select">
+            <select id="nameType_{xed:generate-id()}" class="form-control form-control-inline nameType form-select">
               <option value="personal">
                 <xed:output i18n="mir.nameType.personal" />
               </option>
@@ -655,13 +655,13 @@
   <xed:template id="authorSpecification.repeated">
     <xed:repeat xpath="mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" min="1">
       <div class="mir-form-group row authorSpecification">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="authorSpecification_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.editor.person.authorSpecification" />
         </label>
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="@valueURIxEditor">
-              <select class="form-control form-control-inline form-select">
+              <select id="authorSpecification_{xed:generate-id(..)}" class="form-control form-control-inline form-select">
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
@@ -678,7 +678,7 @@
   <xed:template id="person.affiliation">
     <xed:repeat xpath="mods:affiliation" min="1" max="10">
       <div class="mir-form-group row mir-affiliation-container">
-        <label id="affiliationLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end">
+        <label for="affiliationLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end">
           <xed:output i18n="mir.affiliation" />
         </label>
         <div class="col-md-6">
@@ -686,7 +686,7 @@
             <xed:bind xpath=".">
               <div class="input-group">
                 <input
-                  aria-labelledby="affiliationLabel-{xed:generate-id()}"
+                  id="affiliationLabel-{xed:generate-id()}"
                   type="text"
                   class="form-control"
                   autocomplete="off"
@@ -740,12 +740,12 @@
 
   <xed:template id="topicIdentifier">
       <div class="mir-form-group row">
-        <label id="topicGndLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+        <label for="topicGndLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic.gnd.type" />
         </label>
         <div class="col-md-6">
           <xed:bind xpath="@valueURIxEditor">
-            <input aria-labelledby="topicGndLabel-{xed:generate-id(..)}" type="text" size="20" class="form-control form-control-inline topic_gnd" />
+            <input id="topicGndLabel-{xed:generate-id(..)}" type="text" size="20" class="form-control form-control-inline topic_gnd" />
           </xed:bind>
           <xed:bind xpath="@authority" initially="gnd">
             <input type="hidden" class="topic_gndType" />
@@ -760,7 +760,7 @@
       <div class="mir-form-group row">
         <xed:bind xpath="@type" name="type" initially="termsOfAddress">
           <div class="col-md-3">
-            <select id="namePart-{xed:generate-id(..)}" class="form-control form-select" style="text-align:right; font-weight:bold;">
+            <select id="namePart-{xed:generate-id(..)}" aria-label="{i18n:mir.editor.subject.name.editor.select.namePart}" class="form-control form-select" style="text-align:right; font-weight:bold;">
               <option value="family">
                 <xed:output i18n="mir.namePart.family" />
               </option>
@@ -929,7 +929,7 @@
     <fieldset class="dateExtended_box">
       <legend class="mir-fieldset-legend hiddenDetail">
         <div class="mir-form-group row datetimepicker {$xed-validation-marker}">
-          <label class="col-md-3 col-form-label text-end form-label">
+          <label for="datetimerange_" class="col-md-3 col-form-label text-end form-label">
             <xed:output i18n="mir.date.issued.range" />
           </label>
           <div class="col-md-6 center-vertical">
@@ -959,7 +959,7 @@
 
   <xed:template id="identifier.patent">
     <div class="mir-form-group row">
-      <label class="col-md-3 col-form-label text-end form-label">
+      <label for="identifierPatent-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.identifier.patent" />
       </label>
       <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
@@ -1079,7 +1079,7 @@
       <div class="mir-form-group row {$xed-validation-marker}">
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="@type" name="type">
-            <select id="identifier-{xed:generate-id(..)}" class="form-control identifierSelect form-select">
+            <select id="identifier-{xed:generate-id(..)}" aria-label="{i18n:mir.editor.subject.name.editor.select.identifier}" class="form-control identifierSelect form-select">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
               <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
               <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
@@ -1104,7 +1104,7 @@
       <div class="mir-form-group row">
         <xed:bind xpath="@type">
           <div class="col-md-3">
-            <select id="doiHandleUrn-{xed:generate-id(..)}" class="form-control identifierSelect form-select" style="text-align:right; font-weight:bold;">
+            <select aria-label="{i18n:mir.editor.subject.name.editor.select.identifier}" id="doiHandleUrn-{xed:generate-id(..)}" class="form-control identifierSelect form-select" style="text-align:right; font-weight:bold;">
               <option value="doi">
                 <xed:output i18n="mir.identifier.doi" />
               </option>
@@ -1179,7 +1179,7 @@
           <div class="mir-form-group row">
             <div class="col-md-3">
               <xed:bind xpath="@type">
-                <select id="relatedItemLink-{xed:generate-id(..)}" class="form-control form-control-inline form-select" style="text-align: right; font-weight:bold;">
+                <select id="relatedItemLink-{xed:generate-id(..)}" aria-label="{i18n:mir.relatedItem.link.select}" class="form-control form-control-inline form-select" style="text-align: right; font-weight:bold;">
                   <option value="original">
                     <xed:output i18n="mir.relatedItem.original" />
                   </option>
@@ -1214,7 +1214,7 @@
       <div class="mir-form-group row">
         <div class="col-md-3">
           <xed:bind xpath="@access">
-            <select id="link-{xed:generate-id(..)}" class="form-control form-select" style="text-align:right; font-weight:bold;">
+            <select id="link_{xed:generate-id(..)}" aria-label="{i18n:mir.link.select}" class="form-control form-select" style="text-align:right; font-weight:bold;">
               <option value="">
                 <xed:output i18n="mir.link" />
               </option>
@@ -1310,11 +1310,11 @@
     <xed:load-resource name="mir_filetype" uri="classification:metadata:-1:children:mir_filetype" />
     <xed:bind xpath="mods:physicalDescription/mods:form[@type='file'][@authorityURI=$mir_filetype/label[@xml:lang='x-uri']/@text]/@valueURIxEditor">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="description_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.physical.description.form" />
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline form-select">
+          <select id="description_{xed:generate-id()}" class="form-control form-control-inline form-select">
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_filetype" />
           </select>
         </div>
@@ -1352,12 +1352,12 @@
 
   <xed:template id="host.pages">
     <div class="mir-form-group row mir-modspart">
-      <label id="hostPagesLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label for="hostPagesLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.pages" />:
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:part/mods:extent[@unit='pages']/mods:list">
-          <input aria-labelledby="hostPagesLabel-{xed:generate-id(../../..)}" type="text" size="20" class="form-control form-control-inline" />
+          <input id="hostPagesLabel-{xed:generate-id(../../..)}" type="text" size="20" class="form-control form-control-inline" />
         </xed:bind>
       </div>
       <mir:help-pmud help-text="{i18n:mir.help.host.pages}" />
@@ -1366,12 +1366,12 @@
 
   <xed:template id="host.order">
     <div class="mir-form-group row mir-modspart">
-      <label id="hostOrderLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label for="hostOrderLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.order" />:
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:part/@order">
-          <input aria-labelledby="hostOrderLabel-{xed:generate-id(../..)}" type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+          <input id="hostOrderLabel-{xed:generate-id(../..)}" type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
         </xed:bind>
       </div>
       <mir:help-pmud help-text="{i18n:mir.help.host.order}" />
@@ -1389,7 +1389,7 @@
   <xed:template id="language">
     <xed:repeat xpath="mods:language" max="5">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label id="langID_{xed:generate-id(..)}" for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.language" />
         </label>
         <div class="col-md-6">
@@ -1405,7 +1405,7 @@
   </xed:template>
 
   <xed:template id="lang.list">
-    <select id="lang-{xed:generate-id()}" aria-label="{i18n:mir.language}" class="form-control form-control-inline lang-select form-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
+    <select id="lang_{xed:generate-id(..)}" aria-label="{i18n:mir.editor.subject.editor.language.choose}" class="form-control form-control-inline lang-select form-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
       <xed:choose>
         <xed:when test="string-length(.) &gt; 0">
           <option value="{.}" selected="">
@@ -1449,13 +1449,13 @@
   <xed:template id="type.of.resource.repeated">
     <xed:repeat xpath="mods:typeOfResource" min="1" max="10">
       <div class="mir-form-group row">
-        <label id="typeOfResourceLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+        <label for="typeOfResourceLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.typeOfResource" />
         </label>
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="@mcr:categId">
-              <select aria-labelledby="typeOfResourceLabel-{xed:generate-id(..)}" class="form-control form-control-inline form-select">
+              <select id="typeOfResourceLabel-{xed:generate-id(..)}" class="form-control form-control-inline form-select">
                 <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
               </select>
             </xed:bind>
@@ -1547,7 +1547,7 @@
 
   <xed:template id="institutes">
     <div class="mir-form-group row">
-      <label id="institutesLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label for="institutesLabel_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.institution" />
         :
       </label>
@@ -1556,7 +1556,7 @@
         <xed:bind xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
-            <select aria-labelledby="institutesLabel-{xed:generate-id(../../..)}" class="form-control form-control-inline mir-form__js-select--large form-select">
+            <select id="institutesLabel_{xed:generate-id(../..)}" class="form-control form-control-inline mir-form__js-select--large form-select">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
@@ -1575,7 +1575,7 @@
 
   <xed:template id="publisher.organization">
     <div class="mir-form-group row">
-      <label id="publisherOrgLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label for="publisherOrgLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.publisherOrganization" />
         :
       </label>
@@ -1586,7 +1586,7 @@
               <input type="hidden" class="nameType" />
             </xed:bind>
             <xed:bind xpath="mods:displayForm">
-              <input aria-labelledby="publisherOrgLabel-{xed:generate-id(../../..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+              <input id="publisherOrgLabel-{xed:generate-id(../../..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
                 data-search-entity-type="organisation" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
@@ -1607,7 +1607,7 @@
   <xed:template id="publisher.organization.repeat">
     <xed:repeat xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pbl']"><!--  Publisher [pbl]  -->
       <div class="mir-form-group row">
-        <label id="publisherOrgRepeatLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+        <label for="publisherOrgRepeatLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.publisherOrganization" />
           :
         </label>
@@ -1617,7 +1617,7 @@
               <input type="hidden" class="nameType" />
             </xed:bind>
             <xed:bind xpath="mods:displayForm">
-              <input aria-labelledby="publisherOrgRepeatLabel-{xed:generate-id(..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+              <input id="publisherOrgRepeatLabel-{xed:generate-id(..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
                 data-search-entity-type="organisation" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
@@ -1709,7 +1709,7 @@
       <xed:repeat xpath="mods:abstract[@xml:lang]" min="1" max="3">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="mir.abstract.in" />
             </label>
             <div class="col-md-6">
@@ -1734,7 +1734,7 @@
       <xed:repeat xpath="mods:abstract" min="1" max="3">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="mir.abstract.in" />
             </label>
             <div class="col-md-6">
@@ -1759,12 +1759,12 @@
   <xed:template id="geographicAndCartographics">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="Geographic_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
+          <div class="editorToolsApp" data-labelledby="Geographic_{xed:generate-id()}" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1839,12 +1839,12 @@
   <xed:template id="subject.simple">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple}">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="subjects_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-labelledby="subjects_{xed:generate-id()}" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1855,12 +1855,12 @@
   <xed:template id="subject.simple.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple.required}">
       <div class="mir-form-group row required {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="subject_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-labelledby="subject_{xed:generate-id()}" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1871,12 +1871,12 @@
   <xed:template id="subject.complex.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="mir-form-group row required {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="subjectr_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-labelledby="subjectr_{xed:generate-id()}" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
@@ -1887,12 +1887,12 @@
   <xed:template id="subject.complex">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="search_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-labelledby="search_{xed:generate-id()}" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
@@ -1931,14 +1931,14 @@
 
           <div class="modal-header">
             <h4 id="modalFrame-title" class="modal-title">Modal title</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{i18n:mir.editor.subject.custom.modal.close}" />
           </div>
           <div class="modal-body">
             <div id="modal-searchInput" class="d-flex flex-row-reverse mb-2">
               <button class="btn btn-primary" type="button" aria-label="{i18n:editor.search.search}">
                 <span class="fas fa-search form-control-feedback" />
               </button>
-              <input type="text" placeholder="Suche in den Publikationen" aria-label="{i18n:mir.aria.modal.search.input}" class="form-control" autocomplete="off"/>
+              <input type="text" placeholder="{i18n:mir.placeholder.response.search}" aria-label="{i18n:mir.aria.modal.search.input}" class="form-control" autocomplete="off"/>
             </div>
             <div class="container-fluid">
               <div id="modalFrame-body" class="row">
@@ -1955,8 +1955,8 @@
                   </div>
                 </div>
                 <div class="col-md-8 text-end mt-2 mt-md-0">
-                  <button id="modalFrame-cancel" type="button" class="btn btn-danger me-0 ms-1" data-bs-dismiss="modal"></button>
-                  <button id="modalFrame-send" type="button" class="btn btn-primary me-0 ms-1">
+                  <button id="modalFrame-cancel" type="button" class="btn btn-danger me-0 ms-1" aria-label="{i18n:button.cancel}" data-bs-dismiss="modal"></button>
+                  <button id="modalFrame-send" type="button" aria-label="{i18n:button.send}" class="btn btn-primary me-0 ms-1">
                     <xed:output i18n="button.select"/>
                   </button>
                 </div>
@@ -2024,12 +2024,12 @@
         <xed:repeat xpath="datacite:fundingReference">
           <div class="mir-fieldset-content mir-editor-project-container">
             <div class="mir-form-group row">
-              <label id="projectTitleLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+              <label for="projectTitleLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.project.title"/>
               </label>
               <xed:bind xpath="datacite:awardTitle">
                 <div class="col-md-6 {$xed-validation-marker}">
-                  <input aria-labelledby="projectTitleLabel-{xed:generate-id(..)}" type="text" class="form-control project-title" autocomplete="off"/>
+                  <input id="projectTitleLabel-{xed:generate-id(..)}" type="text" class="form-control project-title" autocomplete="off"/>
                   <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0" required="true"
                     i18n="mir.editor.project.title.validation" display="global"/>
                 </div>
@@ -2037,14 +2037,14 @@
               <mir:help-pmud help-text="{i18n:mir.editor.project.title.help}" pmud="true"/>
             </div>
             <div class="mir-form-group row">
-              <label id="projectIdLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+              <label for="projectIdLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.project.id"/>
               </label>
               <div class="col-md-6">
                 <xed:bind xpath="datacite:awardNumber">
                   <div class="row">
                     <div class="col-md-4">
-                      <input aria-labelledby="projectIdLabel-{xed:generate-id(../..)}" type="text" class="form-control project-id"/>
+                      <input id="projectIdLabel-{xed:generate-id(..)}" type="text" class="form-control project-id"/>
                     </div>
                     <div class="col-md-8 ps-0">
                       <xed:bind xpath="@awardURI">
@@ -2057,12 +2057,12 @@
               <mir:help-pmud help-text="{i18n:mir.editor.project.id.help}"/>
             </div>
             <div class="mir-form-group row">
-              <label id="funderNameLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+              <label for="funderNameLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.project.funder.name"/>
               </label>
               <xed:bind xpath="datacite:funderName">
                 <div class="col-md-6 {$xed-validation-marker}">
-                  <input aria-labelledby="funderNameLabel-{xed:generate-id(..)}" type="text" class="form-control funder-name" autocomplete="off"/>
+                  <input id="funderNameLabel-{xed:generate-id(..)}" type="text" class="form-control funder-name" autocomplete="off"/>
                   <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0 or string-length(../datacite:awardNumber/@awardURI)&gt;0 or string-length(../datacite:awardTitle)&gt;0 or string-length(../datacite:funderIdentifier)&gt;0"
                     required="true" i18n="mir.editor.project.funder.name.validation" display="global"/>
                 </div>
@@ -2070,7 +2070,7 @@
               <mir:help-pmud help-text="{i18n:mir.editor.project.funder.name.help}"/>
             </div>
             <div class="mir-form-group row">
-              <label id="funderIdLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+              <label for="funderIdLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.project.funder.id"/>
               </label>
               <xed:bind xpath="datacite:funderIdentifier">
@@ -2078,7 +2078,7 @@
                   <div class="row">
                     <xed:bind xpath="@funderIdentifierType">
                       <div class="col-md-4 {$xed-validation-marker}">
-                        <select aria-label="{i18n:mir.editor.project.funder.id}" class="form-control form-control-inline form-select funder-id-type">
+                        <select id="funderIdLabel-{xed:generate-id(../..)}" aria-label="{i18n:mir.editor.project.funder.id.select}" class="form-control form-control-inline form-select funder-id-type">
                           <option value="">
                             <xed:output i18n="mir.select"/>
                           </option>
@@ -2103,7 +2103,7 @@
                       </div>
                     </xed:bind>
                     <div class="col-md-8 ps-0 {$xed-validation-marker}">
-                      <input aria-labelledby="funderIdLabel-{xed:generate-id(../..)}" type="text" class="form-control funder-id-value" />
+                      <input aria-label="{i18n:mir.editor.project.funder.id}" type="text" class="form-control funder-id-value" />
                       <xed:validate relevant-if="string-length(@funderIdentifierType)&gt;0" required="true"
                         i18n="mir.editor.project.funder.id.validation" display="global"/>
                     </div>
@@ -2131,12 +2131,12 @@
       <xed:repeat xpath="mods:note" min="1" max="5">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <label id="commentTypeLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+            <label for="commentTypeLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="mir.comment.type" />
             </label>
             <div class="col-md-6">
               <xed:bind xpath="@type">
-                <select aria-labelledby="commentTypeLabel-{xed:generate-id(..)}" class="form-control form-select">
+                <select id="commentTypeLabel-{xed:generate-id(..)}" class="form-control form-select">
                     <option value="">
                       <xed:output i18n="mir.select"/>
                     </option>
@@ -2205,7 +2205,7 @@
           </div>
           <xed:include ref="title.nonrequired" />
           <xed:include ref="genre.simple.nonrequired" />
-          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}"
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" label="mir.abstract.aslink"
               placeholder="{i18n:mir.placeholder.abstract.link}" />
           <xed:include ref="host.volume" />
           <xed:include ref="host.issue" />
@@ -2473,7 +2473,8 @@
       });
 
       document.querySelectorAll(".editorToolsApp").forEach(function (element) {
-        Vue.createApp(window["editor-tools"]).mount(element);
+        Vue.createApp(window["editor-tools"], {
+        labelledby: element.getAttribute("data-labelledby")}).mount(element);
       });
     </script>
   </xed:template>
