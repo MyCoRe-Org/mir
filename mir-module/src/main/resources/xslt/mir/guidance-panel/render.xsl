@@ -92,13 +92,13 @@
     <!-- unique, a page may contain several panels -->
     <xsl:variable name="input-id" select="concat('mir-guidance-panel-search-', $derivate-id)" />
     <xsl:variable name="search-label" select="mcri18n:translate-with-params('mir.guidancePanel.search', $title)" />
-    <form role="search" action="{$ServletsBaseURL}solr/select" method="post">
-      <input type="hidden" name="q" value="mods.relatedItem.root:{$object-id}" />
+    <form role="search" action="{$ServletsBaseURL}solr/find">
+      <input type="hidden" name="fq" value="mods.relatedItem.root:{$object-id}" />
       <label class="visually-hidden" for="{$input-id}">
         <xsl:value-of select="$search-label" />
       </label>
       <div class="input-group">
-        <input id="{$input-id}" type="text" name="fq" class="form-control" placeholder="{$search-label}" />
+        <input id="{$input-id}" type="text" name="condQuery" class="form-control" placeholder="{$search-label}" />
         <button class="btn btn-primary" type="submit" aria-label="{$search-label}">
           <i class="fas fa-search" />
         </button>
