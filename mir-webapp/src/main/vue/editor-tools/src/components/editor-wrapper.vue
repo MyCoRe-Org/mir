@@ -134,10 +134,9 @@ import {Cartographics, Geographic, Name, Subject, TitleInfo, Topic} from "@/api/
 import subjectEditor from "@/components/editor/subject-editor.vue";
 import searchForm from "@/components/search/search-form.vue";
 import SearchResultList, {SearchResultGroup} from "@/components/search/search-result-list.vue";
-import SearchSettings from "@/components/search/search-settings.vue";
 import {SearchSettings as SearchSettingsModel} from "@/api/search/SearchSettings";
-import {LobidSearchProvider} from "@/api/search/LobidSearchProvider";
-import {SearchResult} from "@/api/search/SearchProvider";
+import {createProviderInstance} from "@/api/search/SearchProviderRegistry";
+import {SearchProvider, SearchResult} from "@/api/search/SearchProvider";
 import {EditorSettings, possibleTypes, retrieveSettings, retrieveSubject, storeSubject} from "@/api/XEditorConnector";
 import TopicEditor from "@/components/editor/topic-editor.vue";
 import NameEditor from "@/components/editor/name-editor.vue";
@@ -147,6 +146,12 @@ import CartographicsEditor from "@/components/editor/cartographic-editor.vue";
 import {provideTranslations} from "@/api/I18N";
 
 const customTypeSelectId = `mir-custom-type-select-${Math.random().toString(36).slice(2, 9)}`;
+
+
+const providerInstances: Record<string, SearchProvider> = {};
+
+const PROVIDER_TIMEOUT_MS = 10000;
+let searchCounter = 0;
 
 const model = reactive({
     settings: undefined as EditorSettings | undefined,
@@ -208,17 +213,26 @@ watch(()=>model.subject, (newValue) => {
     }
 }, {deep: true});
 
-watch( () => model.searchOptions, (newValue) => {
+watch( () => model.searchOptions, () => {
     search();
 }, {deep: true});
 
 onMounted(() => {
     if(rootEl.value) {
         model.subject = retrieveSubject(rootEl.value);
-        model.settings = retrieveSettings(rootEl.value);
+        const settings = retrieveSettings(rootEl.value);
+        model.settings = settings;
 
-        const filter = model.settings?.searchFilterDefault || [];
-        const searchable = model.settings.searchable || [];
+    for (const providerConfig of settings.providers) {
+      const instance = createProviderInstance(providerConfig.type, providerConfig.config);
+      if (instance) {
+        providerInstances[providerConfig.id] = instance;
+      }
+    }
+    settings.providers = settings.providers.filter(p => providerInstances[p.id]);
+
+        const filter = settings?.searchFilterDefault || [];
+        const searchable = settings?.searchable || [];
 
         model.searchOptions.searchConference = filter.includes("Conference") && searchable.includes("Conference");
         model.searchOptions.searchFamily = filter.includes("Family") && searchable.includes("Family");
@@ -257,16 +271,79 @@ const searchSubmitted = async (searchTerm: string) => {
     await search();
 }
 
+const withTimeout = <T>(promise: Promise<T>, ms: number, providerId: string): Promise<T> => {
+  let timer: ReturnType<typeof setTimeout>;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Provider ${providerId} timed out after ${ms} ms`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+};
+
 const search = async () => {
-    const searchProvider = new LobidSearchProvider();
-    const result = await searchProvider.search(model.searchTerm, model.searchOptions);
-    model.searchResultGroup = [{
-        groupId: "lobid",
-        title: "Lobid",
-        results: result
-    }];
+  const searchId = ++searchCounter;
+
+  if (!model.settings?.providers) {
     model.searching = false;
-}
+    return;
+  }
+
+  model.searching = true;
+
+  model.searchResultGroup = model.settings.providers.map(providerConfig => ({
+    groupId: providerConfig.id,
+    title: providerConfig.label,
+    results: [],
+    loading: true
+  }));
+
+  try {
+    await Promise.all(
+        model.settings.providers.map(async (providerConfig) => {
+          const providerInstance = providerInstances[providerConfig.id];
+          const group = model.searchResultGroup.find(g => g.groupId === providerConfig.id);
+
+          if (!providerInstance) {
+            return;
+          }
+
+          try {
+            const results = await withTimeout(
+                providerInstance.search(
+                    model.searchTerm,
+                    model.searchOptions
+                ),
+                PROVIDER_TIMEOUT_MS,
+                providerConfig.id
+            );
+
+            if (searchId !== searchCounter) {
+              return;
+            }
+
+            if (group) {
+              group.results = results || [];
+            }
+          } catch (e) {
+            console.error(
+                `Search failed for provider ${providerConfig.id}`,
+                e
+            );
+          } finally {
+            if (group) {
+              group.loading = false;
+            }
+          }
+        })
+    );
+  } catch (e) {
+    console.error("Search failed", e);
+    model.searchResultGroup = [];
+  } finally {
+    if (searchId === searchCounter) {
+      model.searching = false;
+    }
+  }
+};
 
 // used to make the search form not editable
 const searchEnabled = computed(()=>{
