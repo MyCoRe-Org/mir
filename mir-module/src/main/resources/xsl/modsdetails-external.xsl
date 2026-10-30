@@ -706,7 +706,7 @@
         </ul>
       </div>
     </div>
-    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-bs-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

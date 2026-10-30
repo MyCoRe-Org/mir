@@ -99,7 +99,7 @@
               />
             </div>
             <div class="text-end">
-              <a href="#" data-bs-toggle="modal" data-target="#epustaGraphModal">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#epustaGraphModal">
                 <xsl:value-of select="i18n:translate('mir.epusta.open')" />
               </a>
             </div>
