@@ -501,7 +501,7 @@
                 </xsl:variable>
                 <xsl:if test="$displayAddDerivate='true' and key('rights', @ID)/@write and acl:checkPermission('create-derivate') and (not(piUtil:hasManagedPI($id)) or contains($isAllowedToEditPI, 'true'))">
                   <li class="mir-action-item mir-action-item-add-derivate">
-                    <a onclick="javascript: $('.drop-to-object-optional').toggle();" class="dropdown-item">
+                    <a href="#" onclick="$('.drop-to-object-optional').toggle(); return false;" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.upload.addDerivate')" />
                     </a>
                   </li>
@@ -564,10 +564,10 @@
                 <li class="mir-action-item mir-action-item-delete-object">
                   <xsl:choose>
                     <xsl:when test="/mycoreobject/structure/children/child">
-                      <xsl:attribute name="class">
-                        <xsl:value-of select="'disabled'" />
+                      <xsl:attribute name="title">
+                        <xsl:value-of select="i18n:translate('object.hasChildren')" />
                       </xsl:attribute>
-                      <a href="#" title="{i18n:translate('object.hasChildren')}" class="dropdown-item">
+                      <a href="#" class="dropdown-item disabled" aria-disabled="true">
                         <xsl:value-of select="i18n:translate('object.delObject')" />
                       </a>
                     </xsl:when>
@@ -903,7 +903,7 @@
           <span class="label_publisher">
             <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
           </span>
-          <xsl:value-of select="//mods:originInfo/mods:publisher" />
+          <xsl:value-of select="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
         </div>
       </xsl:if>
 
