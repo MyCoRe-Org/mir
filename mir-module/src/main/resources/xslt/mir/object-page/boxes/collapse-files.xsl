@@ -87,7 +87,6 @@
                           </div>
                           <xsl:apply-templates select="." mode="derivateActions">
                             <xsl:with-param name="deriv" select="@xlink:href" />
-                            <xsl:with-param name="parentObjID" select="$objID" />
                             </xsl:apply-templates>
                           <div class="clearfix" />
                         </div>
