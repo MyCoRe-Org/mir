@@ -17,6 +17,7 @@
 <xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="#all"
 >
 
@@ -202,5 +203,13 @@
   <!-- ========== ignore all other content ========== -->
 
   <xsl:template match="*|@*|text()" mode="highwire" />
+
+  <xsl:template match="derobject" mode="highwire">
+    <xsl:variable name="maindoc" select="string(maindoc)" />
+    <xsl:if test="ends-with(lower-case($maindoc), '.pdf')">
+      <xsl:variable name="path" select="string-join(tokenize($maindoc, '/')[.] ! encode-for-uri(.), '/')" />
+      <meta name="citation_pdf_url" content="{$ServletsBaseURL}MCRFileNodeServlet/{@xlink:href}/{$path}" />
+    </xsl:if>
+  </xsl:template>
 
 </xsl:stylesheet>
