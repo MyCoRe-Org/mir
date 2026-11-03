@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:param name="isCurrentUserGuest" select="mcracl:is-current-user-in-role('guest')"/>
+  <xsl:param name="isCurrentUserGuest" select="mcracl:is-current-user-guest-user()"/>
 
   <xsl:template name="output-badge">
     <xsl:param name="class"/>
