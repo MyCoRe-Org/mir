@@ -1,4 +1,21 @@
 FROM tomcat:10-jdk17-temurin-jammy
+# Workaround for CVE-2026-91403 / CVE-2026-114820 (eMudhra), see MIR-1716.
+# Becomes a no-op once the base image ships Temurin >= 17.0.21+9.
+RUN set -eu; \
+    for cn in "emSign ECC Root CA - G3" "AAA Certificate Services"; do \
+      certs="$(keytool -list -v -cacerts -storepass changeit)"; \
+      printf '%s\n' "$certs" \
+        | awk -v cn="Owner: CN=$cn," '/^Alias name:/ {a=substr($0, 13)} index($0, cn)==1 {print a}' \
+        | while IFS= read -r alias; do \
+            echo "Removing from JDK trust store: $alias"; \
+            keytool -delete -cacerts -storepass changeit -alias "$alias"; \
+          done; \
+    done; \
+    certs="$(keytool -list -v -cacerts -storepass changeit)"; \
+    if printf '%s\n' "$certs" \
+         | grep -qE '^Owner: CN=(emSign ECC Root CA - G3|AAA Certificate Services),'; then \
+      echo "emSign ECC Root CA - G3 or AAA Certificate Services still in JDK trust store" >&2; exit 1; \
+    fi
 RUN groupadd -r mcr -g 501 && \
     useradd -d /home/mcr -u 501 -m -s /bin/bash -g mcr mcr
 WORKDIR /usr/local/tomcat/
