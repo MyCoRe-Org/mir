@@ -5,17 +5,17 @@ import {i18n} from "@/api/I18N";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
+// fallback if an (overwritten) layout does not set lobidGNDSearchURL from MIR.Lobid.GND.Search.URL
+const DEFAULT_LOBID_GND_SEARCH_URL = "https://lobid.org/gnd/search";
 
 export class LobidSearchProvider extends SearchProvider {
 
     private readonly baseUrl: string;
 
-    constructor(config: { baseUrl?: string }) {
+    constructor(config?: { baseUrl?: string }) {
         super();
-        if (!config?.baseUrl) {
-            throw new Error("LobidSearchProvider requires a baseUrl.");
-        }
-        this.baseUrl = config.baseUrl;
+        const baseUrl = config?.baseUrl || (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
+        this.baseUrl = new URL(baseUrl, window.location.href).toString();
     }
 
     protected settingsToQuery(settings: SearchSettings): string {
@@ -60,10 +60,14 @@ export class LobidSearchProvider extends SearchProvider {
             return [];
         }
 
-        const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
-        const url = this.baseUrl + "?q=" + encodeURIComponent(searchTerm) + filterQueryComponent + "&format=json&size=30";
+        const url = new URL(this.baseUrl);
+        url.searchParams.append("q", searchTerm);
+        url.searchParams.append("filter", filterQuery);
+        url.searchParams.append("format", "json");
+        url.searchParams.append("size", "30");
+
         try {
-            const response = await fetch(url);
+            const response = await fetch(url.toString());
             if (!response.ok) {
                 console.error(`Request failed: ${response.status} ${response.statusText}`);
                 return [];
