@@ -34,6 +34,14 @@ export const retrieveSubject = (root: HTMLElement): Subject => {
 
 };
 
+
+export interface ProviderConfig {
+    id: string;
+    type: string;
+    label: string;
+    config: Record<string, string>;
+}
+
 export interface EditorSettings {
     /**
      * List of types which facet should be enabled in the search.
@@ -62,6 +70,11 @@ export interface EditorSettings {
      * a warning.
      */
     required: boolean|string[],
+
+    /**
+     * List of search providers.
+     */
+    providers: ProviderConfig[];
 }
 
 export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographics"];
@@ -71,7 +84,8 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
     if(input instanceof Element){
         const settings:EditorSettings = {
             searchable: [],
-            editor: []
+            editor: [],
+            providers: []
         } as any;
 
 
@@ -163,7 +177,55 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
         }
 
 
-        console.log(settings);
+        if (input instanceof HTMLElement) {
+            const providersMap: Record<string, Record<string, string>> = {};
+
+            for (const attr of input.attributes) {
+                if (!attr.name.startsWith("data-provider-")) continue;
+                const remainder = attr.name.substring("data-provider-".length);
+
+
+                const separatorIndex = remainder.indexOf("-");
+                if (separatorIndex <= 0 || separatorIndex === remainder.length - 1) {
+                    console.warn(`Attribute "${attr.name}" does not match data-provider-<id>-<property>, skipping.`);
+                    continue;
+                }
+
+                const providerId = remainder.substring(0, separatorIndex);
+                const propertyPart = remainder.substring(separatorIndex + 1);
+                const propName = propertyPart.replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
+
+                providersMap[providerId] ??= {};
+                providersMap[providerId][propName] = attr.value;
+            }
+
+            settings.providers = Object.entries(providersMap)
+                .filter(([_, props]) => props.enabled === "true")
+                .map(([id, props]) => {
+                    const {enabled, type, label, ...config} = props;
+
+                    return {
+                        id,
+                        type: type || id,
+                        label: label || id,
+                        config
+                    };
+                });
+        }
+
+        // Fallback to lobid
+        if (settings.providers.length === 0) {
+            settings.providers = [
+                {
+                    id: "lobid",
+                    type: "lobid",
+                    label: "Lobid",
+                    config: {
+                        baseUrl: "https://lobid.org/gnd/search",
+                    },
+                },
+            ];
+        }
         return settings
     }
     throw new Error("Could not find subjectXML input");
