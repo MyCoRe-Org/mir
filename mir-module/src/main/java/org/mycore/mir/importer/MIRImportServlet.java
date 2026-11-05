@@ -31,6 +31,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
@@ -86,6 +87,9 @@ public class MIRImportServlet extends MCRServlet {
     private static final String DUPLICATES_SESSION_KEY_PREFIX = "mir.importDuplicates.";
 
     private static final String DEFAULT_EDITOR = "editor-dynamic";
+
+    /** Permission required to mark objects as no duplicates, the same as for the duplicate management. */
+    private static final String MANAGE_DEDUPLICATION_PERMISSION = "manage-deduplication";
 
     @Override
     protected void doGetPost(MCRServletJob job) throws Exception {
@@ -158,12 +162,21 @@ public class MIRImportServlet extends MCRServlet {
      * not from the request, so that only objects this servlet has actually shown can be marked. The flags
      * travel through the editor, which keeps the service part of the object untouched, and are evaluated
      * by {@link MCRDeDupNoDuplicateFlagEventHandler} when the object is stored.
+     * <p>
+     * Users without the permission {@value #MANAGE_DEDUPLICATION_PERMISSION} may continue the import, but
+     * nothing is marked: the possible duplicates then stay visible for those who are allowed to decide.
      *
      * @param importId the id of the import, i.e. the session key of the cached object without its prefix
      * @param cachedMcrObject the imported {@code mycoreobject} cached in the session
      */
     private static void markAsNoDuplicates(String importId, Element cachedMcrObject) {
         String duplicatesSessionKey = DUPLICATES_SESSION_KEY_PREFIX + importId;
+        if (!MCRAccessManager.checkPermission(MANAGE_DEDUPLICATION_PERMISSION)) {
+            MCRSessionMgr.getCurrentSession().deleteObject(duplicatesSessionKey);
+            LOGGER.info("Not marking the object imported under {} as no duplicate, missing permission '{}'",
+                SESSION_KEY_PREFIX + importId, MANAGE_DEDUPLICATION_PERMISSION);
+            return;
+        }
         List<String> objectIds = presentedDuplicates(duplicatesSessionKey);
         if (objectIds.isEmpty()) {
             return;
