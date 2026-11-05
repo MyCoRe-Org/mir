@@ -233,7 +233,7 @@
   <xsl:template name="date-selectFormat">
     <xsl:param name="showDateTimeOption" select="'false'" />
     <div class="date-selectFormat">
-      <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+      <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><span class="caret"></span><span class="visually-hidden">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-end" role="menu">
         <li>
           <a href="#" class="date-simpleOption dropdown-item">
@@ -697,7 +697,7 @@
             <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
                    data-valuexpath="//mods:mods/{@xpath}" data-provide="typeahead" type="text" autocomplete="off"
                    placeholder="{@placeholder}" />
-            <span class="input-group-addon searchbadge"> </span>
+            <span class="input-group-text searchbadge"> </span>
           </div>
         </div>
         <div class="col-md-3">

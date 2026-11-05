@@ -290,7 +290,7 @@
         test="((./structure/children/child) and not($mods-type='series' or $mods-type='journal' or $mods-type='confpro' or $mods-type='book')) or (./structure/derobjects/derobject)"
       >
         <div id="derivate_box" class="accordion-group">
-          <h4 id="derivate_switch" data-target="#derivate_content" data-bs-toggle="collapse" class="accordion-heading">
+          <h4 id="derivate_switch" data-bs-target="#derivate_content" data-bs-toggle="collapse" class="accordion-heading">
             <a name="derivate_box"></a>
             <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.derivatebox')" />
           </h4>
@@ -336,7 +336,7 @@
       <!--*** Created ************************************* -->
       <div id="system_box" class="accordion-group">
         <div class="accordion-heading">
-          <h4 data-target="#system_content" data-bs-toggle="collapse" class="accordion-toggle">
+          <h4 data-bs-target="#system_content" data-bs-toggle="collapse" class="accordion-toggle">
             <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
           </h4>
         </div>
@@ -470,7 +470,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" data-display="static" >
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
           <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
@@ -706,7 +706,7 @@
         </ul>
       </div>
     </div>
-    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-bs-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

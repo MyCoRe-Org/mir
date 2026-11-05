@@ -76,7 +76,7 @@
             <xsl:when test="name() = 'download'">
             </xsl:when>
             <xsl:otherwise>
-              <pre class="pre-scrollable">
+              <pre class="overflow-auto" style="max-height: 340px;">
                 <code>
                   <!-- declare the language explicitly; highlight.js auto-detection misreads
                        SQL as SCSS and Java stack traces as C#. Only the known content types

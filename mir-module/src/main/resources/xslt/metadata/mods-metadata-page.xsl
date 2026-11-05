@@ -210,7 +210,7 @@
 
   <xsl:template match="versions" mode="history-modal">
     <xsl:variable name="ID" select="ancestor::site/@ID"/>
-    <table class="table table-hover table-condensed">
+    <table class="table table-hover table-sm">
       <tr class="info">
         <th>
           <xsl:value-of select="mcri18n:translate('metadata.versionInfo.version')"/>

@@ -59,7 +59,7 @@
                 <xsl:when test="$validationWasSuccessfull='false' and $CaughtException='false'">
                     <div class="container pdf-validation mb-3 px-0" id="accordion">
                         <div class="card-header bg-danger text-white">
-                            <div class="list-group list-group-root well p-3">
+                            <div class="list-group list-group-root bg-light border rounded p-3">
                                 <p class="h5">
                                     <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
                                 </p>
@@ -68,14 +68,14 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card-body border-left border-right border-bottom">
+                        <div class="card-body border-start border-end border-bottom">
                             <xsl:copy-of select="$errorMessages"/>
                         </div>
                     </div>
                 </xsl:when>
                 <xsl:when test="$validationWasSuccessfull='true'">
                     <div class="card-header bg-success text-white mb-3">
-                        <div class="list-group list-group-root well p-3">
+                        <div class="list-group list-group-root bg-light border rounded p-3">
                             <p class="h5">
                                 <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
                             </p>
@@ -137,12 +137,12 @@
         </xsl:variable>
 
         <xsl:variable name="uniqueFileId" select="generate-id(.)"/>
-        <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
+        <div id="{$derivate}{$uniqueFileId}" class="fw-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-bs-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
                class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ms-auto me-1"/>
-                <span class="flex-grow-1 font-weight-bold text-break">
+                <span class="flex-grow-1 fw-bold text-break">
                     <xsl:value-of select="$name"/>
                 </span>
                 <span class="badge bg-{$badgecolor} rounded-pill align-self-center">
@@ -209,7 +209,7 @@
            class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">
             <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-right ms-auto me-1"></i>
-            <span class="flex-grow-1 font-weight-bold text-break">
+            <span class="flex-grow-1 fw-bold text-break">
                 <xsl:value-of select="'Stack trace'"/>
             </span>
         </a>
