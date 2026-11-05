@@ -68,7 +68,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="card-body border-left border-right border-bottom">
+                        <div class="card-body border-start border-end border-bottom">
                             <xsl:copy-of select="$errorMessages"/>
                         </div>
                     </div>
@@ -137,12 +137,12 @@
         </xsl:variable>
 
         <xsl:variable name="uniqueFileId" select="generate-id(.)"/>
-        <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
+        <div id="{$derivate}{$uniqueFileId}" class="fw-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-bs-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
                class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ms-auto me-1"/>
-                <span class="flex-grow-1 font-weight-bold text-break">
+                <span class="flex-grow-1 fw-bold text-break">
                     <xsl:value-of select="$name"/>
                 </span>
                 <span class="badge bg-{$badgecolor} rounded-pill align-self-center">
@@ -209,7 +209,7 @@
            class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">
             <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-right ms-auto me-1"></i>
-            <span class="flex-grow-1 font-weight-bold text-break">
+            <span class="flex-grow-1 fw-bold text-break">
                 <xsl:value-of select="'Stack trace'"/>
             </span>
         </a>
