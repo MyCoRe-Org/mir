@@ -59,7 +59,7 @@
                 <xsl:when test="$validationWasSuccessfull='false' and $CaughtException='false'">
                     <div class="container pdf-validation mb-3 px-0" id="accordion">
                         <div class="card-header bg-danger text-white">
-                            <div class="list-group list-group-root well p-3">
+                            <div class="list-group list-group-root bg-light border rounded p-3">
                                 <p class="h5">
                                     <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
                                 </p>
@@ -75,7 +75,7 @@
                 </xsl:when>
                 <xsl:when test="$validationWasSuccessfull='true'">
                     <div class="card-header bg-success text-white mb-3">
-                        <div class="list-group list-group-root well p-3">
+                        <div class="list-group list-group-root bg-light border rounded p-3">
                             <p class="h5">
                                 <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
                             </p>

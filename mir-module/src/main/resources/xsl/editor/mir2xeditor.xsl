@@ -697,7 +697,7 @@
             <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
                    data-valuexpath="//mods:mods/{@xpath}" data-provide="typeahead" type="text" autocomplete="off"
                    placeholder="{@placeholder}" />
-            <span class="input-group-addon searchbadge"> </span>
+            <span class="input-group-text searchbadge"> </span>
           </div>
         </div>
         <div class="col-md-3">
