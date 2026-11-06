@@ -2,23 +2,28 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {Topic} from "@/api/Subject";
 import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
 import {i18n} from "@/api/I18N";
+import {getProperty} from "@/api/property-service";
+
+const DEFAULT_DANTE_SEARCH_URL = getProperty("MIR.Dante.GND.Search.URL");
 
 export class DanteSearchProvider extends SearchProvider {
 
-    private readonly baseUrl: string;
+    private readonly baseUrl: Promise<string>;
     private readonly vocabulary: string;
     private readonly vocabularies: Set<string>;
     private readonly keys: string[];
 
     constructor(config: { baseUrl?: string; vocabulary?: string; keys?: string }) {
         super();
-        if (!config?.baseUrl) {
-            throw new Error("DanteSearchProvider requires a baseUrl.");
-        }
         if (!config?.vocabulary) {
             throw new Error("DanteSearchProvider requires a vocabulary.");
         }
-        this.baseUrl = config.baseUrl;
+        this.baseUrl = Promise.resolve(config.baseUrl || DEFAULT_DANTE_SEARCH_URL).then(u => {
+            if (!u) {
+                throw new Error("MIR.Dante.GND.Search.URL is not set");
+            }
+            return u;
+        });
         this.vocabulary = config.vocabulary;
         this.vocabularies = new Set(
             config.vocabulary
@@ -42,9 +47,9 @@ export class DanteSearchProvider extends SearchProvider {
 
         const results: Array<SearchResult> = [];
         const cleanDanteTerm = searchTerm && searchTerm.trim() !== "" ? searchTerm.trim() : "*";
-        const url = `${this.baseUrl}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
 
         try {
+            const url = `${await this.baseUrl}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
             const response = await fetch(url);
             if (!response.ok) {
                 console.error(`Request failed (${this.vocabulary}):`, response.status, response.statusText);

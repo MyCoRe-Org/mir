@@ -2,20 +2,26 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {Geographic, Name, NameIdentifier, RoleTerm, TitleInfo, Topic} from "@/api/Subject";
 import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
 import {i18n} from "@/api/I18N";
+import { getProperty } from "@/api/property-service";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
-// fallback if an (overwritten) layout does not set lobidGNDSearchURL from MIR.Lobid.GND.Search.URL
-const DEFAULT_LOBID_GND_SEARCH_URL = "https://lobid.org/gnd/search";
+
+const DEFAULT_LOBID_GND_SEARCH_URL = getProperty('MIR.Lobid.GND.Search.URL');
 
 export class LobidSearchProvider extends SearchProvider {
 
-    private readonly baseUrl: string;
+    private readonly baseUrl: Promise<string>;
 
     constructor(config?: { baseUrl?: string }) {
         super();
-        const baseUrl = config?.baseUrl || (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
-        this.baseUrl = new URL(baseUrl, window.location.href).toString();
+        const configured = config?.baseUrl || (window as any).lobidGNDSearchURL;
+        this.baseUrl = Promise.resolve(configured ?? DEFAULT_LOBID_GND_SEARCH_URL).then(u => {
+            if (!u) {
+                throw new Error("MIR.Lobid.GND.Search.URL is not set");
+            }
+            return new URL(u, window.location.href).toString();
+        });
     }
 
     protected settingsToQuery(settings: SearchSettings): string {
@@ -60,7 +66,7 @@ export class LobidSearchProvider extends SearchProvider {
             return [];
         }
 
-        const url = new URL(this.baseUrl);
+        const url = new URL(await this.baseUrl);
         url.searchParams.append("q", searchTerm);
         url.searchParams.append("filter", filterQuery);
         url.searchParams.append("format", "json");
