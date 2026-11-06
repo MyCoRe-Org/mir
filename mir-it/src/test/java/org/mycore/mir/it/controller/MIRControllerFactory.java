@@ -20,6 +20,10 @@ public class MIRControllerFactory {
         return new MIRPublishEditorController(driver, appURL);
     }
 
+    public MIRImportController createImportController() {
+        return new MIRImportController(driver, appURL);
+    }
+
     public MIRModsEditorController createModsEditorController() {
         return new MIRModsEditorController(driver, appURL);
     }
