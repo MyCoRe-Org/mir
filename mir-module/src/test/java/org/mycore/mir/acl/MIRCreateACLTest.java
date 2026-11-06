@@ -68,40 +68,40 @@ public class MIRCreateACLTest extends MIRACLTest {
     }
 
     @Test
-    public void testCreateDerivateGuest() {
+    public void testAddDerivateGuest() {
         for (String status : STATES) {
-            testCreateDerivate("guest", "otherUser", status, false, "");
+            testAddDerivate("guest", "otherUser", status, false, "");
         }
     }
 
     @Test
-    public void testCreateDerivateAdminAndEditor() {
+    public void testAddDerivateAdminAndEditor() {
         for (String status : STATES) {
-            testCreateDerivate("admin1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_ADMIN);
-            testCreateDerivate("editor1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_EDITOR);
+            testAddDerivate("admin1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_ADMIN);
+            testAddDerivate("editor1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_EDITOR);
         }
     }
 
     @Test
-    public void testCreateDerivateReader() {
+    public void testAddDerivateReader() {
         for (String status : STATES) {
-            testCreateDerivate("reader1", "otherUser", status, false, MIRTestConstants.MIR_ROLES_READER);
+            testAddDerivate("reader1", "otherUser", status, false, MIRTestConstants.MIR_ROLES_READER);
         }
     }
 
     @Test
-    public void testCreateDerivateSubmitter() {
+    public void testAddDerivateSubmitter() {
         // only on own objects with status new
-        testCreateDerivate("submitter1", "submitter1", "new", true, MIRTestConstants.MIR_ROLES_SUBMITTER);
-        testCreateDerivate("submitter1", "otherUser", "new", false, MIRTestConstants.MIR_ROLES_SUBMITTER);
+        testAddDerivate("submitter1", "submitter1", "new", true, MIRTestConstants.MIR_ROLES_SUBMITTER);
+        testAddDerivate("submitter1", "otherUser", "new", false, MIRTestConstants.MIR_ROLES_SUBMITTER);
         for (String status : List.of("submitted", "published", "blocked", "deleted")) {
-            testCreateDerivate("submitter1", "submitter1", status, false, MIRTestConstants.MIR_ROLES_SUBMITTER);
+            testAddDerivate("submitter1", "submitter1", status, false, MIRTestConstants.MIR_ROLES_SUBMITTER);
         }
     }
 
-    private void testCreateDerivate(String user, String creator, String status, boolean shouldBeAbleTo,
+    private void testAddDerivate(String user, String creator, String status, boolean shouldBeAbleTo,
         String role) {
-        testObject(user, creator, status, "mir_mods_0000001", shouldBeAbleTo, "create-derivate", role, false, false,
+        testObject(user, creator, status, "mir_mods_0000001", shouldBeAbleTo, "add-derivate", role, false, false,
             false);
     }
 
