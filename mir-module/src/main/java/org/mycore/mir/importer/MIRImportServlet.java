@@ -57,8 +57,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *   <li>builds the {@code mycoreobject} from the imported metadata (identifier lookup in external
  *       databases) and stores it in the current session under a generated key,</li>
  *   <li>asks the deduplication component (via {@code dedup:duplicates-for-session:{key}}) for existing
- *       objects sharing a deduplication key,</li>
- *   <li>if none are found, redirects straight to the editor, loading the cached object from the
+ *       objects sharing a deduplication key, ignoring those the current user may not read,</li>
+ *   <li>if none are found (or none is readable), redirects straight to the editor, loading the cached object from the
  *       session ({@code session:{key}}),</li>
  *   <li>otherwise renders a confirmation page listing the possible duplicates. Only when the user
  *       explicitly confirms that none of them is a duplicate the editor is opened. The confirmation is
@@ -138,6 +138,7 @@ public class MIRImportServlet extends MCRServlet {
             .stream()
             .map(duplicate -> duplicate.getAttributeValue("id"))
             .distinct()
+            .filter(id -> MCRAccessManager.checkPermission(id, MCRAccessManager.PERMISSION_READ))
             .toList();
 
         if (duplicateIds.isEmpty()) {

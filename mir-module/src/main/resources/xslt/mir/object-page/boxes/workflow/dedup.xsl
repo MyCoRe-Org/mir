@@ -23,7 +23,10 @@
     <xsl:if test="normalize-space($MIR.Workflow.Dedup) = 'true'
                   and $currentStatus = tokenize(normalize-space($MIR.Workflow.Dedup.States), '\s*,\s*')
                   and mcracl:check-permission((), 'manage-deduplication')">
-      <xsl:variable name="duplicates" select="document(concat('dedup:duplicates:', @ID))/duplicates/duplicate"/>
+      <!-- objects the current user may not read are neither listed nor counted -->
+      <xsl:variable name="duplicates"
+                    select="document(concat('dedup:duplicates:', @ID))/duplicates/duplicate
+                            [mcracl:check-permission(@id, 'read')]"/>
       <xsl:if test="exists($duplicates)">
         <xsl:variable name="maxListed" select="xs:integer(normalize-space($MIR.Workflow.Dedup.MaxListed))"/>
         <div class="workflow-box mir-workflow-dedup">
