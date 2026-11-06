@@ -168,7 +168,7 @@
             </and>
             <!-- adding derivates, checked on the parent object -->
             <and>
-                <action>create-derivate</action>
+                <action>add-derivate</action>
                 <or>
                     <and>
                         <status>new</status>
