@@ -36,7 +36,10 @@ import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xsl.uriresolver.MCRURIResolver;
+import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.datamodel.metadata.MCRObjectService;
 import org.mycore.dedup.MCRDeDupNoDuplicateFlagEventHandler;
 import org.mycore.mods.MCRMODSWrapper;
@@ -57,7 +60,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *   <li>builds the {@code mycoreobject} from the imported metadata (identifier lookup in external
  *       databases) and stores it in the current session under a generated key,</li>
  *   <li>asks the deduplication component (via {@code dedup:duplicates-for-session:{key}}) for existing
- *       objects sharing a deduplication key, ignoring those the current user may not read,</li>
+ *       objects sharing a deduplication key, ignoring those the current user may not read or that are in a
+ *       state listed in {@code MIR.Dedup.FilterDocumentsInStates},</li>
  *   <li>if none are found (or none is readable), redirects straight to the editor, loading the cached object from the
  *       session ({@code session:{key}}),</li>
  *   <li>otherwise renders a confirmation page listing the possible duplicates. Only when the user
@@ -87,6 +91,9 @@ public class MIRImportServlet extends MCRServlet {
     private static final String DUPLICATES_SESSION_KEY_PREFIX = "mir.importDuplicates.";
 
     private static final String DEFAULT_EDITOR = "editor-dynamic";
+
+    /** Object states (comma separated) whose objects are never presented as possible duplicates. */
+    private static final String FILTER_STATES_PROPERTY = "MIR.Dedup.FilterDocumentsInStates";
 
     /** Permission required to mark objects as no duplicates, the same as for the duplicate management. */
     private static final String MANAGE_DEDUPLICATION_PERMISSION = "manage-deduplication";
@@ -132,6 +139,10 @@ public class MIRImportServlet extends MCRServlet {
         MCRSessionMgr.getCurrentSession().put(sessionKey, object);
         LOGGER.info("Cached imported object under session key {}", sessionKey);
 
+        List<String> filteredStates = MCRConfiguration2.getString(FILTER_STATES_PROPERTY)
+            .stream()
+            .flatMap(MCRConfiguration2::splitValue)
+            .toList();
         List<String> duplicateIds = MCRURIResolver.obtainInstance()
             .resolve("dedup:duplicates-for-session:" + sessionKey)
             .getChildren("duplicate")
@@ -139,6 +150,7 @@ public class MIRImportServlet extends MCRServlet {
             .map(duplicate -> duplicate.getAttributeValue("id"))
             .distinct()
             .filter(id -> MCRAccessManager.checkPermission(id, MCRAccessManager.PERMISSION_READ))
+            .filter(id -> !isInState(id, filteredStates))
             .toList();
 
         if (duplicateIds.isEmpty()) {
@@ -154,6 +166,16 @@ public class MIRImportServlet extends MCRServlet {
         Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicateIds,
             describeImport(object, modsId.trim(), type));
         getLayoutService().doLayout(request, response, new MCRJDOMContent(page));
+    }
+
+    private static boolean isInState(String objectId, List<String> states) {
+        if (states.isEmpty()) {
+            return false;
+        }
+        MCRCategoryID state = MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(objectId))
+            .getService()
+            .getState();
+        return state != null && states.contains(state.getId());
     }
 
     /**

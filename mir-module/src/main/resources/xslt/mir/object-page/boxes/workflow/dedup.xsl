@@ -16,6 +16,7 @@
   <xsl:param name="MIR.Workflow.Dedup" select="'false'"/>
   <xsl:param name="MIR.Workflow.Dedup.States" select="''"/>
   <xsl:param name="MIR.Workflow.Dedup.MaxListed" select="'3'"/>
+  <xsl:param name="MIR.Dedup.FilterDocumentsInStates" select="''"/>
   <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template match="mycoreobject" mode="possibleDuplicates">
@@ -23,10 +24,14 @@
     <xsl:if test="normalize-space($MIR.Workflow.Dedup) = 'true'
                   and $currentStatus = tokenize(normalize-space($MIR.Workflow.Dedup.States), '\s*,\s*')
                   and mcracl:check-permission((), 'manage-deduplication')">
-      <!-- objects the current user may not read are neither listed nor counted -->
+      <!-- objects the current user may not read or that are in a filtered state are neither listed nor counted -->
+      <xsl:variable name="filteredStates"
+                    select="tokenize(normalize-space($MIR.Dedup.FilterDocumentsInStates), '\s*,\s*')"/>
       <xsl:variable name="duplicates"
                     select="document(concat('dedup:duplicates:', @ID))/duplicates/duplicate
-                            [mcracl:check-permission(@id, 'read')]"/>
+                            [mcracl:check-permission(@id, 'read')]
+                            [not(document(concat('mcrobject:', @id))/mycoreobject/service/servstates
+                                 /servstate[@classid='state']/@categid = $filteredStates)]"/>
       <xsl:if test="exists($duplicates)">
         <xsl:variable name="maxListed" select="xs:integer(normalize-space($MIR.Workflow.Dedup.MaxListed))"/>
         <div class="workflow-box mir-workflow-dedup">
