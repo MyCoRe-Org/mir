@@ -2,6 +2,7 @@
 <xsl:stylesheet version="3.0"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:csl="http://purl.org/net/xbiblio/csl"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mods="http://www.loc.gov/mods/v3"
@@ -30,6 +31,11 @@
     <citation_meta>
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="dc-meta"/>
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
+      <xsl:apply-templates select="(mycoreobject/structure/derobjects/derobject[
+        classification[@classid='derivate_types'][@categid='content']
+        and key('rights', @xlink:href)/@read
+        and mcrderivate:is-display-enabled(@xlink:href, 'export')
+      ])[1]" mode="highwire" />
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="seo-meta" />
     </citation_meta>
 
