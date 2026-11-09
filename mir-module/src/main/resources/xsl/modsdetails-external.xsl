@@ -567,7 +567,7 @@
                       <xsl:attribute name="title">
                         <xsl:value-of select="i18n:translate('object.hasChildren')" />
                       </xsl:attribute>
-                      <a href="#" class="dropdown-item disabled" aria-disabled="true">
+                      <a href="#" class="dropdown-item disabled" tabindex="-1" aria-disabled="true">
                         <xsl:value-of select="i18n:translate('object.delObject')" />
                       </a>
                     </xsl:when>
@@ -898,21 +898,21 @@
       </div>
 
 <!-- hit publisher -->
-      <xsl:if test="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+      <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
         <div class="hit_pub_name">
           <span class="label_publisher">
             <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
           </span>
-          <xsl:value-of select="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
         </div>
       </xsl:if>
 
-      <xsl:if test="//mods:originInfo[@eventType='creation']/mods:publisher">
+      <xsl:if test="mods:originInfo[@eventType='creation']/mods:publisher">
         <div class="hit_pub_name">
           <span class="label_publisher">
             <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.publisher.creation'),': ')" />
           </span>
-          <xsl:value-of select="//mods:originInfo[@eventType='creation']/mods:publisher" />
+          <xsl:value-of select="mods:originInfo[@eventType='creation']/mods:publisher" />
         </div>
       </xsl:if>
     </xsl:for-each>
