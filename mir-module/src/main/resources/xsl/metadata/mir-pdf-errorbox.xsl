@@ -35,8 +35,18 @@
         <!-- PDF files are present, but the job producing their reports is not activated in MyCoRe -->
         <xsl:variable name="deactivated" select="$reports/derivate[@activated = 'false']"/>
 
-        <xsl:if test="$files or $reports/error or $deactivated">
+        <!-- always rendered, so that pdfa-status.js can detect a page served from the browser cache with stale reports -->
+        <xsl:if test="$reports/*">
         <div id="mir-pdfa-validation">
+            <xsl:attribute name="data-object">
+                <xsl:value-of select="@ID"/>
+            </xsl:attribute>
+            <!-- derivates whose PDF files are expected to be listed in the box -->
+            <xsl:attribute name="data-derivates">
+                <xsl:for-each select="$reports/derivate[not(@activated = 'false' or @eligible = 'false')]">
+                    <xsl:value-of select="concat(@id, ' ')"/>
+                </xsl:for-each>
+            </xsl:attribute>
         <!-- a failed report lookup must not hide the derivates that could be read -->
         <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
         <xsl:if test="$deactivated">
@@ -107,9 +117,7 @@
             </xsl:when>
         </xsl:choose>
         </div>
-        <xsl:if test="$pending">
-            <script src="{$WebApplicationBaseURL}js/mir/pdfa-status.js"/>
-        </xsl:if>
+        <script src="{$WebApplicationBaseURL}js/mir/pdfa-status.js"/>
         </xsl:if>
     </xsl:template>
 
@@ -158,7 +166,14 @@
         </xsl:variable>
 
         <xsl:variable name="uniqueFileId" select="generate-id(.)"/>
-        <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
+        <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root"
+             data-pdfa-derivate="{$derivate}" data-pdfa-file="{@name}">
+            <xsl:if test="@lastModified">
+                <!-- seconds precision, as the file listing of the REST API -->
+                <xsl:attribute name="data-pdfa-modified">
+                    <xsl:value-of select="concat(substring(@lastModified, 1, 19), 'Z')"/>
+                </xsl:attribute>
+            </xsl:if>
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-bs-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
                class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">

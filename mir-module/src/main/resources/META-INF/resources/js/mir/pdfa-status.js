@@ -5,6 +5,10 @@
  * modification of the object, so a report that is written after the page was rendered never reaches the browser.
  * Re-fetching this page with the HTTP cache bypassed both picks up the finished reports and refreshes the cached
  * entry, so a later reload shows them too.
+ *
+ * A file added to, replaced in or removed from an existing derivate does not modify the object, so the browser may
+ * show a cached page whose box misses such a change. Without pending files the PDF files listed in the box are
+ * therefore compared once against the current derivate contents and the box is refreshed if they differ.
  */
 (function () {
   "use strict";
@@ -35,12 +39,12 @@
     timer = window.setTimeout(refresh, delay);
   }
 
-  function refresh() {
+  function refresh(force) {
     if (running) {
       return;
     }
     var current = container();
-    if (!isPending(current)) {
+    if (current === null || !(force === true || isPending(current))) {
       return;
     }
     running = true;
@@ -87,9 +91,114 @@
     }
   });
 
+  function getToken(objectId, derivateIds) {
+    var params = new URLSearchParams();
+    [objectId].concat(derivateIds).forEach(function (id) {
+      params.append("ua", "acckey_" + id);
+      params.append("sa", "acckey_" + id);
+    });
+    return fetch(webApplicationBaseURL + "rsc/jwt?" + params, { cache: "no-store", credentials: "same-origin" })
+      .then(function (response) {
+        return response.ok ? response.json() : Promise.reject(new Error("Unexpected status " + response.status));
+      })
+      .then(function (data) {
+        return data.login_success ? data : Promise.reject(new Error("No token: " + data.error));
+      });
+  }
+
+  // resolves to a map "{derivateId}/{path}" -> modified of every PDF file of the derivate, walking all subdirectories
+  function listPDFFiles(objectId, derivateId, token) {
+    var result = new Map();
+    var base = webApplicationBaseURL + "api/v2/objects/" + objectId + "/derivates/" + derivateId + "/contents";
+    var headers = {
+      Accept: "application/json",
+      Authorization: token.token_type + " " + token.access_token
+    };
+
+    function walk(segments) {
+      var path = segments.map(function (segment) {
+        return "/" + encodeURIComponent(segment);
+      }).join("");
+      return fetch(base + path, { cache: "no-store", credentials: "same-origin", headers: headers })
+        .then(function (response) {
+          return response.ok ? response.json() : Promise.reject(new Error("Unexpected status " + response.status));
+        })
+        .then(function (directory) {
+          (directory.files || []).forEach(function (file) {
+            if (file.name.toLowerCase().endsWith(".pdf")) {
+              result.set(derivateId + "/" + segments.concat(file.name).join("/"), file.modified);
+            }
+          });
+          return Promise.all((directory.directories || []).map(function (child) {
+            return walk(segments.concat(child.name));
+          }));
+        });
+    }
+
+    return walk([]).then(function () {
+      return result;
+    });
+  }
+
+  // current holds the PDF files of the checked derivates only
+  function isStale(box, checked, current) {
+    var shown = Array.prototype.filter.call(box.querySelectorAll("[data-pdfa-file]"), function (file) {
+      return checked.has(file.dataset.pdfaDerivate);
+    });
+    if (shown.length !== current.size) {
+      return true;
+    }
+    return shown.some(function (file) {
+      var key = file.dataset.pdfaDerivate + "/" + file.dataset.pdfaFile;
+      var modified = file.dataset.pdfaModified;
+      return !current.has(key) || (modified !== undefined && modified !== current.get(key));
+    });
+  }
+
+  // the page may come from the browser cache: compare its box with the current derivate contents once
+  function checkFreshness(box) {
+    var objectId = box.dataset.object;
+    var derivateIds = (box.dataset.derivates || "").split(/\s+/).filter(Boolean);
+    if (derivateIds.length === 0) {
+      return;
+    }
+    var checked = new Set();
+    var current = new Map();
+    getToken(objectId, derivateIds)
+      .then(function (token) {
+        return Promise.all(derivateIds.map(function (derivateId) {
+          // a derivate that cannot be listed, for example without read permission, is left out of the comparison
+          return listPDFFiles(objectId, derivateId, token)
+            .then(function (files) {
+              checked.add(derivateId);
+              files.forEach(function (modified, key) {
+                current.set(key, modified);
+              });
+            })
+            .catch(function (error) {
+              console.warn("[MIR] Could not list the PDF files of " + derivateId + ".", error);
+            });
+        }));
+      })
+      .then(function () {
+        if (isStale(box, checked, current)) {
+          refresh(true);
+        }
+      })
+      .catch(function (error) {
+        console.warn("[MIR] Could not check whether the PDF/A validation state is up to date.", error);
+      });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
-    if (isPending(container())) {
+    var box = container();
+    if (box === null) {
+      return;
+    }
+    if (isPending(box)) {
       scheduleNext();
+    } else {
+      checkFreshness(box);
     }
   });
 })();
