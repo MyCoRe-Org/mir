@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ======================================================================
-  Transforms MODS metadata to Highwire Press tags for the HTML <head>,
-  for example
+  Transforms MODS metadata and derivate links to Highwire Press tags for
+  the HTML <head>, for example
 
   <meta name="citation_author" content="Doe, John" />
 
@@ -12,6 +12,10 @@
 
   Usage:
   <xsl:apply-templates select="mods:mods" mode="highwire" />
+
+  To output citation_pdf_url for a derivate with a PDF main document
+  (requires the global parameter ServletsBaseURL):
+  <xsl:apply-templates select="derobject" mode="highwire" />
 ======================================================================  -->
 
 <xsl:stylesheet version="3.0"
@@ -194,6 +198,16 @@
     </meta>
   </xsl:template>
 
+  <!-- ========== citation_pdf_url ========== -->
+
+  <xsl:template match="derobject" mode="highwire">
+    <xsl:variable name="maindoc" select="string(maindoc)" />
+    <xsl:if test="ends-with(lower-case($maindoc), '.pdf')">
+      <xsl:variable name="path" select="string-join(tokenize($maindoc, '/')[.] ! encode-for-uri(.), '/')" />
+      <meta name="citation_pdf_url" content="{$ServletsBaseURL}MCRFileNodeServlet/{@xlink:href}/{$path}" />
+    </xsl:if>
+  </xsl:template>
+
   <!-- ========== internal templates ========== -->
 
   <xsl:template match="*" mode="highwire.content">
@@ -203,13 +217,5 @@
   <!-- ========== ignore all other content ========== -->
 
   <xsl:template match="*|@*|text()" mode="highwire" />
-
-  <xsl:template match="derobject" mode="highwire">
-    <xsl:variable name="maindoc" select="string(maindoc)" />
-    <xsl:if test="ends-with(lower-case($maindoc), '.pdf')">
-      <xsl:variable name="path" select="string-join(tokenize($maindoc, '/')[.] ! encode-for-uri(.), '/')" />
-      <meta name="citation_pdf_url" content="{$ServletsBaseURL}MCRFileNodeServlet/{@xlink:href}/{$path}" />
-    </xsl:if>
-  </xsl:template>
 
 </xsl:stylesheet>

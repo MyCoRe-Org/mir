@@ -33,6 +33,7 @@
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
       <xsl:apply-templates select="(mycoreobject/structure/derobjects/derobject[
         classification[@classid='derivate_types'][@categid='content']
+        and ends-with(lower-case(maindoc), '.pdf')
         and key('rights', @xlink:href)/@read
         and mcrderivate:is-display-enabled(@xlink:href, 'export')
       ])[1]" mode="highwire" />
