@@ -15,7 +15,7 @@
     <xsl:variable name="isAllowedToEditPI"
       select="some $role in tokenize($MIR.Strategy.EditPIRoles, ',') satisfies mcracl:is-current-user-in-role($role)"/>
     <div id="mir-file-upload">
-      <!-- same condition as the "add derivate" menu entry in modsdetails-external.xsl -->
+      <!-- same condition as the "add derivate" menu entry in mir/mods/details-external.xsl -->
       <xsl:if test="key('rights', $objID)/@write and mcracl:check-permission($objID, 'add-derivate')
         and (not(mcrpi:has-managed-pi($objID)) or $isAllowedToEditPI)">
         <div data-upload-object="{$objID}" data-upload-target="/" data-upload-classifications="derivate_types:content">
