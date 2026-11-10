@@ -59,6 +59,6 @@ export class LocalSearchProvider implements SearchProvider {
     }
 
     getUrl(searchTerm:string) {
-        return (window as any)["webApplicationBaseURL"] + "servlets/solr/personindexp?XSL.Style=xml&wt=json&terms.regex=" + escapeRegex(searchTerm) + ".*";
+        return (window as any)["webApplicationBaseURL"] + "servlets/solr/personindexp?XSL.Style=xml&wt=json&regex=" + escapeRegex(searchTerm) + ".*";
     }
 }

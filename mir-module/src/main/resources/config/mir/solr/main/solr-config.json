@@ -149,6 +149,7 @@
         "terms": "true",
         "terms.fl": "mods.pindexname.published",
         "terms.sort": "index",
+        "terms.regex": "${regex}\\|.*",
         "terms.regex.flag": "case_insensitive",
         "terms.limit": "-1"
       },
@@ -169,6 +170,7 @@
         "terms": "true",
         "terms.fl": "mods.pindexname",
         "terms.sort": "index",
+        "terms.regex": "${regex}\\|.*",
         "terms.regex.flag": "case_insensitive",
         "terms.limit": "-1"
       },
