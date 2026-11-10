@@ -52,8 +52,7 @@ export class DanteSearchProvider extends SearchProvider {
             const url = `${await this.baseUrl}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
             const response = await fetch(url);
             if (!response.ok) {
-                console.error(`Request failed (${this.vocabulary}):`, response.status, response.statusText);
-                return [];
+                throw new Error(`HTTP ${response.status} ${response.statusText}`);
             }
 
             const json = await response.json();
@@ -120,7 +119,8 @@ export class DanteSearchProvider extends SearchProvider {
                 });
             }
         } catch (e) {
-            console.error(`Error parsing results for ${this.vocabulary}:`, e);
+            console.error(`Error fetching or parsing results for ${this.vocabulary}:`, e);
+            throw e;
         }
 
         return results;

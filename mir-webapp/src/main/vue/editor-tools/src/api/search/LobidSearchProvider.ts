@@ -66,17 +66,16 @@ export class LobidSearchProvider extends SearchProvider {
             return [];
         }
 
-        const url = new URL(await this.baseUrl);
-        url.searchParams.append("q", searchTerm);
-        url.searchParams.append("filter", filterQuery);
-        url.searchParams.append("format", "json");
-        url.searchParams.append("size", "30");
-
         try {
+            const url = new URL(await this.baseUrl);
+            url.searchParams.append("q", searchTerm);
+            url.searchParams.append("filter", filterQuery);
+            url.searchParams.append("format", "json");
+            url.searchParams.append("size", "30");
+
             const response = await fetch(url.toString());
             if (!response.ok) {
-                console.error(`Request failed: ${response.status} ${response.statusText}`);
-                return [];
+                throw new Error(`HTTP ${response.status} ${response.statusText}`);
             }
             const json = await response.json();
             for (const member of json.member) {
@@ -87,6 +86,7 @@ export class LobidSearchProvider extends SearchProvider {
             }
         } catch (e) {
             console.error("Error fetching or parsing search results:", e);
+            throw e;
         }
 
 

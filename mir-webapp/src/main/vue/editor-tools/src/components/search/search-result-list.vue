@@ -29,8 +29,11 @@
 
         <div class="col-md-8 col-sm-12">
             <ol v-if="currentGroup" class="list-group list-group-flush">
-              <li class="list-group-item" v-if="!currentGroup.loading && currentGroup.results.length==0">
-                {{ i18n["mir.editor.subject.search.result.empty"] }}
+              <li class="list-group-item list-group-item-warning" v-if="!currentGroup.loading && currentGroup.error">
+                {{ i18n["mir.editor.subject.search.result.error"] }}
+                </li>
+                <li class="list-group-item" v-else-if="!currentGroup.loading && currentGroup.results.length==0">
+          {{ i18n["mir.editor.subject.search.result.empty"] }}
                 </li>
                 <li class="list-group-item" v-for="result in currentGroup.results" :key="result.id">
                     <div class="row">
@@ -110,7 +113,7 @@ import {
     TitleInfo,
     Topic
 } from "@/api/Subject";
-import {watch, reactive, defineProps, ref, computed} from "vue";
+import {watch, reactive, computed} from "vue";
 import {SearchResult} from "@/api/search/SearchProvider";
 import NameDisplay from "@/components/display/name-display.vue";
 import TopicDisplay from "@/components/display/topic-display.vue";
@@ -134,7 +137,8 @@ export interface SearchResultGroup {
     groupId: string,
     title: string,
     results: SearchResult[],
-    loading?: boolean
+    loading?: boolean,
+    error?: boolean
 }
 
 const props = defineProps<SearchResultListProps>();
@@ -166,6 +170,7 @@ const i18n = provideTranslations([
     "mir.editor.subject.search.result.add",
     "mir.editor.subject.search.result.addCustom",
     "mir.editor.subject.search.result.empty",
+    "mir.editor.subject.search.result.error",
 ]);
 
 const addCustom = () => {

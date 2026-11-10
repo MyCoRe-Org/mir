@@ -328,6 +328,9 @@ const search = async () => {
                 `Search failed for provider ${providerConfig.id}`,
                 e
             );
+            if (group) {
+              group.error = true;
+            }
           } finally {
             if (group) {
               group.loading = false;
