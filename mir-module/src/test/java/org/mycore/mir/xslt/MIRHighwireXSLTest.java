@@ -36,7 +36,8 @@ public class MIRHighwireXSLTest extends MIRXSLTFunctionTestCase {
 
     private static final Namespace XLINK = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
 
-    private static final String FILE_URL = "https://example.org/servlets/MCRFileNodeServlet/mir_derivate_00000001/";
+    private static final String FILE_URL
+        = "https://example.org/api/v2/objects/mir_mods_00000001/derivates/mir_derivate_00000001/contents/";
 
     @Test
     void testPdfMainDocument() throws Exception {
@@ -67,8 +68,10 @@ public class MIRHighwireXSLTest extends MIRXSLTFunctionTestCase {
         Element derobject = new Element("derobject")
             .setAttribute("href", "mir_derivate_00000001", XLINK)
             .addContent(new Element("maindoc").setText(maindoc));
-        Document result = transformDocument(new Document(derobject), XSL,
-            Map.of("ServletsBaseURL", "https://example.org/servlets/"));
+        Element mycoreobject = new Element("mycoreobject").setAttribute("ID", "mir_mods_00000001")
+            .addContent(new Element("structure").addContent(new Element("derobjects").addContent(derobject)));
+        Document result = transformDocument(new Document(mycoreobject), XSL,
+            Map.of("WebApplicationBaseURL", "https://example.org/"));
         Element meta = result.getRootElement().getChild("meta");
         return meta == null ? null : meta.getAttributeValue("content");
     }
