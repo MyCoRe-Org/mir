@@ -2,6 +2,9 @@
 <xsl:stylesheet version="3.0"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
+  xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -10,6 +13,11 @@
   <xsl:include href="xslInclude:solrResponse" />
 
   <xsl:decimal-format name="european" decimal-separator="," grouping-separator="." />
+
+  <xsl:variable
+    name="hide_button_regex"
+    select="mcrproperty:get('MIR.Search.PersonIndex.HideButtonRegex') = 'true'"
+    as="xs:boolean"/>
 
   <xsl:variable name="PageTitle">
     <xsl:value-of select="mcri18n:translate('component.solr.searchresult.resultList')" />
@@ -40,7 +48,7 @@
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:variable name="termsRegex" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='terms.regex']" />
+  <xsl:variable name="termsRegex" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='regex']" />
 
   <xsl:variable name="retainedParams">
     <xsl:for-each select="./response/lst[@name='responseHeader']/lst[@name='params']/str[not(@name='start' or @name='rows')]">
@@ -55,18 +63,10 @@
     <xsl:for-each select="int">
       <xsl:sort select="@name" />
 
-      <xsl:variable name="nameIdentifierAndType" select="substring-after(@name, ':')" />
+      <xsl:variable name="tokenizedTerm" select="tokenize(@name, '\|')" as="xs:string*"/>
 
-      <xsl:variable name="linkText">
-        <xsl:choose>
-          <xsl:when test="contains(@name, ':')">
-            <xsl:value-of select="substring-before(@name, ':')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="@name" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
+      <xsl:variable name="encodedLinkText" select="$tokenizedTerm[last()-1]" as="xs:string"/>
+      <xsl:variable name="nameIdentifierAndType" select="$tokenizedTerm[last()]" as="xs:string"/>
 
       <xsl:choose>
         <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
@@ -81,7 +81,7 @@
             <a
               href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}"
               title="Suche nach allen Publikationen">
-              <xsl:value-of select="$linkText" />
+              <xsl:value-of select="mcrurl:decode-from-uri($encodedLinkText)" />
             </a>
             <xsl:text>&#160;</xsl:text>
             <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
@@ -93,9 +93,9 @@
         </xsl:when>
         <xsl:otherwise>
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;"
-              title="Suche nach allen Publikationen">
-              <xsl:value-of select="$linkText" />
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$encodedLinkText}&quot;"
+               title="Suche nach allen Publikationen">
+              <xsl:value-of select="mcrurl:decode-from-uri($encodedLinkText)" />
             </a>
           </li>
         </xsl:otherwise>
@@ -106,7 +106,7 @@
   <xsl:template match="/response">
 
     <xsl:variable name="a2z">
-      <A search="%5Ba%7Cä%7CÄ%5D.*" />
+      <A search="a.*" />
       <B search="b.*" />
       <C search="c.*" />
       <D search="d.*" />
@@ -120,18 +120,19 @@
       <L search="l.*" />
       <M search="m.*" />
       <N search="n.*" />
-      <O search="%5Bo%7Cö%7CÖ%5D.*" />
+      <O search="o.*" />
       <P search="p.*" />
       <Q search="q.*" />
       <R search="r.*" />
       <S search="s.*" />
       <T search="t.*" />
-      <U search="%5Bu%7Cü%7CÜ%5D.*" />
+      <U search="u.*" />
       <V search="v.*" />
       <W search="w.*" />
       <X search="x.*" />
       <Y search="y.*" />
       <Z search="z.*" />
+      <other label="…" search="[^a-z].*" />
     </xsl:variable>
 
     <div class="row">
@@ -166,12 +167,20 @@
             <ul class="names">
               <xsl:for-each select="$a2z/*">
                 <li>
-                  <xsl:if test="$termsRegex = @search">
-                    <xsl:attribute name="class">active</xsl:attribute>
-                  </xsl:if>
-                  <a href="{concat($proxyBaseURL, '?XSL.Style=person&amp;terms.regex=', @search)}">
-                    <xsl:value-of select="name()" />
-                  </a>
+                  <xsl:variable name="label" select="if (@label) then @label else name()" as="xs:string"/>
+                  <xsl:choose>
+                    <xsl:when test="$termsRegex = @search">
+                      <xsl:attribute name="class">active</xsl:attribute>
+                      <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;regex=.*')}">
+                        <xsl:value-of select="$label"/>
+                      </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;regex=',encode-for-uri(@search))}">
+                        <xsl:value-of select="$label"/>
+                      </a>
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <xsl:if test="position() != last()">
                     <span> | </span>
                   </xsl:if>
@@ -187,20 +196,13 @@
                   method="get"
                   action="{$proxyBaseURL}">
               <xsl:for-each
-                select="lst[@name='responseHeader']/lst[@name='params']/str[not(@name='terms.regex')]">
+                select="lst[@name='responseHeader']/lst[@name='params']/str[not(@name='regex')]">
                 <input type="hidden" name="{@name}" value="{.}" />
               </xsl:for-each>
 
-              <xsl:variable name="search_value">
-                <xsl:choose>
-                  <xsl:when test="$a2z/*[@search=$termsRegex]">
-                    <xsl:value-of select="''" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="$termsRegex" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
+              <xsl:variable
+                name="search_value"
+                select="if($hide_button_regex and $a2z/*[@search=$termsRegex]) then '' else $termsRegex"/>
 
               <xsl:variable name="placeholder">
                 <xsl:value-of select="mcri18n:translate('browse.person.searchplaceholder')" />
@@ -209,7 +211,7 @@
               <label class="sr-only form-label" for="index_search">Gesuchte Zeichen</label>
               <div class="input-group">
                 <input value="{$search_value}"
-                       name="terms.regex"
+                       name="regex"
                        class="search_text_gray focus_form_field form-control"
                        id="index_search"
                        type="text"
