@@ -117,9 +117,10 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
         LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
 
-        // 1. check if the object has a assigned identifier
-        final boolean hasRegisteredPI = hasRegisteredPI(objectId);
-        if (MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission) && hasRegisteredPI && !canEditPI()) {
+        // 1. objects with registered PI can not be deleted or get new derivates (unless user has special permission)
+        final boolean isDeleteObjectOrAddDerivate = MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)
+            || MCRAccessManager.PERMISSION_ADD_DERIVATE.equalsIgnoreCase(permission);
+        if (isDeleteObjectOrAddDerivate && hasRegisteredPI(objectId) && !canEditPI()) {
             return false;
         }
 

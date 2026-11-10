@@ -162,6 +162,7 @@ public class MIRStrategyTest {
             MCRLinkTableManager.ENTRY_TYPE_DERIVATE, "");
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_ADD_DERIVATE));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
@@ -193,6 +194,7 @@ public class MIRStrategyTest {
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
+        assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_ADD_DERIVATE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
@@ -205,6 +207,7 @@ public class MIRStrategyTest {
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
+        assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_ADD_DERIVATE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
@@ -216,6 +219,7 @@ public class MIRStrategyTest {
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
+        assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_ADD_DERIVATE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
     }
