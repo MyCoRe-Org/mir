@@ -21,12 +21,15 @@ COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/mir.sh
 RUN set -eux; \
     chmod 555 /usr/local/bin/mir.sh; \
 	apt-get update; \
-	apt-get install -y gosu curl; \
+	# ffmpeg and ffprobe are used by the video frame generator of MyCoRe
+	apt-get install -y gosu curl ffmpeg; \
 	rm -rf /var/lib/apt/lists/*;
 # Tomcat 11 no longer sets maxParameterCount in server.xml (default 1000 is now hard-coded),
 # so the attribute is added to the HTTP connector instead of replacing an existing value.
 RUN chmod +x /usr/local/bin/mir.sh  && \
     rm -rf /usr/local/tomcat/webapps/* && \
+    # IIIF image identifiers carry the file path as an encoded solidus, the AJP connector below does the same
+    sed -ri "s|<Connector port=\"8080\" protocol=\"HTTP/1.1\"|<Connector port=\"8080\" protocol=\"HTTP/1.1\" encodedSolidusHandling=\"decode\"|" /usr/local/tomcat/conf/server.xml && \
     mkdir /opt/mir/ && \
     chown mcr:mcr -R /opt/mir/ && \
     sed -ri "s/<Connector port=\"8080\"/<Connector port=\"8080\" maxParameterCount=\"$MAX_PARAMETER_COUNT\"/" /usr/local/tomcat/conf/server.xml && \
