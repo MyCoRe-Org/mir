@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory'))
     };
 
-    const layouts = ["flatmir", "cosmol"];
+    const layouts = ["flatmir"];
     const templates = ["cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "lumen", "paper", "readable",
         "sandstone", "simplex", "slate", "spacelab", "superhero", "united", "yeti"];
 
