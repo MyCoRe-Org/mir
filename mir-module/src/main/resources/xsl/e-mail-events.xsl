@@ -14,7 +14,7 @@
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="categories" select="document('classification:metadata:1:children:mir_institutes')/mycoreclass/categories" />
   <xsl:variable name="institutemember" select="$categories/category[mcrxsl:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
-
+  <xsl:include href="import/helperTemplates.xsl" />
   <xsl:template match="/">
     <xsl:message>
       type:
@@ -121,7 +121,9 @@
           <xsl:if test="position()!=1">
             <xsl:value-of select="', '" />
           </xsl:if>
-          <xsl:apply-templates select="." mode="printName" />
+          <xsl:call-template name="printPersonName">
+            <xsl:with-param name="node" select="mods:name" />
+          </xsl:call-template>
         </xsl:for-each>
       </xsl:variable>
       <xsl:value-of select="concat('Autor(en)       : ',$authors,$newline)" />
@@ -231,26 +233,5 @@
     <xsl:value-of select="concat(' (',@valueURI,')')" />
   </xsl:template>
 
-<!-- Names -->
-  <xsl:template match="mods:name" mode="printName">
-    <xsl:choose>
-      <xsl:when test="mods:namePart">
-        <xsl:choose>
-          <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-            <xsl:value-of select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="mods:namePart" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="mods:displayForm">
-        <xsl:value-of select="mods:displayForm" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="." />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
 </xsl:stylesheet>
