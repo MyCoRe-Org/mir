@@ -10,6 +10,8 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/collapse-files.xsl" />
+  <xsl:import href="resource:xslt/mir/object-page/boxes/derivate-actions/helpers.xsl" />
+  <xsl:include href="xslInclude:derivateactions" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
   <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
@@ -85,9 +87,9 @@
                               </xsl:if>
                             </a>
                           </div>
-                          <xsl:apply-templates select="." mode="derivateActions">
-                            <xsl:with-param name="deriv" select="@xlink:href" />
-                            </xsl:apply-templates>
+                          <xsl:call-template name="derivate-actions">
+                            <xsl:with-param name="derivate-id" select="string($derId)" />
+                          </xsl:call-template>
                           <div class="clearfix" />
                         </div>
                       </div>

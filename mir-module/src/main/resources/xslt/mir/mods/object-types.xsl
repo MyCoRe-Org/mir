@@ -15,7 +15,7 @@
   <xsl:include href="resource:xslt/mir/basket/add-button.xsl" />
 
   <xsl:include href="resource:xslt/mir/mods/hitlist-external.xsl" />  <!-- for external usage in application module -->
-  <xsl:include href="resource:xslt/mir/mods/details-external.xsl" />  <!-- for external usage in application module -->
+  <xsl:include href="resource:xslt/mir/basket/content.xsl" />
 
   <!--Template for title in metadata view: see mycoreobject.xsl -->
   <xsl:template priority="1" mode="title" match="/mycoreobject[contains(@ID,'_mods_')]">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mirboxfields="http://www.mycore.de/xslt/mirboxfields"
+  xmlns:mirconfig="http://www.mycore.de/xslt/mirconfig"
   xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
   xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -13,7 +13,7 @@
   <xsl:template match="/">
     <xsl:variable name="object" select="mycoreobject" />
     <xsl:variable name="genres" select="mirmods:genres(mirobject:mods($object))" />
-    <xsl:variable name="names" select="mirboxfields:get('MIR.MetadataBox.Fields', $genres)" />
+    <xsl:variable name="names" select="mirconfig:get-list('MIR.MetadataBox.Fields', $genres)" />
 
     <xsl:if test="exists($names)">
       <div id="mir-metadata">
