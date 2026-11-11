@@ -15,7 +15,7 @@ import org.mycore.test.MyCoReTest;
 @ExtendWith(MCRJPAExtension.class)
 public class MIRMapperXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/functions/mirmapper-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mirmapper-test.xsl";
 
     @BeforeEach
     void setUp() throws Exception {

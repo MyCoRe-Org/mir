@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "message-type": "work",
+  "message-version": "1.0.0",
+  "message": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          10,
+          18
+        ]
+      ],
+      "date-time": "2026-01-01T00:00:00Z",
+      "timestamp": 1767222000,
+      "version": "4.4.0"
+    },
+    "abstract": "<jats:title>Abstract</jats:title>\n<jats:p><jats:bold>Lorem ipsum</jats:bold> dolor sit <jats:italic>amet</jats:italic>, 23<jats:sup>42</jats:sup>.</jats:p>"
+  }
+}

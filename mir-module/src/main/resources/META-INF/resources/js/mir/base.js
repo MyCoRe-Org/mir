@@ -1,34 +1,54 @@
 (function ($) {
     $(document).ready(function () {
         const iiifSearchSelector = "data-iiif-jwt";
+        let iiifTokenRequest = null;
 
-        if ($("[" + iiifSearchSelector + "]").length > 0) {
-            $.ajax({
-                url: webApplicationBaseURL + "rsc/jwt",
-                type: "GET",
-                traditional: true,
-                dataType: "json",
-                success: function (data) {
-                    if (data.login_success) {
-                        loadImages(data);
-                    }
-                },
-                error: function (resp, title, message) {
-                    console.log(resp);
-                    console.log("Token request failed.");
-                }
-            });
+        // the token is requested at most once and shared by all IIIF images of the page,
+        // a stale token request is only replaced if no other image has replaced it already
+        function getIiifToken(staleTokenRequest) {
+            if (iiifTokenRequest === null || iiifTokenRequest === staleTokenRequest) {
+                iiifTokenRequest = new Promise(function (resolve) {
+                    $.ajax({
+                        url: webApplicationBaseURL + "rsc/jwt",
+                        type: "GET",
+                        traditional: true,
+                        dataType: "json",
+                        success: function (data) {
+                            resolve(data.login_success ? data : null);
+                        },
+                        error: function (resp, title, message) {
+                            console.log(resp);
+                            console.log("Token request failed.");
+                            resolve(null);
+                        }
+                    });
+                });
+            }
+            return iiifTokenRequest;
         }
 
-        function loadImages(token) {
-            $("[" + iiifSearchSelector + "]").each(function (i, img) {
-                let url = img.getAttribute(iiifSearchSelector);
+        // loads an IIIF image with the token of the logged in user and passes a blob URL to the callback,
+        // a request that is not authorized is retried once with a fresh token, as the token may have expired meanwhile
+        function loadIiifImage(url, callback, staleTokenRequest) {
+            var tokenRequest = getIiifToken(staleTokenRequest);
+            tokenRequest.then(function (token) {
+                if (token === null) {
+                    return;
+                }
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
-                    if (this.readyState === 4 && this.status === 200) {
-                        //console.log(this.response, typeof this.response);
-                        var url = window.URL || window.webkitURL;
-                        img.src = url.createObjectURL(this.response);
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
+                        var urlFactory = window.URL || window.webkitURL;
+                        callback(urlFactory.createObjectURL(this.response));
+                    } else if ((this.status === 401 || this.status === 403)
+                        && typeof staleTokenRequest === "undefined") {
+                        console.log("Could not load IIIF image " + url + " (status " + this.status + "), retrying.");
+                        loadIiifImage(url, callback, tokenRequest);
+                    } else {
+                        console.log("Could not load IIIF image " + url + " (status " + this.status + ").");
                     }
                 }
                 xhr.open('GET', url);
@@ -37,6 +57,12 @@
                 xhr.send();
             });
         }
+
+        $("[" + iiifSearchSelector + "]").each(function (i, img) {
+            loadIiifImage(img.getAttribute(iiifSearchSelector), function (objectUrl) {
+                img.src = objectUrl;
+            });
+        });
 
         document.querySelectorAll(".personPopover, .boxPopover").forEach(function (popoverElement) {
             let id = popoverElement.getAttribute("id");
@@ -119,6 +145,52 @@
         };
 
         var sourceCache = {};
+        var posterCache = {};
+
+        // the iView image generated from a video frame is used as poster of the selected file
+        var applyPoster = function (player, currentOption) {
+            if (typeof player === "undefined") {
+                return;
+            }
+            var lookupKey = currentOption.parent().index() + "_" + currentOption.index();
+            // the poster is only applied once the image is known to load, otherwise a failing
+            // request would cover the video with an empty box instead of showing its first frame
+            var showPoster = function (url) {
+                // the image may have loaded after another file has been selected
+                if (videoChooserElement.find(":selected").is(currentOption)) {
+                    player.poster(url);
+                }
+            };
+
+            player.poster("");
+            // let the poster of the newly selected file reappear
+            player.hasStarted(false);
+
+            if (lookupKey in posterCache) {
+                showPoster(posterCache[lookupKey]);
+                return;
+            }
+
+            var poster = currentOption.attr("data-poster");
+            var posterJwt = currentOption.attr("data-poster-jwt");
+
+            if (typeof poster !== "undefined") {
+                var image = new Image();
+                image.onload = function () {
+                    posterCache[lookupKey] = poster;
+                    showPoster(poster);
+                };
+                image.onerror = function () {
+                    console.log("Could not load video poster " + poster);
+                };
+                image.src = poster;
+            } else if (typeof posterJwt !== "undefined") {
+                loadIiifImage(posterJwt, function (objectUrl) {
+                    posterCache[lookupKey] = objectUrl;
+                    showPoster(objectUrl);
+                });
+            }
+        };
 
         var getVideo = function (currentOption) {
             var src = currentOption.attr("data-src");
@@ -197,6 +269,10 @@
 
 
             playerToShow.src(sourceArr);
+
+            if (!isAudio) {
+                applyPoster(playerToShow, currentOption);
+            }
 
         });
 
@@ -287,7 +363,7 @@
       });
     });
 
-    // Input element in the mir-flatmir-layout-utils.xsl search
+    // Input element in the mir/layout/flatmir-utils.xsl search
     const mirFlatmirLayoutSearchInputElement = "#searchInput";
     // Selector for the second search form
     const subSearchFormName = "form.search_form";
@@ -303,14 +379,14 @@
     const selectModsItem = ".select_mods_type .dropdown-item";
     // ID of the hidden element with the fq parameter
     const fqElement = "#fq";
-    // ID of the hidden element with the initial condQuery parameter in the mir-flatmir-layout-utils.xsl search form
+    // ID of the hidden element with the initial condQuery parameter in the mir/layout/flatmir-utils.xsl search form
     const initialCondQueryMirFlatmirLayout = "#initialCondQueryMirFlatmirLayout";
     // ID of the hidden element with the initial condQuery parameter in the second search form
     const initialCondQuerySecond = "#initialCondQuerySecond";
     // ID of the hidden element 'condQuery' for the query parameter 'condQuery'
     const condQuery = "#condQuery";
 
-    // Input element's changes in the mir-flatmir-layout-utils.xsl search
+    // Input element's changes in the mir/layout/flatmir-utils.xsl search
     $(mirFlatmirLayoutSearchInputElement).change(() => {
         if ($(initialCondQueryMirFlatmirLayout).length) {
             let initialCondQueryValue = $(mirFlatmirLayoutSearchInputElement).val().trim();
@@ -389,7 +465,7 @@
                 if (selectModsValue === 'mods.nameIdentifier' && preparedQueryText) {
                     // Search in both fields for backward compatibility: mods.nameIdentifier.id (also matches the
                     // plain value without type prefix) only exists with the updated Solr schema. Without it, the
-                    // exact search in mods.nameIdentifier still works. See also response-mir.xsl.
+                    // exact search in mods.nameIdentifier still works. See also mir/solr/response/results.xsl.
                     filterQuery += ' OR mods.nameIdentifier.id:' + preparedQueryText;
                 }
                 $(fqElement).attr('value', filterQuery);

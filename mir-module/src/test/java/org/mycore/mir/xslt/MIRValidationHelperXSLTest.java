@@ -15,7 +15,7 @@ import org.mycore.test.MyCoReTest;
 @ExtendWith(MCRJPAExtension.class)
 public class MIRValidationHelperXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/functions/mirvalidationhelper-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mirvalidationhelper-test.xsl";
 
     @BeforeEach
     void setUp() throws Exception {

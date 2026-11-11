@@ -12,7 +12,7 @@ import org.mycore.test.MyCoReTest;
 @MyCoReTest
 public class MIREditorUtilsXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/functions/mireditorutils-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mireditorutils-test.xsl";
 
     @Test
     void testSerializeNode() throws Exception {

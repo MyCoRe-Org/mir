@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="mir_genres">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/mir_genres" />
+  <label xml:lang="en" text="mir_genres" />
+  <categories>
+    <category ID="article">
+      <label xml:lang="en" text="Article" />
+    </category>
+    <category ID="thesis">
+      <label xml:lang="en" text="Thesis" />
+      <category ID="dissertation">
+        <label xml:lang="en" text="Dissertation" />
+      </category>
+    </category>
+  </categories>
+</mycoreclass>

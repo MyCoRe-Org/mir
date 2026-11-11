@@ -10,7 +10,6 @@
           <div class="col-sm-6">
             <select id="layout" name="XSL.MIR.Layout.Theme.SESSION" onChange="document.templateChooser.submit()" class="form-control">
               <option value="">Standard</option>
-              <option value="cosmol">CosmoL</option>
               <option value="flatmir">FlatMIR</option>
             </select>
           </div>

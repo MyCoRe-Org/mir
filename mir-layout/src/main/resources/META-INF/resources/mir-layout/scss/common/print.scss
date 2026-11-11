@@ -15,7 +15,6 @@
     display:table;
   }
 
-  #main_content_column,
   #main_col,
   .result_list,
   .mir_metadata {
@@ -34,12 +33,10 @@
   footer,
   #powered_by,
   .result_searchline,
-  .result_filter
+  .result_filter,
   #head,
   #menu_toggle,
-  #side_nav_column,
   #mir-abstract-overlay,
-  .button_box,
   #record_detail,
   .nav-tabs {
     display: none;

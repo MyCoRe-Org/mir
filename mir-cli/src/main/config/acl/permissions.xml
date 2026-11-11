@@ -37,6 +37,14 @@
       </boolean>
     </condition>
   </mcrpermission>
+  <mcrpermission name="manage-deduplication" description="Right to use the duplicate management" ruledescription="editor and administrator">
+    <condition format="xml">
+      <boolean operator="or">
+        <condition value="admin" operator="=" field="group" />
+        <condition value="editor" operator="=" field="group" />
+      </boolean>
+    </condition>
+  </mcrpermission>
   <mcrpermission name="create-mods" description="Erzeugen eines MODS-Dokuments" ruledescription="submitter, editor and administrator">
     <condition format="xml">
       <boolean operator="or">

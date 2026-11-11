@@ -3,7 +3,7 @@ RUN groupadd -r mcr -g 501 && \
     useradd -d /home/mcr -u 501 -m -s /bin/bash -g mcr mcr
 WORKDIR /usr/local/tomcat/
 ARG PACKET_SIZE="65536"
-ARG MAX_PARAMETER_COUNT="1000"
+ARG MAX_PARAMETER_COUNT="10000"
 ARG MAX_PART_COUNT="100"
 ENV APP_CONTEXT="mir" \
  MCR_CONFIG_DIR="/mcr/home/" \
@@ -21,12 +21,18 @@ COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/mir.sh
 RUN set -eux; \
     chmod 555 /usr/local/bin/mir.sh; \
 	apt-get update; \
-	apt-get install -y gosu curl; \
+	# ffmpeg and ffprobe are used by the video frame generator of MyCoRe
+	apt-get install -y gosu curl ffmpeg; \
 	rm -rf /var/lib/apt/lists/*;
+# Tomcat 11 no longer sets maxParameterCount in server.xml (default 1000 is now hard-coded),
+# so the attribute is added to the HTTP connector instead of replacing an existing value.
 RUN chmod +x /usr/local/bin/mir.sh  && \
     rm -rf /usr/local/tomcat/webapps/* && \
+    # IIIF image identifiers carry the file path as an encoded solidus, the AJP connector below does the same
+    sed -ri "s|<Connector port=\"8080\" protocol=\"HTTP/1.1\"|<Connector port=\"8080\" protocol=\"HTTP/1.1\" encodedSolidusHandling=\"decode\"|" /usr/local/tomcat/conf/server.xml && \
     mkdir /opt/mir/ && \
     chown mcr:mcr -R /opt/mir/ && \
+    sed -ri "s/<Connector port=\"8080\"/<Connector port=\"8080\" maxParameterCount=\"$MAX_PARAMETER_COUNT\"/" /usr/local/tomcat/conf/server.xml && \
     sed -ri "s/<\/Service>/<Connector protocol=\"AJP\/1.3\" packetSize=\"$PACKET_SIZE\" maxParameterCount=\"$MAX_PARAMETER_COUNT\" maxPartCount=\"$MAX_PART_COUNT\" tomcatAuthentication=\"false\" scheme=\"https\" secretRequired=\"false\" allowedRequestAttributesPattern=\".*\" encodedSolidusHandling=\"decode\" address=\"0.0.0.0\" port=\"8009\" redirectPort=\"8443\" \/>&/g" /usr/local/tomcat/conf/server.xml
 COPY --chown=mcr:mcr mir-webapp/target/mir-*.war /opt/mir/mir.war
 COPY --chown=mcr:mcr mir-cli/target/mir-*.tar.gz /opt/mir/mir.tar.gz

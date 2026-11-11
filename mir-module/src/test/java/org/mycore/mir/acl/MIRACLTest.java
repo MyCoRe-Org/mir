@@ -192,7 +192,7 @@ public abstract class MIRACLTest {
             "org.mycore.common.content.transformer.MCRXSLTransformer");
         MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.TransformerFactoryClass",
             "net.sf.saxon.TransformerFactoryImpl");
-        MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.Stylesheet", "xslt/rules-helper.xsl");
+        MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.Stylesheet", "xslt/mir/acl/rules-helper.xsl");
 
         MCRConfiguration2.set("MCR.Access.Strategy.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
         MCRConfiguration2.set("MCR.Access.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
