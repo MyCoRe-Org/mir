@@ -16,16 +16,15 @@
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir/mods/utils.xsl" />
-  <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
   <xsl:variable name="mods-type">
     <xsl:apply-templates mode="mods-type" select="." />
   </xsl:variable>
   <xsl:template match="/">
     <site ID="{mycoreobject/@ID}">
-      <xsl:if test="key('rights', mycoreobject/@ID)/@read">
+      <xsl:if test="mcracl:check-permission(mycoreobject/@ID, 'read')">
         <xsl:attribute name="read"/>
       </xsl:if>
-      <xsl:if test="key('rights', mycoreobject/@ID)/@write">
+      <xsl:if test="mcracl:check-permission(mycoreobject/@ID, 'writedb')">
         <xsl:attribute name="write"/>
       </xsl:if>
       <xsl:attribute name="title">
@@ -34,12 +33,11 @@
           <xsl:with-param name="withSubtitle" select="false()" />
         </xsl:apply-templates>
       </xsl:attribute>
-      <xsl:call-template name="debug-rights" />
       <xsl:variable name="docState" select="//servstates/servstate/@categid" />
       <xsl:choose>
-        <xsl:when test="key('rights', mycoreobject/@ID)/@read">
+        <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'read')">
           <xsl:choose>
-            <xsl:when test="key('rights', mycoreobject/@ID)/@write">
+            <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'writedb')">
               <xsl:apply-imports />
             </xsl:when>
             <xsl:when test="$docState='blocked' or $docState='deleted'">
@@ -100,20 +98,6 @@
         </xsl:if>
       </div>
     </div>
-  </xsl:template>
-
-  <xsl:template name="debug-rights">
-    <xsl:variable name="lbr" select="'&#x0a;'" />
-    <xsl:comment>
-      <xsl:value-of select="concat('Permissions:',$lbr,$lbr)" />
-      <xsl:for-each select="/mycoreobject/rights/right">
-        <xsl:value-of select="concat(@id,': ')" />
-        <xsl:for-each select="@*[not(name()='id')]">
-          <xsl:value-of select="concat(' ',name())" />
-        </xsl:for-each>
-        <xsl:value-of select="$lbr" />
-      </xsl:for-each>
-    </xsl:comment>
   </xsl:template>
 
   <xsl:template name="categorySearchLink">

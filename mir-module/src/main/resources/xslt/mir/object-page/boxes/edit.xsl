@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -9,9 +10,8 @@
   <xsl:include href="resource:xslt/mir/mods/object-types.xsl" />
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
-    <xsl:variable name="objectRights" select="key('rights', mycoreobject/@ID)" />
-    <xsl:variable name="write" select="boolean($objectRights/@write)" />
-    <xsl:variable name="delete" select="boolean($objectRights/@delete)" />
+    <xsl:variable name="write" select="mcracl:check-permission(mycoreobject/@ID, 'writedb')" />
+    <xsl:variable name="delete" select="mcracl:check-permission(mycoreobject/@ID, 'deletedb')" />
     <div id="mir-edit">
 
         <xsl:apply-templates select="mycoreobject" mode="objectActions">
