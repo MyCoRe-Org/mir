@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ======================================================================
-  Transforms MODS metadata to Highwire Press tags for the HTML <head>,
-  for example
+  Transforms MODS metadata and derivate links to Highwire Press tags for
+  the HTML <head>, for example
 
   <meta name="citation_author" content="Doe, John" />
 
@@ -12,11 +12,17 @@
 
   Usage:
   <xsl:apply-templates select="mods:mods" mode="highwire" />
+
+  To output citation_pdf_url for a derivate with a PDF main document
+  (requires the global parameter WebApplicationBaseURL and the derobject
+  to be part of a mycoreobject):
+  <xsl:apply-templates select="mycoreobject/structure/derobjects/derobject" mode="highwire" />
 ======================================================================  -->
 
 <xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="#all"
 >
 
@@ -191,6 +197,17 @@
     <meta name="citation_lastpage">
       <xsl:apply-templates select="." mode="highwire.content" />
     </meta>
+  </xsl:template>
+
+  <!-- ========== citation_pdf_url ========== -->
+
+  <xsl:template match="derobject" mode="highwire">
+    <xsl:variable name="maindoc" select="string(maindoc)" />
+    <xsl:if test="ends-with(lower-case($maindoc), '.pdf')">
+      <xsl:variable name="path" select="string-join(tokenize($maindoc, '/')[.] ! encode-for-uri(.), '/')" />
+      <meta name="citation_pdf_url"
+        content="{$WebApplicationBaseURL}api/v2/objects/{ancestor::mycoreobject/@ID}/derivates/{@xlink:href}/contents/{$path}" />
+    </xsl:if>
   </xsl:template>
 
   <!-- ========== internal templates ========== -->
