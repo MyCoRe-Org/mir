@@ -5,8 +5,8 @@
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
+  xmlns:mirconfig="http://www.mycore.de/xslt/mirconfig"
   xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
-  xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -14,16 +14,19 @@
 
   <xsl:import href="xslImport:badges" />
   <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
+  <xsl:import href="resource:xslt/mir/solr/response/actions/helpers.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/export.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
   <xsl:include href="resource:xslt/mir/solr/response/facets.xsl"/>
   <xsl:include href="resource:xslt/mir/solr/response/utils.xsl" />
+  <xsl:include href="xslInclude:resultactions" />
 
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
+  <xsl:variable name="result-actions" select="mirconfig:get-list('MIR.ResultActions', ())" />
   <xsl:variable name="maxScore" select="./response/result[@name='response'][1]/@maxScore" />
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
@@ -598,7 +601,15 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="not(mcracl:is-current-user-guest-user())">
+            <xsl:when test="mcracl:is-current-user-guest-user()">
+              <div class="single_hit_option float-end">
+                <xsl:call-template name="basketLink">
+                  <xsl:with-param name="identifier" select="$identifier" />
+                  <xsl:with-param name="dropdown" select="'false'" />
+                </xsl:call-template>
+              </div>
+            </xsl:when>
+            <xsl:when test="exists($result-actions)">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -607,61 +618,15 @@
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <xsl:call-template name="basketLink">
-                        <xsl:with-param name="identifier" select="$identifier" />
-                        <xsl:with-param name="dropdown" select="'true'" />
-                      </xsl:call-template>
-                    </li>
-                        <!-- direct link to editor -->
-                    <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
-                      <li>
-                        <xsl:variable name="edit-url" select="mirobject:edit-url($identifier)" />
-                        <a class="hit_option hit_edit dropdown-item">
-                          <xsl:choose>
-                            <xsl:when test="string-length($edit-url) &gt; 0">
-                              <xsl:attribute name="href">
-                                    <xsl:value-of select="$edit-url" />
-                                  </xsl:attribute>
-                              <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="mcri18n:translate('object.editObject')" />
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <xsl:attribute name="href">
-                                    <xsl:value-of select="'#'" />
-                                  </xsl:attribute>
-                              <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="mcri18n:translate('object.locked')" />
-                            </xsl:otherwise>
-                          </xsl:choose>
-                        </a>
-                      </li>
-                    </xsl:if>
-                    <xsl:if test="mirorcidutil:is-orcid-enabled()">
-                      <xsl:variable name="current-user" select="document('user:current')/user" />
-                      <xsl:variable name="object-name-ids" select="arr[@name='mods.nameIdentifier']/str/string()" />
-
-                      <xsl:call-template name="render-export-to-orcid-menu-item">
-                        <xsl:with-param name="object-id" select="$identifier" />
-                        <xsl:with-param name="disabled" select="
-                          not(mirorcidutil:is-publishable-state(str[@name='state']))
-                          or not(mirorcidutil:has-trusted-matching-id($current-user, $object-name-ids))
-                          or not(mirorcidutil:has-orcid-credential($current-user))
-                        " />
-                      </xsl:call-template>
-                    </xsl:if>
+                    <xsl:call-template name="result-actions">
+                      <xsl:with-param name="names" select="$result-actions" />
+                      <xsl:with-param name="doc" select="." />
+                      <xsl:with-param name="object-id" select="string($identifier)" />
+                    </xsl:call-template>
                   </ul>
                 </div>
               </div>
             </xsl:when>
-            <xsl:otherwise>
-              <div class="single_hit_option float-end">
-                <xsl:call-template name="basketLink">
-                  <xsl:with-param name="identifier" select="$identifier" />
-                  <xsl:with-param name="dropdown" select="'false'" />
-                </xsl:call-template>
-              </div>
-            </xsl:otherwise>
           </xsl:choose>
           
 

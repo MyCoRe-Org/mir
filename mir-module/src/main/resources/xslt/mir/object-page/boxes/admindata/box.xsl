@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mirboxfields="http://www.mycore.de/xslt/mirboxfields"
+  xmlns:mirconfig="http://www.mycore.de/xslt/mirconfig"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -9,7 +9,7 @@
   <xsl:include href="xslInclude:admindatabox" />
 
   <xsl:template match="/">
-    <xsl:variable name="names" select="mirboxfields:get('MIR.AdmindataBox.Fields', ())" />
+    <xsl:variable name="names" select="mirconfig:get-list('MIR.AdmindataBox.Fields', ())" />
 
     <xsl:if test="exists($names)">
       <div id="mir-admindata">
