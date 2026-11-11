@@ -632,19 +632,17 @@
                       </li>
                     </xsl:if>
                     <xsl:if test="mirorcidutil:is-orcid-enabled()">
-                      <li>
-                        <xsl:variable name="current-user" select="document('user:current')/user" />
-                        <xsl:variable name="object-name-ids" select="arr[@name='mods.nameIdentifier']/str/string()" />
+                      <xsl:variable name="current-user" select="document('user:current')/user" />
+                      <xsl:variable name="object-name-ids" select="arr[@name='mods.nameIdentifier']/str/string()" />
 
-                        <xsl:call-template name="render-export-to-orcid-menu-item">
-                          <xsl:with-param name="object-id" select="$identifier" />
-                          <xsl:with-param name="disabled" select="
-                            not(mirorcidutil:is-publishable-state(str[@name='state']))
-                            or not(mirorcidutil:has-trusted-matching-id($current-user, $object-name-ids))
-                            or not(mirorcidutil:has-orcid-credential($current-user))
-                          " />
-                        </xsl:call-template>
-                      </li>
+                      <xsl:call-template name="render-export-to-orcid-menu-item">
+                        <xsl:with-param name="object-id" select="$identifier" />
+                        <xsl:with-param name="disabled" select="
+                          not(mirorcidutil:is-publishable-state(str[@name='state']))
+                          or not(mirorcidutil:has-trusted-matching-id($current-user, $object-name-ids))
+                          or not(mirorcidutil:has-orcid-credential($current-user))
+                        " />
+                      </xsl:call-template>
                     </xsl:if>
                   </ul>
                 </div>

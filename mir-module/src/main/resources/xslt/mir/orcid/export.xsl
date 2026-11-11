@@ -54,18 +54,11 @@
     <xsl:param name="disabled" as="xs:boolean" select="true()" />
 
     <xsl:if test="$object-id != ''">
-      <li id="exportToOrcidMenuItem">
-        <a id="openExportToOrcidModal" class="dropdown-item" role="menuitem" data-object-id="{$object-id}">
-          <xsl:attribute name="class">
-            <xsl:choose>
-              <xsl:when test="$disabled">
-                <xsl:text>dropdown-item open-export-orcid-modal disabled</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text>dropdown-item open-export-orcid-modal</xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
+      <li class="mir-action-item mir-action-item-orcid-export">
+        <a class="dropdown-item{if ($disabled) then ' disabled' else ''}" role="menuitem" data-orcid-export="{$object-id}">
+          <xsl:if test="$disabled">
+            <xsl:attribute name="aria-disabled" select="'true'" />
+          </xsl:if>
           <xsl:value-of select="mcri18n:translate('mir.orcid.publication.export.action.trigger')" />
         </a>
       </li>
