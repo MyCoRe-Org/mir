@@ -228,7 +228,7 @@
       <xsl:apply-templates mode="mods-type" select="." />
     </xsl:variable>
 
-    <div id="detail_view" class="well">
+    <div id="detail_view" class="bg-light border rounded p-3">
       <h3>
         <xsl:apply-templates select="." mode="resulttitle" /><!-- shorten plain text title (without html) -->
       </h3>

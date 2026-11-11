@@ -51,7 +51,7 @@
         <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
         <xsl:if test="$deactivated">
             <div class="card-header bg-warning mb-3 pdfa-deactivated">
-                <div class="list-group list-group-root bg-light border rounded p-3">
+                <div class="list-group list-group-root text-bg-light border rounded p-3">
                     <p class="h5">
                         <xsl:value-of select="i18n:translate('pdf.errorbox.deactivated.heading')"/>
                     </p>
@@ -65,7 +65,7 @@
             <xsl:when test="$invalid">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
                     <div class="card-header bg-danger text-white">
-                        <div class="list-group list-group-root bg-light border rounded p-3">
+                        <div class="list-group list-group-root text-bg-light border rounded p-3">
                             <p class="h5">
                                 <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
                             </p>
@@ -88,7 +88,7 @@
             <xsl:when test="$pending">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
                     <div class="card-header bg-secondary pdfa-status">
-                        <div class="list-group list-group-root bg-light border rounded p-3">
+                        <div class="list-group list-group-root text-bg-light border rounded p-3">
                             <p class="h5">
                                 <xsl:value-of select="i18n:translate('pdf.errorbox.pending.heading')"/>
                             </p>
@@ -105,7 +105,7 @@
             </xsl:when>
             <xsl:when test="$files">
                 <div class="card-header bg-success text-white mb-3">
-                    <div class="list-group list-group-root bg-light border rounded p-3">
+                    <div class="list-group list-group-root text-bg-light border rounded p-3">
                         <p class="h5">
                             <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
                         </p>

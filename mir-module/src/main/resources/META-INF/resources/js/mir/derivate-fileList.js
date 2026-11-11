@@ -406,6 +406,9 @@
 				buildBreadcrumbs(json.path);
 			}
 			$(fileBox).append(fileList);
+			$(fileBox).find('[data-bs-toggle="tooltip"]').each(function () {
+				bootstrap.Tooltip.getOrCreateInstance(this);
+			});
 			mycore.upload.enable($(fileBox)[0]);
 			MIRConfirm.bind('.confirm_deletion');
 			$('.rename').click(function (e) {
