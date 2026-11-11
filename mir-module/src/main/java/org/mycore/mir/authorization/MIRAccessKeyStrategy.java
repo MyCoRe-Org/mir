@@ -50,25 +50,31 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     /**
      * Checks whether the specified permission is granted for the given {@link MCRObjectID}.
      *
+     * A write access key also grants the permission {@link MCRAccessManager#PERMISSION_ADD_DERIVATE}.
+     *
      * @param objectId   the {@link MCRObjectID} instance representing the object
-     * @param permission the requested permission (e.g., "read", "write")
+     * @param permission the requested permission (e.g., "read", "writedb", "add-derivate")
      * @return {@code true} if the permission is granted, {@code false} otherwise
      */
     public boolean checkObjectPermission(MCRObjectID objectId, String permission) {
         if (!MCRAccessKeyConfig.getAllowedObjectTypes().contains(objectId.getTypeId())) {
             return false;
         }
-        final String sanitizedPermission = sanitizePermission(permission);
+        // a write access key also allows to add derivates to the object
+        final String keyPermission = MCRAccessManager.PERMISSION_ADD_DERIVATE.equals(permission)
+            ? MCRAccessManager.PERMISSION_WRITE
+            : permission;
+        final String sanitizedPermission = sanitizePermission(keyPermission);
         if (!(MCRAccessManager.PERMISSION_WRITE.equals(sanitizedPermission)
             || MCRAccessManager.PERMISSION_READ.equals(sanitizedPermission))) {
             return false;
         }
         if (MCRAccessKeyConfig.getAllowedSessionPermissionTypes().contains(sanitizedPermission)) {
-            if (checkSessionHasValidAccessKey(objectId.toString(), permission)) {
+            if (checkSessionHasValidAccessKey(objectId.toString(), keyPermission)) {
                 return true;
             }
         }
-        return checkUserHasValidAccessKey(objectId.toString(), permission);
+        return checkUserHasValidAccessKey(objectId.toString(), keyPermission);
     }
 
     private static String sanitizePermission(String permission) {

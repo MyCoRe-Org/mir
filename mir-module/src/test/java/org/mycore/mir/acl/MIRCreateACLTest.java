@@ -18,6 +18,8 @@
 
 package org.mycore.mir.acl;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,11 +27,12 @@ import org.mycore.test.MCRJPAExtension;
 import org.mycore.test.MCRMetadataExtension;
 import org.mycore.test.MyCoReTest;
 
-
 @MyCoReTest
 @ExtendWith(MCRJPAExtension.class)
 @ExtendWith(MCRMetadataExtension.class)
 public class MIRCreateACLTest extends MIRACLTest {
+
+    private static final List<String> STATES = List.of("new", "submitted", "published", "blocked", "deleted");
 
     @Override
     @BeforeEach
@@ -40,38 +43,66 @@ public class MIRCreateACLTest extends MIRACLTest {
     @Test
     public void testCreateGuest() {
         testPermission("guest", "create-mods", false, "");
-
-        testPermission("guest", "create-derivate", false, "");
     }
 
     @Test
-    public void testCreateAdmin(){
+    public void testCreateAdmin() {
         enableDebug();
         testPermission("admin1", "create-mods", true, MIRTestConstants.MIR_ROLES_ADMIN);
         disableDebug();
-
-        testPermission("admin1", "create-derivate", true,  MIRTestConstants.MIR_ROLES_ADMIN);
     }
 
     @Test
-    public void testCreateEditor(){
-        testPermission("editor1", "create-mods", true,  MIRTestConstants.MIR_ROLES_EDITOR);
-
-        testPermission("editor1", "create-derivate", true,  MIRTestConstants.MIR_ROLES_EDITOR);
+    public void testCreateEditor() {
+        testPermission("editor1", "create-mods", true, MIRTestConstants.MIR_ROLES_EDITOR);
     }
 
     @Test
-    public void testCreateReader(){
-        testPermission("reader1", "create-mods", false,  MIRTestConstants.MIR_ROLES_READER);
-
-        testPermission("reader1", "create-derivate", false,  MIRTestConstants.MIR_ROLES_READER);
+    public void testCreateReader() {
+        testPermission("reader1", "create-mods", false, MIRTestConstants.MIR_ROLES_READER);
     }
 
     @Test
-    public void testCreateSubmitter(){
-        testPermission("submitter1", "create-mods", true,  MIRTestConstants.MIR_ROLES_SUBMITTER);
+    public void testCreateSubmitter() {
+        testPermission("submitter1", "create-mods", true, MIRTestConstants.MIR_ROLES_SUBMITTER);
+    }
 
-        testPermission("submitter1", "create-derivate", true,  MIRTestConstants.MIR_ROLES_SUBMITTER);
+    @Test
+    public void testAddDerivateGuest() {
+        for (String status : STATES) {
+            testAddDerivate("guest", "otherUser", status, false, "");
+        }
+    }
+
+    @Test
+    public void testAddDerivateAdminAndEditor() {
+        for (String status : STATES) {
+            testAddDerivate("admin1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_ADMIN);
+            testAddDerivate("editor1", "otherUser", status, true, MIRTestConstants.MIR_ROLES_EDITOR);
+        }
+    }
+
+    @Test
+    public void testAddDerivateReader() {
+        for (String status : STATES) {
+            testAddDerivate("reader1", "otherUser", status, false, MIRTestConstants.MIR_ROLES_READER);
+        }
+    }
+
+    @Test
+    public void testAddDerivateSubmitter() {
+        // only on own objects with status new
+        testAddDerivate("submitter1", "submitter1", "new", true, MIRTestConstants.MIR_ROLES_SUBMITTER);
+        testAddDerivate("submitter1", "otherUser", "new", false, MIRTestConstants.MIR_ROLES_SUBMITTER);
+        for (String status : List.of("submitted", "published", "blocked", "deleted")) {
+            testAddDerivate("submitter1", "submitter1", status, false, MIRTestConstants.MIR_ROLES_SUBMITTER);
+        }
+    }
+
+    private void testAddDerivate(String user, String creator, String status, boolean shouldBeAbleTo,
+        String role) {
+        testObject(user, creator, status, "mir_mods_0000001", shouldBeAbleTo, "add-derivate", role, false, false,
+            false);
     }
 
 }
