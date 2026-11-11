@@ -3,7 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-  xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -11,7 +11,6 @@
   <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/workflow/box.xsl"/>
   <xsl:import href="xslImport:mirworkflow"/>
   <xsl:import href="pdf-error.xsl"/>
-  <xsl:param name="layout" select="'$'"/>
   <xsl:param name="MIR.Workflow.Box" select="'false'"/>
   <xsl:param name="MIR.Workflow.ReviewDerivateRequired" select="'true'"/>
   <xsl:param name="CurrentUser"/>
@@ -186,77 +185,20 @@
 
 
 
-  <!-- copied from mods.xsl -> ToDo: refacture! -->
-  <xsl:template name="mods.getObjectEditURL">
-    <xsl:param name="id" />
-    <xsl:param name="layout" select="'$'" />
-    <xsl:param name="collection" select="''" />
-    <xsl:choose>
-      <xsl:when test="doc-available('resource:actionmappings.xml')">
-        <!-- URL mapping enabled -->
-        <xsl:variable name="url">
-          <xsl:choose>
-            <xsl:when test="string-length($collection) &gt; 0">
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update-xml',$collection,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update',$collection,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update-xml',$id,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update',$id,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:choose>
-          <xsl:when test="string-length($url)=0" />
-          <xsl:otherwise>
-            <xsl:value-of select="mcrurl:set-param($url, 'id', $id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <!-- URL mapping disabled -->
-        <xsl:choose>
-          <xsl:when test="$layout != '$'">
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-dynamic.xed?id=',$id,'&amp;genre=article&amp;host=standalone')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-admin.xed?id=',$id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
   
 
     <xsl:template name="getEditURL">
         <xsl:param name="id"/>
-        <xsl:variable name="adminEditURL">
+        <xsl:variable name="admin-edit-url">
             <xsl:value-of select="mcractionmapping:get-url-for-id('update-admin',$id,true())"/>
         </xsl:variable>
-        <xsl:variable name="normalEditURL">
-          <xsl:call-template name="mods.getObjectEditURL">
-                <xsl:with-param name="id" select="$id"/>
-                <xsl:with-param name="layout" select="$layout"/>
-            </xsl:call-template>
-        </xsl:variable>
+        <xsl:variable name="normal-edit-url" select="mirobject:edit-url($id)"/>
         <xsl:choose>
-            <xsl:when test="string-length($adminEditURL)&gt;0">
-                <xsl:value-of select="$adminEditURL"/><xsl:text>&amp;id=</xsl:text><xsl:value-of select="$id"/>
+            <xsl:when test="string-length($admin-edit-url)&gt;0">
+                <xsl:value-of select="$admin-edit-url"/><xsl:text>&amp;id=</xsl:text><xsl:value-of select="$id"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$normalEditURL"/>
+                <xsl:value-of select="$normal-edit-url"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

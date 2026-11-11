@@ -7,6 +7,7 @@
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:miraccesskeyutil="http://www.mycore.de/xslt/miraccesskeyutil"
+  xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -220,12 +221,7 @@
         <xsl:value-of select="concat('&amp;layout=',$layout)" />
       </xsl:if>
     </xsl:variable>
-    <xsl:variable name="editURL">
-      <xsl:call-template name="mods.getObjectEditURL">
-        <xsl:with-param name="id" select="$id" />
-        <xsl:with-param name="layout" select="$layout" />
-      </xsl:call-template>
-    </xsl:variable>
+    <xsl:variable name="edit-url" select="mirobject:edit-url($id)" />
     <xsl:variable name="adminEditURL">
       <xsl:value-of select="mcractionmapping:get-url-for-id('update-admin',$id,true())" />
     </xsl:variable>
@@ -285,9 +281,9 @@
               </xsl:if>
               <xsl:if test="$accessedit">
                 <xsl:choose>
-                  <xsl:when test="string-length($editURL) &gt; 0">
+                  <xsl:when test="string-length($edit-url) &gt; 0">
                     <li class="mir-action-item mir-action-item-edit-object">
-                      <a href="{$editURL}" class="dropdown-item">
+                      <a href="{$edit-url}" class="dropdown-item">
                         <xsl:value-of select="mcri18n:translate('object.editObject')" />
                       </a>
                     </li>
