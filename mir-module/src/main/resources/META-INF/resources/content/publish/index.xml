@@ -25,14 +25,14 @@
             Eingabeformular weitergeleitet. Falls der Datensatz bereits einen Identifikator besitzt,
             können ggf. Metadaten aus anderen Datenquellen übernommen werden.
           </p>
-          <h3 id="genre-titel">Publikationstyp festlegen</h3>
+          <h3 id="genre-title">Publikationstyp festlegen</h3>
         </div>
       </div>
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-titel">
+          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title">
           </select>
         </div>
       </div>
@@ -40,7 +40,7 @@
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-titel">
+          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-title">
           </select>
         </div>
       </div>
@@ -55,7 +55,7 @@
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" aria-label="Art des Identifikators für den Import ausw\u00E4hlen" class="form-control form-select">
+          <select name="type" aria-label="Art des Identifikators für den Import auswählen" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -101,14 +101,14 @@
             you may enter it here. It will be used to look up and reuse metadata from
             external databases.
           </p>
-          <h3 id="genre-titel">Set publication type</h3>
+          <h3 id="genre-title">Set publication type</h3>
         </div>
       </div>
 
       <div class="row mir-form-group">
        <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-titel">
+          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title">
           </select>
         </div>
       </div>
@@ -116,7 +116,7 @@
       <div class="row mir-form-group">
        <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-titel">
+          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-title">
           </select>
         </div>
       </div>

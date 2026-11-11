@@ -81,7 +81,7 @@
                                     <li v-for="info in result.info">
                                         {{ info.label }}:
                                         <span v-if="info.type=='string'">{{ info.value }}</span>
-                                        <a v-else :href="info.value" target="_blank" rel="noopener">{{ info.value }}</a>
+                                        <a v-else :href="info.value" rel="noopener">{{ info.value }}</a>
                                     </li>
                                 </ul>
                             </div>
