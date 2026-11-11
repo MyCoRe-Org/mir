@@ -7,21 +7,32 @@ import { getProperty } from "@/api/property-service";
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
 
-const DEFAULT_LOBID_GND_SEARCH_URL = getProperty('MIR.Lobid.GND.Search.URL');
-
 export class LobidSearchProvider extends SearchProvider {
 
-    private readonly baseUrl: Promise<string>;
+    private readonly configuredBaseUrl?: string;
+    private baseUrlPromise?: Promise<string>;
 
     constructor(config?: { baseUrl?: string }) {
         super();
-        const configured = config?.baseUrl || (window as any).lobidGNDSearchURL;
-        this.baseUrl = Promise.resolve(configured ?? DEFAULT_LOBID_GND_SEARCH_URL).then(u => {
-            if (!u) {
-                throw new Error("MIR.Lobid.GND.Search.URL is not set");
-            }
-            return new URL(u, window.location.href).toString();
-        });
+        this.configuredBaseUrl = config?.baseUrl || (window as any).lobidGNDSearchURL;
+    }
+
+    private resolveBaseUrl(): Promise<string> {
+        if (!this.baseUrlPromise) {
+            this.baseUrlPromise = this.loadBaseUrl().catch(e => {
+                this.baseUrlPromise = undefined;
+                throw e;
+            });
+        }
+        return this.baseUrlPromise;
+    }
+
+    private async loadBaseUrl(): Promise<string> {
+        const u = this.configuredBaseUrl || await getProperty('MIR.Lobid.GND.Search.URL');
+        if (!u) {
+            throw new Error("MIR.Lobid.GND.Search.URL is not set");
+        }
+        return new URL(u, window.location.href).toString();
     }
 
     protected settingsToQuery(settings: SearchSettings): string {
@@ -67,7 +78,7 @@ export class LobidSearchProvider extends SearchProvider {
         }
 
         try {
-            const url = new URL(await this.baseUrl);
+            const url = new URL(await this.resolveBaseUrl());
             url.searchParams.append("q", searchTerm);
             url.searchParams.append("filter", filterQuery);
             url.searchParams.append("format", "json");

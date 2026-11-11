@@ -4,11 +4,10 @@ import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/Searc
 import {i18n} from "@/api/I18N";
 import {getProperty} from "@/api/property-service";
 
-const DEFAULT_DANTE_SEARCH_URL = getProperty("MIR.Dante.GND.Search.URL");
-
 export class DanteSearchProvider extends SearchProvider {
 
-    private readonly baseUrl: Promise<string>;
+    private readonly configuredBaseUrl?: string;
+    private baseUrlPromise?: Promise<string>;
     private readonly vocabulary: string;
     private readonly vocabularies: Set<string>;
     private readonly keys: string[];
@@ -18,12 +17,7 @@ export class DanteSearchProvider extends SearchProvider {
         if (!config?.vocabulary) {
             throw new Error("DanteSearchProvider requires a vocabulary.");
         }
-        this.baseUrl = Promise.resolve(config.baseUrl || DEFAULT_DANTE_SEARCH_URL).then(u => {
-            if (!u) {
-                throw new Error("MIR.Dante.GND.Search.URL is not set");
-            }
-            return u;
-        });
+        this.configuredBaseUrl = config.baseUrl;
         this.vocabulary = config.vocabulary;
         this.vocabularies = new Set(
             config.vocabulary
@@ -40,6 +34,25 @@ export class DanteSearchProvider extends SearchProvider {
             .filter(key => key.length > 0);
     }
 
+
+    private resolveBaseUrl(): Promise<string> {
+        if (!this.baseUrlPromise) {
+            this.baseUrlPromise = this.loadBaseUrl().catch(e => {
+                this.baseUrlPromise = undefined;
+                throw e;
+            });
+        }
+        return this.baseUrlPromise;
+    }
+
+    private async loadBaseUrl(): Promise<string> {
+        const u = this.configuredBaseUrl || await getProperty("MIR.Dante.Search.URL");
+        if (!u) {
+            throw new Error("MIR.Dante.Search.URL is not set");
+        }
+        return u;
+    }
+
     async search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>> {
         if (!settings || !settings.searchTopic) {
             return [];
@@ -49,7 +62,7 @@ export class DanteSearchProvider extends SearchProvider {
         const cleanDanteTerm = searchTerm && searchTerm.trim() !== "" ? searchTerm.trim() : "*";
 
         try {
-            const url = `${await this.baseUrl}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
+            const url = `${await this.resolveBaseUrl()}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status} ${response.statusText}`);

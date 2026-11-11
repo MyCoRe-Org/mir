@@ -220,9 +220,7 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                     id: "lobid",
                     type: "lobid",
                     label: "Lobid",
-                    config: {
-                        baseUrl: "https://lobid.org/gnd/search",
-                    },
+                    config: {}
                 },
             ];
         }

@@ -64,6 +64,11 @@ To add a new provider using your own webapp, you need to create your provider us
 You then have to add the provider in both you editorToolsApp and register it in the SearchProviderRegistry.
 Make sure your provider has a search() function similiar to Dante or Lobid. 
 
+The base URLs of the Lobid and Dante providers can be configured in mycore.properties, so the data-provider-<name>-base-url attribute is optional. The properties are used as a fallback whenever the attribute is not set.
+```
+MIR.Lobid.GND.Search.URL=https://lobid.org/gnd/search
+MIR.Dante.Search.URL=https://api.dante.gbv.de/search
+```
 
 Example:
 ```javascript
