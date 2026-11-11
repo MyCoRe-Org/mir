@@ -77,7 +77,7 @@
                 }
 
                 let policies = response["items"][0]["publisher_policy"];
-                onresolve("https://v2.sherpa.ac.uk/id/publication/" + response["items"][0]["id"], policies.map(function (policy) {
+                onresolve("https://openpolicyfinder.jisc.ac.uk/publication/" + response["items"][0]["id"], policies.map(function (policy) {
                     return policy["uri"];
                 }));
             }
