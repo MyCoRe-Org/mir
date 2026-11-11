@@ -30,7 +30,7 @@
                   <xsl:when test="description">
                     <xsl:value-of select="concat('Kategorie ', description, ' aufklappen')" />
                   </xsl:when>
-                  <xsl:otherwise>Unterkategorien anzeigen TODO i18n!</xsl:otherwise>
+                  <xsl:otherwise><xsl:value-of select="mir.classification.subcategories')" /></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <button
