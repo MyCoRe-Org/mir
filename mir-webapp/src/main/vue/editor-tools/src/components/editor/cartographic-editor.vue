@@ -66,15 +66,25 @@
 
                         </ol-source-vector>
                         <ol-source-vector>
-                            <ol-feature>
+                            <ol-feature v-if="polygonCoords.length > 0">
                                 <ol-geom-multi-polygon
-                                    :coordinates="[convertedTransformedCoords]">
+                                    :coordinates="polygonCoords">
                                 </ol-geom-multi-polygon>
                                 <ol-style>
                                     <ol-style-stroke
                                         :color="'blue'"
                                         :width="'3'"
                                     ></ol-style-stroke>
+                                </ol-style>
+                            </ol-feature>
+                            <ol-feature v-if="pointCoords.length > 0">
+                                <ol-geom-multi-point
+                                    :coordinates="pointCoords">
+                                </ol-geom-multi-point>
+                                <ol-style>
+                                    <ol-style-circle :radius="6">
+                                        <ol-style-fill :color="'blue'"></ol-style-fill>
+                                    </ol-style-circle>
                                 </ol-style>
                             </ol-feature>
                         </ol-source-vector>
@@ -102,8 +112,8 @@ import * as ol  from "vue3-openlayers";
 import {provideTranslations} from "@/api/I18N";
 const {Map, Layers, Sources, Styles, Geometries, Interactions} = ol;
 const {OlMap, OlView, OlFeature} =Map;
-const {OlStyle, OlStyleStroke} = Styles;
-const { OlGeomMultiPolygon } = Geometries;
+const {OlStyle, OlStyleStroke, OlStyleCircle, OlStyleFill} = Styles;
+const { OlGeomMultiPolygon, OlGeomMultiPoint } = Geometries;
 const {OlTileLayer, OlVectorLayer} = Layers;
 const {OlSourceOSM, OlSourceVector} = Sources;
 const {OlInteractionDraw} = Interactions;
@@ -151,7 +161,7 @@ onMounted(() => {
             const flatCoord = coord.flat(1)
             const extent = boundingExtent(flatCoord);
             if(!isEmpty(extent)){
-                (view.value as View).fit(extent, {});
+                (view.value as View).fit(extent, {maxZoom: 12});
             }
         }
     });
@@ -187,6 +197,19 @@ const convertedTransformedCoords = computed(()=>{
     });
 });
 
+
+// a single coordinate pair is a point, more than one form a polygon
+const polygonCoords = computed(() => {
+    return (convertedTransformedCoords.value || [])
+        .filter(coords => coords.length > 1)
+        .map(coords => [coords]);
+});
+
+const pointCoords = computed(() => {
+    return (convertedTransformedCoords.value || [])
+        .filter(coords => coords.length === 1)
+        .map(coords => coords[0]);
+});
 
 const convertCoords = (coordStr: string): number[][] => {
     const coords = coordStr.split(",");
