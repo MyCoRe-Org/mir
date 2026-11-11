@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
-  xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
-  xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -605,17 +604,12 @@
                         <!-- direct link to editor -->
                     <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
                       <li>
-                        <xsl:variable name="editURL">
-                          <xsl:call-template name="mods.getObjectEditURL">
-                            <xsl:with-param name="id" select="$identifier" />
-                            <xsl:with-param name="layout" select="'$'" />
-                          </xsl:call-template>
-                        </xsl:variable>
+                        <xsl:variable name="edit-url" select="mirobject:edit-url($identifier)" />
                         <a class="hit_option hit_edit dropdown-item">
                           <xsl:choose>
-                            <xsl:when test="string-length($editURL) &gt; 0">
+                            <xsl:when test="string-length($edit-url) &gt; 0">
                               <xsl:attribute name="href">
-                                    <xsl:value-of select="$editURL" />
+                                    <xsl:value-of select="$edit-url" />
                                   </xsl:attribute>
                               <span class="fas fa-pencil-alt"></span>
                               <xsl:value-of select="mcri18n:translate('object.editObject')" />
@@ -1003,59 +997,6 @@
     <xsl:if test="string-length(normalize-space($searchString))&gt;0 and $searchString!='*'">
       <xsl:value-of select="concat($join, 'q=', $searchString)" />
     </xsl:if>
-  </xsl:template>
-
-  <!-- copied from mods.xsl -> ToDo: refacture! -->
-  <xsl:template name="mods.getObjectEditURL">
-    <xsl:param name="id" />
-    <xsl:param name="layout" select="'$'" />
-    <xsl:param name="collection" select="''" />
-    <xsl:choose>
-      <xsl:when test="doc-available('resource:actionmappings.xml')">
-      <!-- URL mapping enabled -->
-        <xsl:variable name="url">
-          <xsl:choose>
-            <xsl:when test="string-length($collection) &gt; 0">
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update-xml',$collection,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update',$collection,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update-xml',$id,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update',$id,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:choose>
-          <xsl:when test="string-length($url)=0" />
-          <xsl:otherwise>
-            <xsl:value-of select="mcrurl:set-param($url, 'id', $id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-      <!-- URL mapping disabled -->
-        <xsl:choose>
-          <xsl:when test="$layout != '$'">
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-dynamic.xed?id=',$id,'&amp;genre=article&amp;host=standalone')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-admin.xed?id=',$id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="print.classiFilter">
