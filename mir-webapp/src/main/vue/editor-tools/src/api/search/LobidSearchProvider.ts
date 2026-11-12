@@ -2,7 +2,6 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {Geographic, Name, NameIdentifier, RoleTerm, TitleInfo, Topic} from "@/api/Subject";
 import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
 import {i18n} from "@/api/I18N";
-import { getProperty } from "@/api/property-service";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
@@ -10,29 +9,10 @@ const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
 export class LobidSearchProvider extends SearchProvider {
 
     private readonly configuredBaseUrl?: string;
-    private baseUrlPromise?: Promise<string>;
 
     constructor(config?: { baseUrl?: string }) {
         super();
         this.configuredBaseUrl = config?.baseUrl || (window as any).lobidGNDSearchURL;
-    }
-
-    private resolveBaseUrl(): Promise<string> {
-        if (!this.baseUrlPromise) {
-            this.baseUrlPromise = this.loadBaseUrl().catch(e => {
-                this.baseUrlPromise = undefined;
-                throw e;
-            });
-        }
-        return this.baseUrlPromise;
-    }
-
-    private async loadBaseUrl(): Promise<string> {
-        const u = this.configuredBaseUrl || await getProperty('MIR.Lobid.GND.Search.URL');
-        if (!u) {
-            throw new Error("MIR.Lobid.GND.Search.URL is not set");
-        }
-        return new URL(u, window.location.href).toString();
     }
 
     protected settingsToQuery(settings: SearchSettings): string {
@@ -78,7 +58,10 @@ export class LobidSearchProvider extends SearchProvider {
         }
 
         try {
-            const url = new URL(await this.resolveBaseUrl());
+            if (!this.configuredBaseUrl) {
+                throw new Error("MIR.Lobid.GND.Search.URL is not set");
+            }
+            const url = new URL(this.configuredBaseUrl, window.location.href);
             url.searchParams.append("q", searchTerm);
             url.searchParams.append("filter", filterQuery);
             url.searchParams.append("format", "json");

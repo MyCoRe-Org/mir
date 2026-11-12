@@ -2,7 +2,6 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {Topic} from "@/api/Subject";
 import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
 import {i18n} from "@/api/I18N";
-import {getProperty} from "@/api/property-service";
 
 export class DanteSearchProvider extends SearchProvider {
 
@@ -12,12 +11,13 @@ export class DanteSearchProvider extends SearchProvider {
     private readonly vocabularies: Set<string>;
     private readonly keys: string[];
 
+
     constructor(config: { baseUrl?: string; vocabulary?: string; keys?: string }) {
         super();
+        this.configuredBaseUrl = config?.baseUrl || (window as any).danteSearchURL;
         if (!config?.vocabulary) {
             throw new Error("DanteSearchProvider requires a vocabulary.");
         }
-        this.configuredBaseUrl = config.baseUrl;
         this.vocabulary = config.vocabulary;
         this.vocabularies = new Set(
             config.vocabulary
@@ -35,23 +35,7 @@ export class DanteSearchProvider extends SearchProvider {
     }
 
 
-    private resolveBaseUrl(): Promise<string> {
-        if (!this.baseUrlPromise) {
-            this.baseUrlPromise = this.loadBaseUrl().catch(e => {
-                this.baseUrlPromise = undefined;
-                throw e;
-            });
-        }
-        return this.baseUrlPromise;
-    }
 
-    private async loadBaseUrl(): Promise<string> {
-        const u = this.configuredBaseUrl || await getProperty("MIR.Dante.Search.URL");
-        if (!u) {
-            throw new Error("MIR.Dante.Search.URL is not set");
-        }
-        return u;
-    }
 
     async search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>> {
         if (!settings || !settings.searchTopic) {
@@ -62,8 +46,17 @@ export class DanteSearchProvider extends SearchProvider {
         const cleanDanteTerm = searchTerm && searchTerm.trim() !== "" ? searchTerm.trim() : "*";
 
         try {
-            const url = `${await this.resolveBaseUrl()}?voc=${encodeURIComponent(this.vocabulary)}&query=${encodeURIComponent(cleanDanteTerm)}&limit=30`;
-            const response = await fetch(url);
+            if (!this.configuredBaseUrl) {
+                throw new Error("MIR.Lobid.GND.Search.URL is not set");
+            }
+            const url = new URL(this.configuredBaseUrl, window.location.href);
+
+            url.searchParams.append("voc", this.vocabulary);
+            url.searchParams.append("query", cleanDanteTerm);
+            url.searchParams.append("limit", "30");
+
+
+            const response = await fetch(url.toString());
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status} ${response.statusText}`);
             }

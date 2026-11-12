@@ -1838,18 +1838,31 @@
   </xed:template>
 
   <xed:template id="subject.simple">
-    <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple}">
+    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-end form-label">
-          <xed:output i18n="mir.subject.topic"/>
+          <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp"
+               data-searchable="*"
+               data-editor="*"
+               data-search-filter-default="*"
+               data-admin="true"
+               data-required="false"
+               data-provider-dante-enabled="true"
+               data-provider-dante-type="dante"
+               data-provider-dante-label="Dante"
+               data-provider-dante-vocabulary="areal_unit_niedersachsen"
+               data-provider-dante-keys="inScheme,notation,altLabel"
+
+          >
+          </div>
         </div>
-        <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
+        <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.empty" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
     </xed:repeat>
   </xed:template>
 
