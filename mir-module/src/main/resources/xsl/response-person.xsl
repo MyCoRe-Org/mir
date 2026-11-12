@@ -214,7 +214,7 @@
                 <xsl:value-of select="i18n:translate('browse.person.searchplaceholder')" />
               </xsl:variable>
 
-              <label class="sr-only form-label" for="index_search">Gesuchte Zeichen</label>
+              <label class="visually-hidden form-label" for="index_search">Gesuchte Zeichen</label>
               <div class="input-group">
                 <input value="{$search_value}"
                        name="terms.regex"

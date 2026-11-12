@@ -360,10 +360,9 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="class">
-            <xsl:text>custom-control</xsl:text>
-            <xsl:value-of select="concat(' custom-', $inputType)" />
+            <xsl:text>form-check</xsl:text>
             <xsl:if test="$inline = 'true'">
-              <xsl:text> custom-control-inline</xsl:text>
+              <xsl:text> form-check-inline</xsl:text>
             </xsl:if>
           </xsl:attribute>
 
@@ -426,7 +425,7 @@
 
   <xsl:template match="mir:template" mode="inputTooltip">
     <xsl:if test="@tooltip">
-      <span class="input-group-text" data-bs-toggle="tooltip" data-html="true">
+      <span class="input-group-text" data-bs-toggle="tooltip" data-bs-html="true">
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
@@ -473,7 +472,7 @@
               </xsl:choose>
             </xsl:when>
             <xsl:when test="string-length(@i18n) &gt; 0 and string-length(@icon) &gt; 0">
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xed:output i18n="{@i18n}" />
               </span>
             </xsl:when>

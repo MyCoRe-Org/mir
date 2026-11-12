@@ -68,7 +68,7 @@
                           <xed:output i18n="editor.search.mir.openAccess" />
                         </option>
                       </select>
-                      <span class="input-group-text" data-bs-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                      <span class="input-group-text" data-bs-toggle="tooltip" data-bs-html="true" title="{i18n:editor.search.fulltext.tooltip}">
                         <i class="fas fa-info-circle" />
                       </span>
                     </xed:bind>
