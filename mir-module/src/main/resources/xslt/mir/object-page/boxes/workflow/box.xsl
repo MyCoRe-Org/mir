@@ -18,7 +18,6 @@
 
   <xsl:param name="MIR.Workflow.Debug" select="'false'"/>
   <xsl:param name="MIR.Workflow.PDFValidation" select="'false'"/>
-  <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
   <xsl:include href="resource:xslt/mir/object-page/boxes/workflow/utils.xsl"/>
@@ -69,7 +68,7 @@
       </xsl:message>
     </xsl:if>
 
-    <xsl:if test="key('rights', @ID)/@write">
+    <xsl:if test="mcracl:check-permission(@ID, 'writedb')">
       <xsl:variable name="currentStatus"
                     select="service/servstates/servstate[@classid='state']/@categid"/>
       <xsl:variable name="editURL">

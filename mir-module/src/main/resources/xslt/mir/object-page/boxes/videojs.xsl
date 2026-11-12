@@ -34,7 +34,7 @@
               <xsl:variable name="docContext" select="mycoreobject" />
               <xsl:for-each select="$solrResult/response/lst[@name='grouped']/lst[@name='derivateID']/arr[@name='groups']/lst">
                 <xsl:variable name="currentDerivateID" select="str[@name='groupValue']/text()" />
-                <xsl:variable name="read" select="count($docContext[key('rights', $currentDerivateID)/@read]) &gt; 0" />
+                <xsl:variable name="read" select="mcracl:check-permission($currentDerivateID, 'read')" />
                 <!-- TODO: maybe display derivate label instead of id -->
                 <xsl:if test="$read">
                   <optgroup label="{$currentDerivateID}">

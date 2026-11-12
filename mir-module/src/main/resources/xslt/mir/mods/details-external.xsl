@@ -209,8 +209,8 @@
 
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="objectActions" priority="2">
     <xsl:param name="id" select="./@ID" />
-    <xsl:param name="accessedit" select="key('rights', $id)/@write" />
-    <xsl:param name="accessdelete" select="key('rights', $id)/@delete" />
+    <xsl:param name="accessedit" select="mcracl:check-permission($id, 'writedb')" />
+    <xsl:param name="accessdelete" select="mcracl:check-permission($id, 'deletedb')" />
     <xsl:param name="hasURN" select="'false'" />
     <xsl:param name="displayAddDerivate" select="'true'" />
     <xsl:param name="layout" select="'$'" />
@@ -317,7 +317,7 @@
                     </xsl:if>
                   </xsl:for-each>
                 </xsl:variable>
-                <xsl:if test="$displayAddDerivate='true' and key('rights', @ID)/@write and mcracl:check-permission($id, 'add-derivate') and (not(mcrpi:has-managed-pi($id)) or contains($isAllowedToEditPI, 'true'))">
+                <xsl:if test="$displayAddDerivate='true' and $accessedit and mcracl:check-permission($id, 'add-derivate') and (not(mcrpi:has-managed-pi($id)) or contains($isAllowedToEditPI, 'true'))">
                   <li class="mir-action-item mir-action-item-add-derivate">
                     <a href="#" onclick="$('.drop-to-object-optional').toggle(); return false;" class="dropdown-item">
                       <xsl:value-of select="mcri18n:translate('mir.upload.addDerivate')" />
@@ -516,7 +516,7 @@
     <xsl:param name="deriv" />
     <xsl:param name="parentObjID" />
 
-    <xsl:if test="key('rights', $deriv)/@read">
+    <xsl:if test="mcracl:check-permission($deriv, 'read')">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
 
@@ -527,21 +527,21 @@
             <xsl:value-of select="concat(' ',mcri18n:translate('mir.actions'))" />
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <xsl:if test="key('rights', $deriv)/@write">
+            <xsl:if test="mcracl:check-permission($deriv, 'writedb')">
               <li>
                 <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed?derivateid={$deriv}&amp;cancelUrl={encode-for-uri($RequestURL)}" class="option dropdown-item">
                   <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.updateDerivateName')" />
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@write and string(document(concat('callJava:org.mycore.iview2.services.MCRIView2Tools:getSupportedMainFile:',$deriv))) and normalize-space($MIR.METSEditor.enable)='true'">
+            <xsl:if test="mcracl:check-permission($deriv, 'writedb') and string(document(concat('callJava:org.mycore.iview2.services.MCRIView2Tools:getSupportedMainFile:',$deriv))) and normalize-space($MIR.METSEditor.enable)='true'">
               <li>
                 <a href="{$WebApplicationBaseURL}rsc/mets/editor/start/{$deriv}" class="option startmets dropdown-item">
                   <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.startmets')" />
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@read">
+            <xsl:if test="mcracl:check-permission($deriv, 'read')">
               <li>
                 <!-- Link to toggle to show/hide md5 sum -->
                 <a href="#" class="option dropdown-item toggleMD5Link">
@@ -569,7 +569,7 @@
                 </xsl:choose>
               </li>
             </xsl:if>-->
-            <xsl:if test="key('rights', $deriv)/@delete">
+            <xsl:if test="mcracl:check-permission($deriv, 'deletedb')">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete?id={$deriv}" class="confirm_deletion option dropdown-item" data-text="{mcri18n:translate('mir.confirm.derivate.text')}">
                   <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.delDerivate')" />
