@@ -205,39 +205,39 @@ public class MIRSearchController extends MIRTestController {
         });
 
         if (identifier != null) {
-            driver.waitAndFindElement(By.id("inputIdentifier1")).sendKeys(identifier);
+            driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputIdentifier1_')]")).sendKeys(identifier);
         }
 
         if (mirInstitute != null) {
-            new Select(driver.waitAndFindElement(By.id("inputInst1")))
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputInst1_')]")))
                 .selectByValue("mir_institutes:" + mirInstitute.getValue());
         }
 
         if (classification != null) {
-            new Select(driver.waitAndFindElement(By.id("inputSDNB1")))
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputSDNB1_')]")))
                 .selectByValue("SDNB:" + classification);
         }
 
         if (type != null) {
-            new Select(driver.waitAndFindElement(By.id("inputGenre1")))
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputGenre1')]")))
                 .selectByValue("mir_genres:" + type);
         }
 
         if (license != null) {
-            new Select(driver.waitAndFindElement(By.id("inputLicense1")))
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputLicense1')]")))
                 .selectByValue("mir_licenses:" + license);
         }
 
         if (status != null) {
-            new Select(driver.waitAndFindElement(By.id("inputStatus1"))).selectByValue(status.getValue());
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputStatus1')]"))).selectByValue(status.getValue());
         }
 
         if (date != null) {
-            driver.waitAndFindElement(By.id("inputDate1")).sendKeys(date);
+            driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputDate1_')]")).sendKeys(date);
         }
 
         if (content != null) {
-            new Select(driver.waitAndFindElement(By.id("inputFulltext1"))).selectByValue(content);
+            new Select(driver.waitAndFindElement(By.xpath("//*[starts-with(@id, 'inputFulltext1')]"))).selectByValue(content);
         }
 
         search();

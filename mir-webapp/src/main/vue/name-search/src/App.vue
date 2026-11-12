@@ -139,7 +139,7 @@ import IdentifierDisplay from "@/components/IdentifierDisplay.vue";
 import {i18n} from "@/api/I18N";
 import {RorSearchProvider} from "@/api/RorSearchProvider";
 import {LocalSearchProvider} from "@/api/LocalSearchProvider";
-import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
+import {computed, defineProps, onMounted, reactive, ref, watch, nextTick} from "vue";
 import {vOnClickOutside} from '@vueuse/components'
 
 LocalSearchProvider.init();
@@ -212,6 +212,18 @@ watch(() => model.isPerson, (val) => {
     }
 }, {deep: true});
 
+//find label above this input field and set for attribute with id.
+watch(() => nameLocatorString.value, async (newValue) => {
+    if (!newValue) return;
+    await nextTick();
+    const labelEl = document.getElementById(`personLabel-${newValue}`)
+        ?.closest('.col-md-6')
+        ?.previousElementSibling;
+
+    if (labelEl) {
+        labelEl.setAttribute('for', `personLabel-${newValue}`);
+    }
+}, { deep: true });
 
 onMounted(async () => {
     await loadLanguage();
@@ -517,7 +529,7 @@ const closeDrops = () => {
 }
 
 .identifier-count {
-  font-size: 0.6em;
+  font-size: 0.8em;
   margin-left: 4px;
   vertical-align: bottom;
 }

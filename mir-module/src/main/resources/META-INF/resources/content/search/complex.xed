@@ -39,7 +39,7 @@
                   <div class="mir-form-group row">
                     <div class="col-md-3">
                       <xed:bind xpath="@field">
-                        <select class="form-control form-select">
+                        <select id="searchFieldSelect" class="form-control form-select" aria-label="{i18n:editor.search.select.field}">
                           <option value="mods.title,mods.title.lang.de,mods.title.lang.en,mods.title.lang.es,mods.title.lang.fr,mods.title.lang.it,mods.title.lang.ru,mods.title.lang.ru.latin,mods.title.lang.tr">
                             <xed:output i18n="editor.search.mir.title" />
                           </option>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-md-2">
                       <xed:bind xpath="@operator">
-                        <select class="form-control form-select">
+                        <select class="form-control form-select" aria-label="{i18n:editor.search.select.operator}">
                           <option value="contains">
                             <xed:output i18n="editor.search.contains" />
                           </option>
@@ -73,7 +73,7 @@
                     <div class="col-md-7 row">
                       <div class="col-md-8">
                         <xed:bind xpath="@value">
-                          <input type="text" class="form-control" />
+                          <input type="text" class="form-control" aria-labelledby="searchFieldSelect"/>
                         </xed:bind>
                       </div>
                       <div class="btn-group col-md-4">
@@ -116,7 +116,7 @@
                     </label>
                     <div class="col-md-2">
                       <xed:bind xpath="@operator">
-                        <select class="form-control form-select">
+                        <select class="form-control form-select" aria-label="{i18n:editor.search.select.operator}">
                           <option value="=">=</option>
                           <option value="&gt;">&gt;</option>
                           <option value="&gt;=">&gt;=</option>

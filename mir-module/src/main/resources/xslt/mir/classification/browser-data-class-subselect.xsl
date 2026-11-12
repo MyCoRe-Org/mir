@@ -24,18 +24,31 @@
         <xsl:variable name="id" select="translate(concat(../@classification,'_',@id),'+/()[]','ABCDEF')" />
         <li>
           <xsl:choose>
-            <xsl:when test="@children = 'true'">
-              <a
-                href="#"
+            <xsl:when test="@children = 'true'">              
+              <xsl:variable name="btnLabel">
+                <xsl:choose>
+                  <xsl:when test="description">
+                    <xsl:value-of select="concat('Kategorie ', description, ' aufklappen')" />
+                  </xsl:when>
+                  <xsl:otherwise><xsl:value-of select="mir.classification.subcategories')" /></xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <button
+                type="button"
+                class="cbToggleBtn"
                 id="cbButton_{$id}"
+                aria-label="{$btnLabel}"
+                aria-expanded="false"
+                aria-controls="cbChildren_{$id}"
                 onclick="toogle('{@id}','{$folder.closed}','{$folder.open}');">
-                  <i class="{$folder.closed}" id="cbButton_{$id}" />
-              </a>
+                  <i class="{$folder.closed}" aria-hidden="true" />
+              </button>
             </xsl:when>
             <xsl:otherwise>
-              <i class="{$folder.leaf}" id="cbButton_{$id}" />
+              <i class="{$folder.leaf}" id="cbButton_{$id}" aria-hidden="true" />
             </xsl:otherwise>
           </xsl:choose>
+
           <xsl:apply-templates select="@numResults" mode="formatCount">
             <xsl:with-param name="maxCount" select="$maxResults" />
           </xsl:apply-templates>
