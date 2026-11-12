@@ -3,6 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
@@ -16,13 +17,8 @@
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
 
   <xsl:param name="MCR.Users.Superuser.UserName" />
-  <xsl:param name="MIR.registerDOI" select="''" />
-  <xsl:param name="MIR.registerURN" select="'true'" />
   <xsl:param name="MIR.METSEditor.enable" select="'false'" />
-  <xsl:param name="template" select="'fixme'" />
 
-  <xsl:param name="MCR.Packaging.Packer.ImageWare.FlagType" />
-  <xsl:param name="MIR.ImageWare.Enabled" />
   <xsl:param name="MIR.Workflow.Menu" select="'false'" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes"/>
   <xsl:param name="MIR.Strategy.EditPIRoles" />
@@ -33,193 +29,13 @@
   <xsl:include href="resource:xslt/mir/utils/common.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
 
-  <!-- do nothing for display parent -->
-  <xsl:template match="/mycoreobject" mode="parent" priority="1">
-  </xsl:template>
-
-  <xsl:template mode="printDerivatesThumb" match="/mycoreobject[contains(@ID,'_mods_')]" priority="1">
-    <xsl:param name="staticURL" />
-    <xsl:param name="layout" />
-    <xsl:param name="xmltempl" />
-    <xsl:param name="modsType" select="'report'" />
-    <xsl:variable name="suffix">
-      <xsl:if test="string-length($layout)&gt;0">
-        <xsl:value-of select="concat('&amp;layout=',$layout)" />
-      </xsl:if>
-    </xsl:variable>
-    <xsl:if test="./structure/derobjects">
-
-      <div class="hit_symbol">
-        <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/big/icon_{$modsType}.png" alt="{$modsType}" title="{$modsType}" />
-        <xsl:variable name="embargo" select="metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
-        <xsl:choose>
-<!-- TODO:          <xsl:when test="mcracl:is-current-user-in-role('guest') and count($embargo) &gt; 0 and mcrxml:compare(string($embargo),dt:date-time()) &gt; 0">-->
-          <xsl:when test="mcracl:is-current-user-guest-user() and count($embargo) &gt; 0 and false()">
-            <!-- embargo is active for guest user -->
-            <xsl:value-of select="mcri18n:translate-with-params('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargo)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:for-each select="./structure/derobjects/derobject">
-              <xsl:variable name="deriv" select="@xlink:href" />
-              <xsl:variable name="derivlink" select="concat('mcrobject:',$deriv)" />
-              <xsl:variable name="derivate" select="document($derivlink)" />
-              <xsl:variable name="fileType" select="document(concat('ifs:/',@xlink:href,'/'))/mcr_directory/children/child/contentType" />
-
-              <xsl:variable name="derivid" select="$derivate/mycorederivate/@ID" />
-              <xsl:variable name="derivlabel" select="$derivate/mycorederivate/@label" />
-              <xsl:variable name="derivmain" select="$derivate/mycorederivate/derivate/internals/internal/@maindoc" />
-              <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-              <xsl:variable name="derivifs" select="concat($derivbase,$derivmain)" />
-              <xsl:variable name="derivdir" select="$derivbase" />
-
-              <div class="hit_links">
-                <a href="{$derivifs}">
-                  <xsl:choose>
-                    <xsl:when
-                      test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='html' or $fileType='rtf' or $fileType='txt' or $fileType='xml'"
-                    >
-                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$derivmain}" title="{$derivmain}" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_default.png" alt="{$derivmain}" title="{$derivmain}" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
-                <a href="{$derivdir}">
-                <!-- xsl:value-of select="i18n:translate('buttons.details')" / -->
-                  <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_details.png" alt="Details" title="Details"
-                    style="padding-bottom:2px;" />
-                </a>
-              </div>
-            </xsl:for-each>
-          </xsl:otherwise>
-        </xsl:choose>
-      </div>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="mods:accessCondition" mode="rights_reserved" priority="1">
-    <img>
-      <xsl:attribute name="src">
-        <xsl:value-of select="concat($WebApplicationBaseURL, 'templates/master/', $template , '/IMAGES/copyright.png')" />
-      </xsl:attribute>
-      <xsl:attribute name="alt">
-        <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
-      </xsl:attribute>
-    </img>
-  </xsl:template>
-
-  <xsl:template match="children" mode="printChildren" priority="1">
-    <xsl:param name="label" select="'enthält'" />
-
-    <!-- the for-each would iterate over <id> with root not beeing /mycoreobject so we save the current node in variable context to access
-      needed nodes -->
-    <xsl:variable name="context" select="/mycoreobject" />
-
-    <xsl:variable name="children" select="$context/structure/children/child[string(document(concat('org.mycore.common.xml.MCRXMLFunctions:isInCategory',@xlink:href,':','state:published')))='true']" />
-    <xsl:variable name="maxElements" select="20" />
-    <xsl:variable name="positionMin">
-      <xsl:choose>
-        <xsl:when test="count($children) &gt; $maxElements">
-          <xsl:value-of select="count($children) - $maxElements + 1" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="0" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <tr>
-      <td valign="top" class="metaname">
-        <xsl:value-of select="concat($label,':')" />
-      </td>
-      <td class="metavalue">
-        <xsl:if test="$positionMin != 0">
-          <p>
-            <a href="{$ServletsBaseURL}MCRSearchServlet?parent={$context/@ID}">
-              <xsl:value-of select="mcri18n:translate('component.mods.metaData.displayAll')" />
-            </a>
-          </p>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="count($children) &gt; 1">
-            <!-- display recent $maxElements only -->
-            <ul class="document_children">
-              <xsl:for-each select="$children[position() &gt;= $positionMin]">
-                <li>
-                  <xsl:call-template name="objectLink">
-                    <xsl:with-param name="obj_id" select="@xlink:href" />
-                  </xsl:call-template>
-                </li>
-              </xsl:for-each>
-            </ul>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="objectLink">
-              <xsl:with-param name="obj_id" select="$children/@xlink:href" />
-            </xsl:call-template>
-          </xsl:otherwise>
-        </xsl:choose>
-      </td>
-    </tr>
-  </xsl:template>
-
-
-  <xsl:template match="/mycoreobject" mode="breadCrumb" priority="1">
-
-    <ul class="breadcrumb">
-      <li class="first">
-        <a href="{$WebApplicationBaseURL}content/main/classifications/mir_genres.xml">
-          <xsl:value-of select="mcri18n:translate('editor.search.mir.genre')" />
-        </a>
-      </li>
-      <xsl:if test="./structure/parents">
-        <xsl:variable name="parent_genre">
-          <xsl:apply-templates mode="mods-type" select="document(concat('mcrobject:',./structure/parents/parent/@xlink:href))/mycoreobject" />
-        </xsl:variable>
-        <li>
-          <xsl:value-of select="mcri18n:translate(concat('component.mods.metaData.dictionary.', $parent_genre))" />
-          <xsl:text>: </xsl:text>
-          <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_type" select="'this'" />
-          </xsl:apply-templates>
-          <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_type" select="'before'" />
-          </xsl:apply-templates>
-          <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_type" select="'after'" />
-          </xsl:apply-templates>
-        </li>
-      </xsl:if>
-
-      <xsl:variable name="internal_genre">
-        <xsl:apply-templates mode="mods-type" select="." />
-      </xsl:variable>
-      <li>
-        <xsl:value-of select="mcri18n:translate(concat('component.mods.metaData.dictionary.', $internal_genre))" />
-      </li>
-      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']">
-        <li>
-          <xsl:apply-templates select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']" mode="classification" />
-        </li>
-      </xsl:if>
-    </ul>
-
-  </xsl:template>
-
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="objectActions" priority="2">
     <xsl:param name="id" select="./@ID" />
     <xsl:param name="accessedit" select="key('rights', $id)/@write" />
     <xsl:param name="accessdelete" select="key('rights', $id)/@delete" />
-    <xsl:param name="hasURN" select="'false'" />
     <xsl:param name="displayAddDerivate" select="'true'" />
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="mods-type" select="'report'" />
-    <xsl:variable name="layoutparam">
-      <xsl:if test="$layout != '$'">
-        <xsl:value-of select="concat('&amp;layout=',$layout)" />
-      </xsl:if>
-    </xsl:variable>
     <xsl:variable name="editURL">
       <xsl:call-template name="mods.getObjectEditURL">
         <xsl:with-param name="id" select="$id" />
@@ -256,16 +72,14 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" data-display="static" >
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
           <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
           <xsl:value-of select="concat(' ',mcri18n:translate('mir.actions'))" />
-          <span class="caret"></span>
         </a>
 
         <ul class="dropdown-menu dropdown-menu-end">
-          <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:choose>
             <xsl:when test="not($accessedit) and mcracl:is-current-user-guest-user()">
               <li class="mir-action-item">
@@ -369,8 +183,6 @@
                       <xsl:value-of select="mcri18n:translate('object.copyObject')" />
                     </a>
                   </li>
-                </xsl:if>
-                <xsl:if test="string-length($copyURL) &gt; 0">
                   <li class="mir-action-item mir-action-item-copy-object-new-version">
                     <a href="{$copyURL}?oldVersion={$id}" class="dropdown-item">
                       <xsl:value-of select="mcri18n:translate('object.newVersion')" />
@@ -406,67 +218,26 @@
                   </a>
                 </li>
               </xsl:if>
-              <xsl:variable name="genreHosts" select="document('classification:metadata:-1:children:mir_genres')" />
-              <xsl:variable name="child-layout">
-                <xsl:for-each select="$genreHosts//category[contains(label[@xml:lang='x-hosts']/@text, $mods-type)]">
-                  <xsl:value-of select="@ID" />
-                  <xsl:text>|</xsl:text>
-                </xsl:for-each>
-              </xsl:variable>
-              <!-- xsl:message>
-                mods-type:
-                <xsl:value-of select="$mods-type" />
-                child-layout:
-                <xsl:value-of select="$child-layout" />
-                accessedit:
-                <xsl:value-of select="$accessedit" />
-              </xsl:message -->
+              <xsl:variable name="genres" select="
+                document('classification:metadata:-1:children:mir_genres')
+                  //category[contains(label[@xml:lang='x-hosts']/@text, $mods-type)]/@ID/string()
+              " />
               <!-- actionmapping.xml must be available for this functionality -->
-              <xsl:if test="string-length($child-layout) &gt; 0 and mcracl:check-permission('', 'create-mods') and doc-available('resource:actionmappings.xml')">
-
-                <xsl:variable name="url">
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('create-child',$id,true())"  />
-                </xsl:variable>
-                <xsl:variable name="genres" select="tokenize($child-layout, '\|')[normalize-space()]"/>
-
-                <xsl:choose>
-                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
-                    <xsl:for-each select="$genres">
-                      <li>
-                        <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
-                          <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
-                        </a>
-                      </li>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
-                    <xsl:for-each select="$genres">
-                      <li>
-                        <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}" class="dropdown-item">
-                          <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
-                        </a>
-                      </li>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
-                    <xsl:for-each select="$genres">
-                      <li>
-                        <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}" class="dropdown-item">
-                          <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
-                        </a>
-                      </li>
-                    </xsl:for-each>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:for-each select="$genres">
-                      <li>
-                        <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
-                          <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
-                        </a>
-                      </li>
-                    </xsl:for-each>
-                  </xsl:otherwise>
-                </xsl:choose>
+              <xsl:if test="exists($genres) and mcracl:check-permission('', 'create-mods') and doc-available('resource:actionmappings.xml')">
+                <xsl:variable name="url" select="mcractionmapping:get-url-for-id('create-child',$id,true())" />
+                <xsl:variable name="is-dynamic-editor" select="contains($url, 'editor-dynamic.xed')" />
+                <xsl:variable name="is-lecture-child" select="$is-dynamic-editor and $mods-type = 'lecture'" />
+                <xsl:variable name="related-item-type" select="
+                  if ($is-lecture-child or (not($is-dynamic-editor) and $mods-type = 'series')) then 'series' else 'host'
+                " />
+                <xsl:variable name="host-param" select="if ($is-lecture-child) then concat('&amp;host=', $mods-type) else ''" />
+                <xsl:for-each select="$genres">
+                  <li>
+                    <a href="{$url}?relatedItemId={$id}&amp;relatedItemType={$related-item-type}&amp;genre={.}{$host-param}" class="dropdown-item">
+                      <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
+                    </a>
+                  </li>
+                </xsl:for-each>
               </xsl:if>
               <xsl:if test="miraccesskeyutil:is-access-key-allowed($id)">
                 <xsl:call-template name="print-manage-access-keys-menu-item">
@@ -514,12 +285,8 @@
 
   <xsl:template match="derobject" mode="derivateActions">
     <xsl:param name="deriv" />
-    <xsl:param name="parentObjID" />
 
     <xsl:if test="key('rights', $deriv)/@read">
-      <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
-      <xsl:variable select="document($derivlink)" name="derivate" />
-
       <div class="dropdown float-end options">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
@@ -541,19 +308,17 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@read">
-              <li>
-                <!-- Link to toggle to show/hide md5 sum -->
-                <a href="#" class="option dropdown-item toggleMD5Link">
-                  <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.MD5.show')" />
-                </a>
-              </li>
-              <li>
-                <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip dropdown-item">
-                  <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.zip')" />
-                </a>
-              </li>
-            </xsl:if>
+            <li>
+              <!-- Link to toggle to show/hide md5 sum -->
+              <a href="#" class="option dropdown-item toggleMD5Link">
+                <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.MD5.show')" />
+              </a>
+            </li>
+            <li>
+              <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip dropdown-item">
+                <xsl:value-of select="mcri18n:translate('component.mods.metaData.options.zip')" />
+              </a>
+            </li>
             <!--<xsl:if test="key('rights', $deriv)/@write">
               <li>
                 <xsl:if test="not(key('rights', $deriv)/@delete)">
@@ -624,9 +389,6 @@
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">
     <xsl:variable name="objID" select="@ID" />
-    <xsl:variable name="mods-type">
-      <xsl:apply-templates select="." mode="mods-type" />
-    </xsl:variable>
 
     <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods">
 
@@ -644,7 +406,10 @@
           <xsl:choose>
             <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
               <div class="hit_icon">
-                <img>
+                <xsl:variable name="title">
+                  <xsl:apply-templates select="ancestor::mycoreobject" mode="resulttitle" />
+                </xsl:variable>
+                <img alt="{mcri18n:translate('metaData.preview')}: {normalize-space($title)}">
                   <xsl:variable name="hitIconSrc" select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                   <xsl:choose>
                     <xsl:when test="not(mcracl:is-current-user-guest-user())">
@@ -666,7 +431,7 @@
             </xsl:when>
             <xsl:otherwise>
               <div class="hit_icon">
-                <img src="{$WebApplicationBaseURL}images/icons/icon_common.png"/>
+                <img alt="" src="{$WebApplicationBaseURL}images/icons/icon_common.png"/>
               </div>
               <!-- if not, then the content type decides a icon -->
               <xsl:variable name="iconLink">
@@ -675,7 +440,7 @@
                   <xsl:with-param name="mimeType" select="$contentType"/>
                 </xsl:call-template>
               </xsl:variable>
-              <img class="hit_icon_overlay" src="{$iconLink}"/>
+              <img alt="{mcrderivate:get-file-extension($maindoc)}" class="hit_icon_overlay" src="{$iconLink}"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
