@@ -121,8 +121,14 @@
     </xsl:for-each>
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
-      <xsl:variable name="pindexname">
+      <xsl:variable name="queryableNameString">
         <xsl:apply-templates select="." mode="queryableNameString" />
+      </xsl:variable>
+      <xsl:variable name="pindexname">
+        <xsl:value-of select="string(document(concat('prepareForPersonIndex:',encode-for-uri($queryableNameString))))"/>
+        <xsl:text>|</xsl:text>
+        <xsl:value-of select="encode-for-uri($queryableNameString)"/>
+        <xsl:text>|</xsl:text>
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -130,7 +136,6 @@
         </xsl:variable>
         <xsl:variable name="nameIdentifier" select="$nameIds/nameIdentifier[1]" />
         <xsl:if test="count($nameIdentifier) &gt; 0">
-          <xsl:text>:</xsl:text>
           <xsl:value-of select="$nameIdentifier/@type" />
           <xsl:text>:</xsl:text>
           <xsl:value-of select="$nameIdentifier/@id" />
