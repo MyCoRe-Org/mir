@@ -23,7 +23,7 @@
   <xsl:param name="MIR.CanonicalBaseURL" />
 
   <xsl:variable name="canViewSystembox" select="mcracl:check-permission(site/@ID, 'read-history')"/>
-  <xsl:variable name="show-real-user-name" select="mcrproperty:get('MIR.AdmindataBox.ShowRealUserName') = 'true'"/>
+  <xsl:variable name="show-real-user-name" select="mcrproperty:get-boolean('MIR.AdmindataBox.ShowRealUserName')"/>
 
   <xsl:template match="/site">
     <xsl:copy>

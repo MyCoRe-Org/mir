@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:variable name="use-abstracts" select="mcrproperty:get('MCR.MODS.EnrichmentResolver.DataSource.CrossRef.UseAbstracts') = 'true'" />
+  <xsl:variable name="use-abstracts" select="mcrproperty:get-boolean('MCR.MODS.EnrichmentResolver.DataSource.CrossRef.UseAbstracts')" />
 
   <xsl:function name="mircrossrefutils:convert-jats-abstract" as="element()*">
     <xsl:param name="jatsXml" as="xs:string"/>

@@ -27,7 +27,7 @@
     <field name="hasFiles">
       <xsl:value-of select="count(structure/derobjects/derobject)&gt;0" />
     </field>
-    <xsl:if test="lower-case(mcrproperty:get('MIR.Alias.Enabled')) = 'true'">
+    <xsl:if test="mcrproperty:get-boolean('MIR.Alias.Enabled')">
       <xsl:for-each select="service/servflags/servflag[@type='alias'][string-length(normalize-space()) &gt; 0][1]">
         <field name="alias">
           <xsl:value-of select="normalize-space()" />
