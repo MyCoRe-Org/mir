@@ -17,7 +17,7 @@
     </h1>
     <p>
       <xsl:choose>
-        <xsl:when test="lower-case(mcrproperty:get('MIR.SelfRegistration.EmailVerification.setDisabled')) = 'true'">
+        <xsl:when test="mcrproperty:get-boolean('MIR.SelfRegistration.EmailVerification.setDisabled')">
           <xsl:value-of select="mcri18n:translate($i18n-prefix || 'user.disabled.info')" />
         </xsl:when>
         <xsl:otherwise>

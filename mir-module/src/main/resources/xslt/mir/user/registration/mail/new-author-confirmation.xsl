@@ -11,10 +11,10 @@
   <xsl:variable name="i18n-prefix" select="'selfRegistration.step.verified.email.admin.'" />
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="email-verification" select="
-    lower-case(mcrproperty:get('MIR.SelfRegistration.EmailVerification.setDisabled')) = 'false'
+    not(mcrproperty:get-boolean('MIR.SelfRegistration.EmailVerification.setDisabled'))
   " />
   <xsl:variable name="unlock-via-admin-link" select="
-    lower-case(mcrproperty:get('MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink')) = 'true'
+    mcrproperty:get-boolean('MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink')
   " />
 
   <xsl:template match="/">

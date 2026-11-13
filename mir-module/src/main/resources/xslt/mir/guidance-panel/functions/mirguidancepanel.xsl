@@ -8,11 +8,11 @@
   exclude-result-prefixes="#all">
 
   <xsl:function name="mirguidancepanel:is-enabled" as="xs:boolean">
-    <xsl:sequence select="lower-case(mcrproperty:get('MIR.GuidancePanel.Enabled')) = 'true'" />
+    <xsl:sequence select="mcrproperty:get-boolean('MIR.GuidancePanel.Enabled')" />
   </xsl:function>
 
   <xsl:function name="mirguidancepanel:is-rss-enabled" as="xs:boolean">
-    <xsl:sequence select="lower-case(mcrproperty:get('MIR.GuidancePanel.RSS.Enabled')) = 'true'" />
+    <xsl:sequence select="mcrproperty:get-boolean('MIR.GuidancePanel.RSS.Enabled')" />
   </xsl:function>
 
   <!--
