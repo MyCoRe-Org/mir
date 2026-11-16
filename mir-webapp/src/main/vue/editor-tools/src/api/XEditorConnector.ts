@@ -53,7 +53,8 @@ export interface EditorSettings {
 
     /**
      * If false the editor only allows editing of one subelement. If the subject contains more than one subelement, the
-     * editor is disabled. If the type is "geographicPair" the editor allows editing of two subelements.
+     * editor is disabled. If the type is "geographicPair" the editor allows editing of geographic subelements and at
+     * most one cartographics subelement.
      */
     admin: boolean|"geographicPair",
 
