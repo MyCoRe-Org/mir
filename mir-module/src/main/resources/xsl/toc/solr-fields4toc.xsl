@@ -137,15 +137,16 @@
       <xsl:value-of select="." />
     </field>
 
+    <xsl:variable name="value" select="normalize-space(.)" />
     <xsl:choose>
-      <xsl:when test="string(number(.)) = 'NaN'">
-        <field name="{$field}.str">
-          <xsl:value-of select="." />
+      <xsl:when test="string-length($value) &gt; 0 and string-length($value) &lt; 10 and translate($value, '0123456789', '') = ''">
+        <field name="{$field}.int">
+          <xsl:value-of select="format-number(number($value), '0')" />
         </field>
       </xsl:when>
       <xsl:otherwise>
-        <field name="{$field}.int">
-          <xsl:value-of select="string(number(.))" />
+        <field name="{$field}.str">
+          <xsl:value-of select="." />
         </field>
       </xsl:otherwise>
     </xsl:choose>
