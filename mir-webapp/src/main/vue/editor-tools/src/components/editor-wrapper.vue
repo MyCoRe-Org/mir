@@ -271,20 +271,14 @@ const search = async () => {
 
 // used to make the search form not editable
 const searchEnabled = computed(()=>{
-    if(model.settings?.admin == "geographicPair"){
-       const enabled = model.subject?.children.length == undefined || model.subject?.children.filter(child=>child.type=="Geographic").length == 0;
-       console.log("search enabled", enabled);
-       return enabled;
+    if(model.settings?.admin === false){
+        const enabled = model.subject?.children.length==0 && model.settings?.searchable.length > 0;
+        console.log("search enabled child searchable", enabled)
+        return enabled;
     } else {
-       if(model.settings?.admin === false){
-           const enabled = model.subject?.children.length==0 && model.settings?.searchable.length > 0;
-           console.log("search enabled child searchable", enabled)
-           return enabled;
-       } else {
-           console.log("search enabled is admin!");
-           return true;
-       }
-   }
+        console.log("search enabled is admin!");
+        return true;
+    }
 });
 
 // used to display the 'add cartographics button'
@@ -307,29 +301,11 @@ const anySearchable = computed( () => {
 
 const possibleTypeList = computed(() => {
     if(model.settings?.admin === "geographicPair"){
-        if(model.subject?.children.length == undefined || model.subject?.children.length > 1){
+        if(!model.subject){
             return [];
-        } else {
-            const geographicPresent = model.subject.children.filter(c => {
-                if(c.type === "Geographic"){
-                    return true;
-                }
-            }).length == 1;
-            const cartographicsPresent = model.subject.children.filter(c => {
-                if(c.type === "Cartographics"){
-                    return true;
-                }
-            }).length == 1;
-            if(geographicPresent && cartographicsPresent){
-                return [];
-            } else if(geographicPresent){
-                return ["Cartographics"];
-            } else if(cartographicsPresent){
-                return ["Geographic"];
-            } else {
-                return ["Geographic", "Cartographics"];
-            }
         }
+        const cartographicsPresent = model.subject.children.some(c => c.type === "Cartographics");
+        return cartographicsPresent ? ["Geographic"] : ["Geographic", "Cartographics"];
     } else {
         if(model.settings?.admin === false && (model.subject == undefined || model.subject?.children.length > 0)){
             return [];
