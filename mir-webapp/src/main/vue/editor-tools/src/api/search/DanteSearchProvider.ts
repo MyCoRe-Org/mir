@@ -47,7 +47,7 @@ export class DanteSearchProvider extends SearchProvider {
 
         try {
             if (!this.configuredBaseUrl) {
-                throw new Error("MIR.Lobid.GND.Search.URL is not set");
+                throw new Error("MIR.Dante.Search.URL is not set");
             }
             const url = new URL(this.configuredBaseUrl, window.location.href);
 

@@ -22,6 +22,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                              <p v-if="!providersAvailable" class="search-unavailable text-muted">
+                                {{ i18n["mir.editor.subject.search.result.unavailable"] }}
+                              </p>
                                 <search-result-list
                                     v-model:search-settings="model.searchOptions"
                                     :addCustomEnabled="possibleTypeList.length>0"
@@ -198,8 +201,10 @@ const i18n = provideTranslations([
     "mir.editor.subject.custom.modal.close",
     "mir.editor.subject.custom.modal.add",
     "mir.editor.subject.addCoordinates",
-    "mir.editor.subject.search.leaving"
+    "mir.editor.subject.search.leaving",
+  "mir.editor.subject.search.result.unavailable"
 ]);
+const providersAvailable = ref(false);
 
 const searchDialog = ref<HTMLElement | null>(null);
 
@@ -230,6 +235,7 @@ onMounted(() => {
       }
     }
     settings.providers = settings.providers.filter(p => providerInstances[p.id]);
+    providersAvailable.value = settings.providers.length > 0;
 
         const filter = settings?.searchFilterDefault || [];
         const searchable = settings?.searchable || [];
