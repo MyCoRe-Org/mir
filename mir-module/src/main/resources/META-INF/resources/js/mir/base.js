@@ -228,6 +228,12 @@
       $("#identifierModal").modal("show");
     });
 
+    const showCopyTooltip = (element, text) => {
+      const tooltip = bootstrap.Tooltip.getOrCreateInstance(element);
+      tooltip.setContent({ ".tooltip-inner": text });
+      tooltip.show();
+    };
+
     $("body").on("click", ".mir_copy_identifier", function () {
       var input = $(this).parents(".mir_identifier").find(".mir_identifier_hidden_input");
       $(input).removeClass("d-none");
@@ -235,19 +241,19 @@
       try {
         var successful = document.execCommand('copy');
         if (successful){
-          $(this).attr('data-original-title', 'Copied!').tooltip('show');
+          showCopyTooltip(this, 'Copied!');
         }
         else {
-          $(this).attr('data-original-title', 'Oops, unable to copy').tooltip('show');
+          showCopyTooltip(this, 'Oops, unable to copy');
         }
       } catch (err) {
-        $(this).attr('data-original-title', 'Oops, unable to copy').tooltip('show');
+        showCopyTooltip(this, 'Oops, unable to copy');
       }
       $(input).addClass("d-none");
     });
 
     $('.mir_copy_identifier').on('hidden.bs.tooltip', function () {
-      $(this).attr('data-original-title', $(this).attr("data-org-title"));
+      bootstrap.Tooltip.getInstance(this).setContent({ ".tooltip-inner": $(this).attr("data-org-title") });
     });
 
     $("body").on("focus", ".search-organization input[name*='mods:displayForm']", function() {

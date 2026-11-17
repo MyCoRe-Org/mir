@@ -12,14 +12,14 @@
         <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager', 'checkPermission', $derivateid,'writedb')">
           <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out"/>
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="javascript"/>
-          <div class="panel panel-default">
+          <div class="card">
             <xed:bind xpath="/mycorederivate">
-              <div class="panel-heading">
-                <h1 class="panel-title">
+              <div class="card-header">
+                <h1 class="card-title">
                   <xed:output i18n="component.mods.metaData.options.updateDerivateName"/>
                 </h1>
               </div>
-              <div class="panel-body">
+              <div class="card-body">
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
                              ref="title_repeat"/>
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>

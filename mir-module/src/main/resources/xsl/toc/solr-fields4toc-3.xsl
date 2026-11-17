@@ -6,7 +6,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  exclude-result-prefixes="xlink mods">
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xlink mods xs">
 
   <xsl:import href="xslImport:solr-document-3:toc/solr-fields4toc-3.xsl" />
 
@@ -137,14 +138,14 @@
     </field>
 
     <xsl:choose>
-      <xsl:when test="string(number(.)) = 'NaN'">
-        <field name="{$field}.str">
-          <xsl:value-of select="." />
+      <xsl:when test=". castable as xs:int">
+        <field name="{$field}.int">
+          <xsl:value-of select="xs:int(.)" />
         </field>
       </xsl:when>
       <xsl:otherwise>
-        <field name="{$field}.int">
-          <xsl:value-of select="string(number(.))" />
+        <field name="{$field}.str">
+          <xsl:value-of select="." />
         </field>
       </xsl:otherwise>
     </xsl:choose>

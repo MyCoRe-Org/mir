@@ -443,7 +443,7 @@
                   </xsl:call-template>
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.first'))" />
               </span>
             </a>
@@ -452,7 +452,7 @@
             <xsl:attribute name="class">disabled</xsl:attribute>
             <span>
               <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.first'))" />
               </span>
             </span>
@@ -469,7 +469,7 @@
                   </xsl:call-template>
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.previous'))" />
               </span>
             </a>
@@ -478,7 +478,7 @@
             <xsl:attribute name="class">disabled</xsl:attribute>
             <span>
               <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.previous'))" />
               </span>
             </span>
@@ -535,7 +535,7 @@
                   </xsl:call-template>
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.next'))" />
               </span>
             </a>
@@ -544,7 +544,7 @@
             <xsl:attribute name="class">disabled</xsl:attribute>
             <span>
               <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.next'))" />
               </span>
             </span>
@@ -561,7 +561,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.last'))" />
               </span>
             </a>
@@ -570,7 +570,7 @@
             <xsl:attribute name="class">disabled</xsl:attribute>
             <span>
               <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="i18n:translate(concat($i18nprefix, '.last'))" />
               </span>
             </span>

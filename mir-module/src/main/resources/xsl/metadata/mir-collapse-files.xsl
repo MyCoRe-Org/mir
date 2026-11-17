@@ -116,7 +116,7 @@
                       </noscript>
                     </xsl:when>
                     <xsl:otherwise>
-                      <div id="collapse{@xlink:href}" class="row body collapse in show">
+                      <div id="collapse{@xlink:href}" class="row body collapse show">
                         <div class="col-12">
                           <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                         </div>
