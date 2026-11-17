@@ -255,7 +255,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" data-display="static" >
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
           <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
@@ -489,7 +489,7 @@
         </ul>
       </div>
     </div>
-    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-bs-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

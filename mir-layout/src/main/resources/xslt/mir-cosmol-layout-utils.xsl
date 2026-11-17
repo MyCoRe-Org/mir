@@ -55,11 +55,9 @@
               </xsl:when>
             </xsl:choose>
             <div class="input-group mb-3">
-              <div class="input-group-append">
-                <button type="submit" aria-label="{mcri18n:translate('editor.search.search')}" class="btn btn-primary">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
+              <button type="submit" aria-label="{mcri18n:translate('editor.search.search')}" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+              </button>
             </div>
           </div>
         </form>
