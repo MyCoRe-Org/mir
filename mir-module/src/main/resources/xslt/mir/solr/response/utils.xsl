@@ -154,7 +154,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:text>«</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.firstPage" />
               </span>
             </a>
@@ -163,7 +163,7 @@
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
               <xsl:text>«</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.firstPage" />
               </span>
             </span></a>
@@ -182,7 +182,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:text>‹</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.previousPage" />
               </span>
             </a>
@@ -191,7 +191,7 @@
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
               <xsl:text>‹</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.previousPage" />
               </span>
             </span></a>
@@ -254,7 +254,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:text>›</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.nextPage" />
               </span>
             </a>
@@ -263,7 +263,7 @@
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
               <xsl:text>›</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.nextPage" />
               </span>
             </span></a>
@@ -282,7 +282,7 @@
                 </xsl:call-template>
               </xsl:attribute>
               <xsl:text>»</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.lastPage" />
               </span>
             </a>
@@ -291,7 +291,7 @@
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
               <xsl:text>»</xsl:text>
-              <span class="sr-only">
+              <span class="visually-hidden">
                 <xsl:value-of select="$label.lastPage" />
               </span>
             </span></a>
