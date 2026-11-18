@@ -1,6 +1,7 @@
 package org.mycore.mir.xslt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 
@@ -16,11 +17,10 @@ public class MIRObjectXSLTest extends MIRXSLTFunctionTestCase {
     private static final String XSL = "/xslt/mir/functions/mirobject-test.xsl";
 
     @Test
-    void testEditUrlAppendsObjectId() throws Exception {
+    void testEditUrlAppendsObjectIdForNonPublishedObject() throws Exception {
         String url = resultText(XSL, "test-edit-url", Map.of("value", "mir_mods_00000001"));
 
-        assertEquals("MCRLockServlet?url=/editor/editor-dynamic.xed&id=mir_mods_00000001",
-            url.substring(url.indexOf("MCRLockServlet")));
+        assertTrue(url.endsWith("MCRLockServlet?url=/editor/editor-dynamic.xed&id=mir_mods_00000001"), url);
     }
 
     @Test

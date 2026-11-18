@@ -182,10 +182,6 @@
     </xsl:call-template>
   </xsl:template>
 
-
-
-  
-
     <xsl:template name="getEditURL">
         <xsl:param name="id"/>
         <xsl:variable name="admin-edit-url">

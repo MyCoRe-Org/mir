@@ -33,7 +33,6 @@
     <xsl:param name="accessedit" select="mcracl:check-permission($id, 'writedb')" />
     <xsl:param name="accessdelete" select="mcracl:check-permission($id, 'deletedb')" />
     <xsl:param name="displayAddDerivate" select="'true'" />
-    <xsl:param name="layout" select="'$'" />
     <xsl:param name="mods-type" select="'report'" />
     <xsl:variable name="edit-url" select="mirobject:edit-url($id)" />
     <xsl:variable name="adminEditURL">
