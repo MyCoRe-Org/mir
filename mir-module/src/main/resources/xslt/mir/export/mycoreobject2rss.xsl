@@ -35,7 +35,7 @@
           </description>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:apply-templates select="$mods/mods:language[mods:languageTerm[@type = 'code']][1]" />
+      <xsl:apply-templates select="$mods/mods:language[mods:languageTerm[@type = 'code'][@authority = 'rfc5646']][1]" />
       <xsl:if test="$generator">
         <generator>
           <xsl:value-of select="$generator" />
@@ -43,7 +43,7 @@
       </xsl:if>
       <docs>https://www.rssboard.org/rss-specification</docs>
       <xsl:variable name="query" select="concat('solr:q=', encode-for-uri(concat('mods.relatedItem.root:', @ID)),
-        '&amp;fl=id&amp;rows=20&amp;sort=', encode-for-uri('mods.dateIssued desc,mods.dateIssued.host desc'))" />
+        '&amp;fl=id&amp;rows=', mcrproperty:get('MIR.RSS.MaxItems'), '&amp;sort=', encode-for-uri('mods.dateIssued desc,mods.dateIssued.host desc'))" />
       <!-- the Solr query does not check permissions, so only readable objects are listed -->
       <xsl:for-each select="document($query)/response/result/doc/str[@name = 'id'][mcracl:check-permission(., 'read')]">
         <xsl:apply-templates select="document(concat('mcrobject:', .))/mycoreobject" mode="item" />
@@ -57,7 +57,7 @@
       <xsl:apply-templates select="$mods/mods:titleInfo[1]" />
       <xsl:call-template name="render-rss-link" />
       <xsl:apply-templates select="$mods/mods:abstract[normalize-space()][1]" />
-      <xsl:apply-templates select="service/servdates/servdate[@type = 'modifydate'][. castable as xs:dateTime]" />
+      <xsl:apply-templates select="service/servdates/servdate[@type = 'createdate'][. castable as xs:dateTime]" />
       <guid>
         <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', @ID)" />
       </guid>
@@ -95,7 +95,7 @@
 
   <xsl:template match="mods:language">
     <language>
-      <xsl:value-of select="mods:languageTerm[@type = 'code'][1]" />
+      <xsl:value-of select="mods:languageTerm[@type = 'code'][@authority = 'rfc5646'][1]" />
     </language>
   </xsl:template>
 

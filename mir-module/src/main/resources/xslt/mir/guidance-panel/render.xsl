@@ -100,7 +100,7 @@
       <div class="input-group">
         <input id="{$input-id}" type="text" name="condQuery" class="form-control" placeholder="{$search-label}" />
         <button class="btn btn-primary" type="submit" aria-label="{$search-label}">
-          <i class="fas fa-search" />
+          <i class="fas fa-search" aria-hidden="true" />
         </button>
       </div>
     </form>
@@ -110,8 +110,8 @@
     <xsl:param name="object-id" as="xs:string" />
     <li>
       <a href="{$WebApplicationBaseURL}receive/{$object-id}?XSL.Style=rss">
-        <i class="fas fa-rss" />
-        <xsl:text> RSS 2.0 Feed</xsl:text>
+        <i class="fas fa-rss" aria-hidden="true" />
+        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.rss'))" />
       </a>
     </li>
   </xsl:template>
