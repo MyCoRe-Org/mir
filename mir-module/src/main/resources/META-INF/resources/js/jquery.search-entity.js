@@ -575,7 +575,7 @@
       var $typeBtn = this.$typeBtn = $(document.createElement("button"));
       $typeBtn.addClass(options.buttonClass).addClass("dropdown-toggle");
       $typeBtn.attr("data-bs-toggle", "dropdown");
-      $typeBtn.html("<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>");
+      $typeBtn.html("<span class=\"caret\"></span><span class=\"visually-hidden\">Toggle Dropdown</span>");
 
       $inputGroup.append($typeBtn);
 
@@ -654,7 +654,7 @@
       let text = this.$searchBtn.text();
       this.$searchBtn.text(" " + this.$searchBtn.attr("data-loading-text"));
       let content = jQuery('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">' +
-          '</span><span class="sr-only">' + this.$searchBtn.attr("data-loading-text") + '</span>');
+          '</span><span class="visually-hidden">' + this.$searchBtn.attr("data-loading-text") + '</span>');
       this.$searchBtn.prepend(content);
 
       let that = this;

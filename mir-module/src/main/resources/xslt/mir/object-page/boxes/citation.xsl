@@ -403,7 +403,7 @@
               <xsl:value-of select="$id" />
             </a>
           </pre>
-          <span class="fas fa-copy mir_copy_identifier" data-bs-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
+          <span class="fas fa-copy mir_copy_identifier" data-bs-toggle="tooltip" data-bs-placement="left" aria-hidden="true" title="Copy Identifier"
             data-org-title="Copy Identifier"></span>
         </div>
         <input aria-hidden="true" tabindex="-1" type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>

@@ -101,7 +101,7 @@
               />
             </div>
             <div class="text-end">
-              <a href="#" data-bs-toggle="modal" data-target="#epustaGraphModal">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#epustaGraphModal">
                 <xsl:value-of select="mcri18n:translate('mir.epusta.open')" />
               </a>
             </div>
@@ -120,10 +120,9 @@
                     </h4>
                     <button
                       type="button"
-                      class="close modalFrame-cancel"
+                      class="btn-close modalFrame-cancel"
                       data-bs-dismiss="modal"
                       aria-label="Close">
-                      <i class="fas fa-times" aria-hidden="true"></i>
                     </button>
                   </div>
                   <div class="modal-body">
