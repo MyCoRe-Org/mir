@@ -5,12 +5,14 @@
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
+  xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mods xlink">
 
   <xsl:import href="xslImport:solr-document:mir/solr/indexing/fields.xsl"/>
+  <xsl:include href="resource:xslt/mir/functions/mirmods.xsl" />
   <!-- <xsl:include href="resource:xsl/utils/mods-utils-3.xsl"/> -->
 
   <!-- <xsl:include href="resource:xslt/functions/mods.xsl"/>-->
@@ -34,6 +36,11 @@
         </field>
       </xsl:for-each>
     </xsl:if>
+    <xsl:for-each select="distinct-values(metadata/def.modsContainer/modsContainer/mods:mods ! mirmods:root-ids(.))">
+      <field name="mods.relatedItem.root">
+        <xsl:value-of select="." />
+      </field>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="mir">

@@ -7,12 +7,14 @@
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
+  <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/export.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
@@ -451,6 +453,16 @@
             </xsl:if>
           </div>
         </div>
+
+        <xsl:if test="mirguidancepanel:is-enabled()">
+          <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']" />
+          <xsl:for-each select="distinct-values(($params/str[@name = ('q', 'fq')], $params/arr[@name = 'fq']/str)
+            [starts-with(., 'mods.relatedItem.root:')] ! substring-after(., 'mods.relatedItem.root:'))">
+            <xsl:call-template name="render-guidance-panels">
+              <xsl:with-param name="object-id" select="." />
+            </xsl:call-template>
+          </xsl:for-each>
+        </xsl:if>
 
         <!-- Dynamic facets -->
         <xsl:call-template name="facets" />
