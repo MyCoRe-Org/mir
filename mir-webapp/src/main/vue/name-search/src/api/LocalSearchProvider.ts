@@ -41,7 +41,9 @@ export class LocalSearchProvider implements SearchProvider {
         for (let i = 0; i < array.length; i+=2) {
             const term = array[i] as string;
 
-            const [name, type, identifier] = term.split(":", 3);
+            const [encodedName, identifierAndType] = term.split("|").slice(-2);
+            const name = decodeURIComponent(encodedName);
+            const [type, identifier] = identifierAndType.split(":", 2);
 
             const person: NameSearchResult = {
                 id: uuid(),
@@ -49,7 +51,7 @@ export class LocalSearchProvider implements SearchProvider {
                 identifier: type!=undefined && identifier!=undefined ? [ {type, value:identifier} ] : [],
                 metadata: [] as GenericMetadata[],
                 person: true
-            } ;
+            };
 
             result.push(person);
         }

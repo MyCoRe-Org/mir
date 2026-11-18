@@ -14,9 +14,14 @@
   <xsl:decimal-format name="european" decimal-separator="," grouping-separator="." />
 
   <xsl:variable
-    name="hide_button_regex"
-    select="mcrproperty:get-boolean('MIR.Search.PersonIndex.HideButtonRegex')"
+    name="hideButtonRegex"
+    select="not(mcrproperty:get-boolean('MIR.Search.PersonIndex.ShowButtonRegex'))"
     as="xs:boolean"/>
+
+  <xsl:variable
+    name="encodedButtonDeselectionRegex"
+    select="encode-for-uri(mcrproperty:get-or-else('MIR.Search.PersonIndex.ButtonDeselectionRegex', ''))"
+    as="xs:string"/>
 
   <xsl:variable name="PageTitle">
     <xsl:value-of select="mcri18n:translate('component.solr.searchresult.resultList')" />
@@ -170,7 +175,7 @@
                   <xsl:choose>
                     <xsl:when test="$termsRegex = @search">
                       <xsl:attribute name="class">active</xsl:attribute>
-                      <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;regex=.*')}">
+                      <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;regex=',$encodedButtonDeselectionRegex)}">
                         <xsl:value-of select="$label"/>
                       </a>
                     </xsl:when>
@@ -201,7 +206,7 @@
 
               <xsl:variable
                 name="search_value"
-                select="if($hide_button_regex and $a2z/*[@search=$termsRegex]) then '' else $termsRegex"/>
+                select="if($hideButtonRegex and $a2z/*[@search=$termsRegex]) then '' else $termsRegex"/>
 
               <xsl:variable name="placeholder">
                 <xsl:value-of select="mcri18n:translate('browse.person.searchplaceholder')" />
