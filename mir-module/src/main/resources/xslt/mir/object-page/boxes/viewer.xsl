@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
@@ -27,7 +28,7 @@
     ]">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
-          <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
+          <xsl:if test="count(mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
                 <h3 class="mir-viewer">
@@ -35,7 +36,7 @@
                 </h3>
                 <!-- show one viewer for each derivate -->
                 <xsl:for-each select="mycoreobject/structure/derobjects/derobject[
-                  key('rights', @xlink:href)/@read
+                  mcracl:check-permission(@xlink:href, 'read')
                   and mcrderivate:is-display-enabled(@xlink:href, 'show-file-viewer')
                   and not(some $categid in classification/@categid satisfies contains($MIR.Viewer.DisableDerivateType, string($categid)))
                 ]">

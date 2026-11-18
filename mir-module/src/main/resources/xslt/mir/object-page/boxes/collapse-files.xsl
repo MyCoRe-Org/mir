@@ -16,11 +16,11 @@
     <xsl:variable name="loginURL" select="$LoginDetourURL" />
 
     <xsl:choose>
-      <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
+      <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'read')">
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
           <xsl:choose>
-            <xsl:when test="mycoreobject/structure/derobjects/derobject and not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
+            <xsl:when test="mycoreobject/structure/derobjects/derobject and not(mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')])">
               <div id="mir-access-restricted">
                 <h3>
                   <xsl:value-of select="mcri18n:translate('metadata.files.file')" />
@@ -47,18 +47,18 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:if test="contains($MIR.NotFullAccessInfo.Genres, $mods-type)">
-                <xsl:if test="count(mycoreobject/structure/derobjects/derobject) &gt; count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
+                <xsl:if test="count(mycoreobject/structure/derobjects/derobject) &gt; count(mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')])">
                   <div class="alert alert-warning" role="alert">
                     <xsl:value-of select="mcri18n:translate('mir.derivate.not_full_access')" />
                   </div>
                 </xsl:if>
               </xsl:if>
-              <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
+              <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]">
                 <xsl:variable name="derId" select="@xlink:href" />
                 <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
                 <xsl:variable name="derivateType" select="$derivateXML/mycorederivate/derivate/classifications/classification[@classid='derivate_types']/@categid" />
                 <xsl:variable name="derivateDisplayed" select="mcrderivate:is-display-enabled(@xlink:href, 'show-file-area')" />
-                <xsl:if test="$derivateDisplayed or key('rights', $derId)/@write">
+                <xsl:if test="$derivateDisplayed or mcracl:check-permission($derId, 'writedb')">
                   <div id="files{@xlink:href}" class="file_box">
                     <div class="row header">
                       <div class="col-12">
@@ -94,7 +94,7 @@
                       </div>
                     </div>
                     <xsl:choose>
-                      <xsl:when test="key('rights', @xlink:href)/@read">
+                      <xsl:when test="mcracl:check-permission(@xlink:href, 'read')">
                         <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
                         <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{mcracl:check-permission($derId,'writedb')}" data-deletedb="{mcracl:check-permission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
                           <xsl:if test="mcracl:check-permission($derId,'read')">
