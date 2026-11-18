@@ -14,8 +14,6 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
-
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.METSEditor.enable" select="'false'" />
 
@@ -391,10 +389,7 @@
           <xsl:choose>
             <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
               <div class="hit_icon">
-                <xsl:variable name="title">
-                  <xsl:apply-templates select="ancestor::mycoreobject" mode="resulttitle" />
-                </xsl:variable>
-                <img alt="{mcri18n:translate('metaData.preview')}: {normalize-space($title)}">
+                <img alt="">
                   <xsl:variable name="hitIconSrc" select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                   <xsl:choose>
                     <xsl:when test="not(mcracl:is-current-user-guest-user())">
@@ -423,6 +418,7 @@
                 <xsl:call-template name="iconLink">
                   <xsl:with-param name="baseURL" select="$WebApplicationBaseURL"/>
                   <xsl:with-param name="mimeType" select="$contentType"/>
+                  <xsl:with-param name="derivateMaindoc" select="$maindoc"/>
                 </xsl:call-template>
               </xsl:variable>
               <img alt="{mcrderivate:get-file-extension($maindoc)}" class="hit_icon_overlay" src="{$iconLink}"/>
