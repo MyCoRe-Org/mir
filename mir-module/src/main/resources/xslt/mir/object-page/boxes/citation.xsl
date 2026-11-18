@@ -2,6 +2,7 @@
 <xsl:stylesheet version="3.0"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:csl="http://purl.org/net/xbiblio/csl"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
@@ -34,7 +35,7 @@
       <xsl:apply-templates select="(mycoreobject/structure/derobjects/derobject[
         classification[@classid='derivate_types'][@categid='content']
         and ends-with(lower-case(maindoc), '.pdf')
-        and key('rights', @xlink:href)/@read
+        and mcracl:check-permission(@xlink:href, 'read')
         and mcrderivate:is-display-enabled(@xlink:href, 'export')
       ])[1]" mode="highwire" />
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="seo-meta" />

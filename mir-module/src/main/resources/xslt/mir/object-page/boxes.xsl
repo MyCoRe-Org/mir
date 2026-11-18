@@ -20,11 +20,13 @@
     <xsl:apply-templates mode="mods-type" select="." />
   </xsl:variable>
   <xsl:template match="/">
+    <xsl:variable name="read" select="mcracl:check-permission(mycoreobject/@ID, 'read')" />
+    <xsl:variable name="write" select="mcracl:check-permission(mycoreobject/@ID, 'writedb')" />
     <site ID="{mycoreobject/@ID}">
-      <xsl:if test="mcracl:check-permission(mycoreobject/@ID, 'read')">
+      <xsl:if test="$read">
         <xsl:attribute name="read"/>
       </xsl:if>
-      <xsl:if test="mcracl:check-permission(mycoreobject/@ID, 'writedb')">
+      <xsl:if test="$write">
         <xsl:attribute name="write"/>
       </xsl:if>
       <xsl:attribute name="title">
@@ -35,9 +37,9 @@
       </xsl:attribute>
       <xsl:variable name="docState" select="//servstates/servstate/@categid" />
       <xsl:choose>
-        <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'read')">
+        <xsl:when test="$read">
           <xsl:choose>
-            <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'writedb')">
+            <xsl:when test="$write">
               <xsl:apply-imports />
             </xsl:when>
             <xsl:when test="$docState='blocked' or $docState='deleted'">

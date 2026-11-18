@@ -554,21 +554,6 @@
                 </a>
               </li>
             </xsl:if>
-            <!--<xsl:if test="key('rights', $deriv)/@write">
-              <li>
-                <xsl:if test="not(key('rights', $deriv)/@delete)">
-                  <xsl:attribute name="class">last</xsl:attribute>
-                </xsl:if>
-                <xsl:choose>
-                    <a href="{$ServletsBaseURL}derivate/update?objectid={../../../@ID}&amp;id={$deriv}" class="option">
-                      <xsl:value-of select="i18n:translate('component.mods.metaData.options.addFile')" />
-                    </a>
-                  <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('component.mods.metaData.options.derivateLocked')" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </li>
-            </xsl:if>-->
             <xsl:if test="mcracl:check-permission($deriv, 'deletedb')">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete?id={$deriv}" class="confirm_deletion option dropdown-item" data-text="{mcri18n:translate('mir.confirm.derivate.text')}">
