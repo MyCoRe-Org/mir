@@ -21,7 +21,6 @@ package org.mycore.mir.index;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
-import org.jdom2.Verifier;
 import org.mycore.common.MCRException;
 import org.mycore.common.xsl.uriresolver.MCRURIResolverResponse;
 import org.mycore.resource.MCRResourceHelper;
@@ -90,28 +88,11 @@ public final class MIRPrepareForPersonIndexURIResolver implements URIResolver {
     public Source resolve(String href, String base) throws TransformerException {
 
         String encodedValue = href.substring(href.indexOf(':') + 1);
-        String string = decodeFromUri(encodedValue);
+        String string = MIRDecodeForPersonIndexResolver.decodeFromUri(encodedValue);
 
         return MCRURIResolverResponse.ofString(prepareForPersonIndex(string));
 
     }
-
-    /**
-     * Reverses what the built-in XSLT-function <code>encode-for-uri</code> does.
-     */
-    private static String decodeFromUri(String encodedValue) throws TransformerException {
-        try {
-            String decodedValue = URLDecoder.decode(encodedValue, StandardCharsets.UTF_8);
-            String reason = Verifier.checkCharacterData(decodedValue);
-            if (reason != null) {
-                throw new TransformerException("Non-printable URI-decoded value (" + reason + "): " + encodedValue);
-            }
-            return decodedValue;
-        } catch (IllegalArgumentException e) {
-            throw new TransformerException("Invalid URI-encoded value: " + encodedValue, e);
-        }
-    }
-
 
     /**
      * Creates a simplified version of a string (lowercase, without accents and diacritics), to be used
