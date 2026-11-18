@@ -21,6 +21,7 @@
   <xsl:param name="mcruser" select="document('user:current')/user"/>
   <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="'false'"/>
   <xsl:param name="MIR.Lobid.GND.Search.URL" />
+  <xsl:param name="MIR.Dante.Search.URL" />
   <xsl:param name="MIR.Maintenance.File" />
 
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
@@ -267,6 +268,9 @@
       <xsl:text>';</xsl:text>
       <xsl:text>var lobidGNDSearchURL = '</xsl:text>
       <xsl:value-of select="$MIR.Lobid.GND.Search.URL" />
+      <xsl:text>';</xsl:text>
+      <xsl:text>var danteSearchURL = '</xsl:text>
+      <xsl:value-of select="$MIR.Dante.Search.URL" />
       <xsl:text>';</xsl:text>
     </script>
     <script>
