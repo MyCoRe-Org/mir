@@ -11,8 +11,6 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
-
   <xsl:include href="resource:xslt/mir/mods/utils.xsl" />
   <xsl:include href="resource:xslt/mir/utils/common.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
