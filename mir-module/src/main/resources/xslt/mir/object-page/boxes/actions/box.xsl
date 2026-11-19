@@ -43,6 +43,8 @@
       <xsl:call-template name="object-action-dialogs">
         <xsl:with-param name="names" select="$names" />
         <xsl:with-param name="object" select="$object" />
+        <xsl:with-param name="genres" select="$genres" />
+        <xsl:with-param name="mods-type" select="string($mods-type)" />
       </xsl:call-template>
     </div>
     <xsl:apply-imports />

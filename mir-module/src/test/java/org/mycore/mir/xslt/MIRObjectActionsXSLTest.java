@@ -3,6 +3,7 @@ package org.mycore.mir.xslt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -111,6 +112,8 @@ public class MIRObjectActionsXSLTest extends MIRXSLTFunctionTestCase {
         Element dialog = first(thesis, "//div[@id='mir-edit']/div[@id='test-dialog']");
         assertNotNull(dialog);
         assertEquals(OBJECT_ID, dialog.getAttributeValue("data-object-id"));
+        assertEquals("true", dialog.getAttributeValue("data-write"));
+        assertTrue(dialog.getAttributeValue("data-genres").contains("thesis"));
         assertNull(first(other, "//div[@id='test-dialog']"));
         assertNull(first(other, "//div[@id='modal-pi']"));
     }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -27,7 +26,9 @@
   </xsl:template>
 
   <xsl:template match="action[@name='orcid-export']" mode="object-action-dialog">
-    <xsl:if test="mirorcidutil:is-orcid-enabled() and not(mcracl:is-current-user-guest-user())">
+    <xsl:param name="guest" as="xs:boolean" tunnel="yes" />
+
+    <xsl:if test="not($guest) and mirorcidutil:is-orcid-enabled()">
       <xsl:call-template name="render-export-to-orcid-modal" />
       <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-metadata.js" />
     </xsl:if>

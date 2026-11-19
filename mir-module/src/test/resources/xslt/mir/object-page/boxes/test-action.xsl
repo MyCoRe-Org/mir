@@ -18,8 +18,9 @@
 
   <xsl:template match="action[@name='test']" mode="object-action-dialog">
     <xsl:param name="object-id" as="xs:string" tunnel="yes" />
+    <xsl:param name="write" as="xs:boolean" tunnel="yes" />
 
-    <div id="test-dialog" data-object-id="{$object-id}" />
+    <div id="test-dialog" data-object-id="{$object-id}" data-write="{$write}" data-genres="{@genres}" />
   </xsl:template>
 
 </xsl:stylesheet>
