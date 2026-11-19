@@ -16,4 +16,10 @@
     <li class="mir-action-item mir-action-item-edit-thesis" />
   </xsl:template>
 
+  <xsl:template match="action[@name='test']" mode="object-action-dialog">
+    <xsl:param name="object-id" as="xs:string" tunnel="yes" />
+
+    <div id="test-dialog" data-object-id="{$object-id}" />
+  </xsl:template>
+
 </xsl:stylesheet>

@@ -32,4 +32,31 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="action[@name='register-pi']" mode="object-action-dialog">
+    <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-bs-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" data-i18n="component.pi.register."></h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-2">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <div class="col-md-10" data-i18n="component.pi.register.modal.text."></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary modal-pi-cancel" data-bs-dismiss="modal">
+              <xsl:value-of select="mcri18n:translate('component.pi.register.modal.abort')" />
+            </button>
+            <button type="button" class="btn btn-danger" id="modal-pi-add" data-i18n="component.pi.register.">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
+
 </xsl:stylesheet>

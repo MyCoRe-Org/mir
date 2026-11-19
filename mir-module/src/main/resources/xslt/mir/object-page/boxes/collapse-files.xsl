@@ -88,7 +88,8 @@
                             </a>
                           </div>
                           <xsl:call-template name="derivate-actions">
-                            <xsl:with-param name="derivate-id" select="string($derId)" />
+                            <xsl:with-param name="derivate" select="." />
+                            <xsl:with-param name="object-id" select="string($objID)" />
                           </xsl:call-template>
                           <div class="clearfix" />
                         </div>
