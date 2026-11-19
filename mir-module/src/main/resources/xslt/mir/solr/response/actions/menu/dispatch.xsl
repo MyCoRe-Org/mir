@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -20,6 +21,7 @@
     <xsl:apply-templates select="$actions/action" mode="result-action">
       <xsl:with-param name="doc" select="$doc" tunnel="yes" />
       <xsl:with-param name="object-id" select="$object-id" tunnel="yes" />
+      <xsl:with-param name="write" select="mcracl:check-permission($object-id, 'writedb')" tunnel="yes" />
     </xsl:apply-templates>
   </xsl:template>
 
