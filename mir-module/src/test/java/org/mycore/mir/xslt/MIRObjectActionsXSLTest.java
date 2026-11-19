@@ -100,6 +100,21 @@ public class MIRObjectActionsXSLTest extends MIRXSLTFunctionTestCase {
         assertEquals(List.of("edit-object", "delete-object"), actions(other));
     }
 
+    @Test
+    @MCRTestConfiguration(properties = {
+        @MCRTestProperty(key = "MIR.ObjectActions.thesis", string = "test,edit")
+    })
+    void testDialogsAreRenderedForConfiguredActionsOnly() throws Exception {
+        Document thesis = withIncludedModule(TEST_ACTION, () -> render("dissertation", true));
+        Document other = withIncludedModule(TEST_ACTION, () -> render(null, true));
+
+        Element dialog = first(thesis, "//div[@id='mir-edit']/div[@id='test-dialog']");
+        assertNotNull(dialog);
+        assertEquals(OBJECT_ID, dialog.getAttributeValue("data-object-id"));
+        assertNull(first(other, "//div[@id='test-dialog']"));
+        assertNull(first(other, "//div[@id='modal-pi']"));
+    }
+
     private static <T> T withIncludedModule(String module, Callable<T> action) throws Exception {
         String original = MCRConfiguration2.getStringOrThrow(INCLUDES);
         MCRConfiguration2.set(INCLUDES, original + "," + module);

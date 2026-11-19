@@ -12,7 +12,8 @@
   <xsl:template match="/">
     <actions>
       <xsl:call-template name="derivate-actions">
-        <xsl:with-param name="derivate-id" select="string(/derivate/@id)" />
+        <xsl:with-param name="derivate" select="mycoreobject/structure/derobjects/derobject[1]" />
+        <xsl:with-param name="object-id" select="string(mycoreobject/@ID)" />
       </xsl:call-template>
     </actions>
   </xsl:template>
