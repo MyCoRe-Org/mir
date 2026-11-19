@@ -3,6 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -11,9 +12,6 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="resource:xslt/mir/object-page/boxes/metadata/shared/classification-link.xsl" />
-
-  <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
-  <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
   <xsl:include href="resource:xslt/mir/mods/utils.xsl" />
   <xsl:include href="resource:xslt/mir/utils/common.xsl" />
@@ -62,12 +60,12 @@
             string(document(concat('ifs:/', $derivate-id))/mcr_directory/children/child[name = $main-doc][1]/contentType)
           " />
           <xsl:variable name="supported-content-types" select="
-            tokenize($MCR.Module-iview2.SupportedContentTypes, ',') ! normalize-space()
+            tokenize(string(mcrproperty:get('MCR.Module-iview2.SupportedContentTypes')), ',') ! normalize-space()
           " />
           <xsl:choose>
             <xsl:when test="$content-type != '' and ($content-type = $supported-content-types or $content-type = 'application/pdf')">
               <xsl:variable name="icon-src" select="
-                concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $object/@ID, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')
+                concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $object/@ID, '/full/', mcrproperty:get('MIR.Thumbnail.IIIF.Resolution'), '/0/default.jpg')
               " />
               <div class="hit_icon">
                 <xsl:choose>
