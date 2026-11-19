@@ -9,7 +9,6 @@
 
   <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/actions/box.xsl" />
   <xsl:import href="resource:xslt/mir/object-page/boxes/actions/helpers.xsl" />
-  <xsl:include href="resource:xslt/mir/mods/object-types.xsl" />
   <xsl:include href="xslInclude:objectactions" />
 
   <xsl:template match="/">
