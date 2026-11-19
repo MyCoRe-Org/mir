@@ -23,10 +23,8 @@
 
     <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods">
 
-<!-- document preview -->
       <div class="hit_download_box">
         <xsl:choose>
-        <!-- we got a derivate -->
         <xsl:when test="../../../../structure/derobjects">
           <xsl:variable name="identifier" select="../../../../@ID" />
           <xsl:variable name="derivid" select="../../../../structure/derobjects/derobject[1]/@xlink:href" />
@@ -61,7 +59,6 @@
               <div class="hit_icon">
                 <img alt="" src="{$WebApplicationBaseURL}images/icons/icon_common.png"/>
               </div>
-              <!-- if not, then the content type decides a icon -->
               <xsl:variable name="iconLink">
                 <xsl:call-template name="iconLink">
                   <xsl:with-param name="baseURL" select="$WebApplicationBaseURL"/>
@@ -73,29 +70,24 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
-          <!-- no derivate -->
           <xsl:otherwise>
-            <!-- show default icon -->
             <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
           </xsl:otherwise>
         </xsl:choose>
       </div>
 
-<!-- hit type -->
       <div class="hit_tnd_container">
         <div class="hit_tnd_content mir-badge-container">
           <xsl:apply-templates select="document(concat('solr:q=id%3A', $objID))/response/result/doc" mode="badge"/>
         </div>
       </div>
 
-      <!-- Title, Link to presentation -->
       <h3 class="hit_title">
         <xsl:call-template name="objectLink">
           <xsl:with-param name="obj_id" select="$objID" />
         </xsl:call-template>
       </h3>
 
-<!-- hit author -->
       <div class="hit_author">
         <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
           <xsl:if test="position()!=1">
@@ -105,7 +97,6 @@
         </xsl:for-each>
       </div>
 
-<!-- hit parent -->
       <xsl:if test="../../../../structure/parents/parent/@xlink:href">
         <div class="hit_source">
           <span class="label_parent">
@@ -117,7 +108,6 @@
         </div>
       </xsl:if>
 
-<!-- hit abstract -->
       <div class="hit_abstract">
         <xsl:if test="mods:abstract[not(@altFormat)]">
           <xsl:choose>
@@ -131,7 +121,6 @@
         </xsl:if>
       </div>
 
-<!-- hit publisher -->
       <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
         <div class="hit_pub_name">
           <span class="label_publisher">
