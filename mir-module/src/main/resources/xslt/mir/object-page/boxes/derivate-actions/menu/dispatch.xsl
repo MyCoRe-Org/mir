@@ -13,14 +13,15 @@
   <xsl:template name="derivate-actions">
     <xsl:param name="derivate" as="element(derobject)" />
     <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="names" select="mirconfig:get-list('MIR.DerivateActions', ())" as="xs:string*" />
+    <xsl:param name="genres" select="()" as="xs:string*" />
+    <xsl:param name="names" select="mirconfig:get-list('MIR.DerivateActions', $genres)" as="xs:string*" />
 
     <xsl:variable name="derivate-id" select="string($derivate/@xlink:href)" />
 
     <xsl:if test="exists($names) and mcracl:check-permission($derivate-id, 'read')">
       <xsl:variable name="actions">
         <xsl:for-each select="$names">
-          <action name="{.}" />
+          <action name="{.}" genres="{$genres}" />
         </xsl:for-each>
       </xsl:variable>
       <div class="dropdown float-end options">
