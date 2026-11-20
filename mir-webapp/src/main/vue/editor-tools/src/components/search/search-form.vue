@@ -3,9 +3,9 @@
         <div class="mir-form-group">
             <div class="input-group input-group-sm mb-3">
                 <input v-model="model.inputValue"
-                :id="model.inputId|| undefined"
+                :id="props.labelledby || undefined"
                 :disabled="searchEnabled ? null : ''"
-                :aria-label="model.inputId ? null : i18n['mir.editor.subject.search.placeholder']"
+                :aria-label="props.labelledby ? undefined : i18n['mir.editor.subject.search.placeholder']"
                 @submit.prevent type="text" :placeholder="i18n['mir.editor.subject.search.placeholder']" class="form-control search-topic">
                 <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ i18n['mir.editor.subject.search'] }}</button>
             </div>
@@ -15,12 +15,13 @@
 
 <script lang="ts" setup>
 
-import {reactive, defineProps, watch, onMounted, getCurrentInstance} from "vue";
+import {reactive, watch} from "vue";
 import {provideTranslations} from "@/api/I18N";
 
 interface SearchFormProps {
     searchEnabled: boolean,
     searchTerm: string,
+    labelledby?: string,
 }
 
 const emit = defineEmits(["searchSubmitted"]);
@@ -37,12 +38,6 @@ watch(()=> props.searchTerm, (newValue) => {
   deep: true
 });
 
-onMounted(() => {
-    const root = getCurrentInstance()?.appContext.app._container;
-    const container = root?.closest(".editorToolsApp");
-
-    model.inputId = container?.getAttribute("data-labelledby") || "";
-});
 const i18n = provideTranslations([
     "mir.editor.subject.search",
     "mir.editor.subject.search.placeholder",

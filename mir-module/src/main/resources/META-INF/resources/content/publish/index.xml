@@ -25,22 +25,24 @@
             Eingabeformular weitergeleitet. Falls der Datensatz bereits einen Identifikator besitzt,
             können ggf. Metadaten aus anderen Datenquellen übernommen werden.
           </p>
-          <h3 id="genre-title">Publikationstyp festlegen</h3>
+          <h3 id="genre-title-de">Publikationstyp festlegen</h3>
         </div>
       </div>
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title">
+          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title-de">
           </select>
         </div>
       </div>
 
       <div class="row mir-form-group">
-        <div class="col-sm-3 col-lg-2"></div>
+        <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
+          Erscheint in
+        </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-title">
+          <select id="host" class="form-control form-select" name="host" size="1">
           </select>
         </div>
       </div>
@@ -101,22 +103,24 @@
             you may enter it here. It will be used to look up and reuse metadata from
             external databases.
           </p>
-          <h3 id="genre-title">Set publication type</h3>
+          <h3 id="genre-title-en">Set publication type</h3>
         </div>
       </div>
 
       <div class="row mir-form-group">
-       <div class="col-sm-3 col-lg-2"></div>
+        <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title">
+          <select id="genre" class="form-control form-select" name="genre" size="1" aria-labelledby="genre-title-en">
           </select>
         </div>
       </div>
 
       <div class="row mir-form-group">
-       <div class="col-sm-3 col-lg-2"></div>
+        <label for="host" class="col-sm-3 col-lg-2 control-label form-label">
+          Appears in
+        </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control form-select" name="host" size="1" aria-labelledby="genre-title">
+          <select id="host" class="form-control form-select" name="host" size="1">
           </select>
         </div>
       </div>

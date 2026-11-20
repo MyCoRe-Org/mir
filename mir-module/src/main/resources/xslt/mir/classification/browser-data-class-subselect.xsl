@@ -24,24 +24,14 @@
         <xsl:variable name="id" select="translate(concat(../@classification,'_',@id),'+/()[]','ABCDEF')" />
         <li>
           <xsl:choose>
-            <xsl:when test="@children = 'true'">              
-              <xsl:variable name="btnLabel">
-                <xsl:choose>
-                  <xsl:when test="description">
-                    <xsl:value-of select="concat('Kategorie ', description, ' aufklappen')" />
-                  </xsl:when>
-                  <xsl:otherwise><xsl:value-of select="mir.classification.subcategories')" /></xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
+            <xsl:when test="@children = 'true'">
               <button
-                type="button"
-                class="cbToggleBtn"
-                id="cbButton_{$id}"
-                aria-label="{$btnLabel}"
+                type="button" class="btn btn-link p-0 border-0"
+                aria-label="{mcri18n:translate('mir.classification.subcategories')}"
                 aria-expanded="false"
                 aria-controls="cbChildren_{$id}"
                 onclick="toogle('{@id}','{$folder.closed}','{$folder.open}');">
-                  <i class="{$folder.closed}" aria-hidden="true" />
+                  <i class="{$folder.closed}" id="cbButton_{$id}" aria-hidden="true" />
               </button>
             </xsl:when>
             <xsl:otherwise>

@@ -118,7 +118,6 @@
                     i18n="editor.search.status" tooltip="editor.search.status.tooltip"
                     uri="xslStyle:items2options:classification:editor:-1:children:state" />
                   <!-- Datum -->
-                  <!-- TODO: id dynamisch erstellen! -->
                   <div class="mir-form-group row">
                     <xed:bind xpath="condition[@field='mods.dateIssued']">
                       <label for="inputDate1_{xed:generate-id()}" class="col-md-3 col-form-label text-md-end form-label">

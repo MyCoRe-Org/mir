@@ -484,7 +484,7 @@
       <div class="mir-form-group row">
         <div class="col-md-3">
           <xed:bind xpath="@eventType" default="creation">
-            <select class="form-control form-control-inline date-select form-select">
+            <select aria-label="{i18n:mir.date.type}" class="form-control form-control-inline date-select form-select">
               <option value="creation">
                 <xed:output i18n="mir.date.created" />
               </option>
@@ -503,15 +503,15 @@
             </select>
           </xed:bind>
         </div>
-        <mir:dateRangeInput xpath="mods:dateCreated[@encoding='w3cdtf']" class="datetimepicker date-changeable col-md-6" placeholder="{i18n:mir.placeholder.date}"
+        <mir:dateRangeInput xpath="mods:dateCreated[@encoding='w3cdtf']" class="datetimepicker date-changeable col-md-6" aria-label="{i18n:mir.date.created}" placeholder="{i18n:mir.placeholder.date}"
           type="creation" />
-        <mir:dateRangeInput xpath="mods:dateCaptured[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" placeholder="{i18n:mir.placeholder.date}"
+        <mir:dateRangeInput xpath="mods:dateCaptured[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" aria-label="{i18n:mir.date.collected}" placeholder="{i18n:mir.placeholder.date}"
           type="collection" />
-        <mir:dateRangeInput xpath="mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" placeholder="{i18n:mir.placeholder.date}"
+        <mir:dateRangeInput xpath="mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" aria-label="{i18n:mir.date.issued.10}" placeholder="{i18n:mir.placeholder.date}"
           type="publication" />
-        <mir:dateRangeInput xpath="mods:dateOther[@type='reviewed'][@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6"
+        <mir:dateRangeInput xpath="mods:dateOther[@type='reviewed'][@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" aria-label="{i18n:mir.date.reviewed}"
           placeholder="{i18n:mir.placeholder.date}" type="review" />
-        <mir:dateRangeInput xpath="mods:dateModified[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" placeholder="{i18n:mir.placeholder.date}"
+        <mir:dateRangeInput xpath="mods:dateModified[@encoding='w3cdtf']" class="datetimepicker date-changeable d-none col-md-6" aria-label="{i18n:mir.date.updated}" placeholder="{i18n:mir.placeholder.date}"
           type="update" />
         <mir:help-pmud help-text="{i18n:mir.help.date.repeated}" pmud="true" />
       </div>
@@ -930,12 +930,12 @@
     <fieldset class="dateExtended_box">
       <legend class="mir-fieldset-legend hiddenDetail">
         <div class="mir-form-group row datetimepicker {$xed-validation-marker}">
-          <label for="datetimerange_" class="col-md-3 col-form-label text-end form-label">
+          <label for="datetimerange_mir.date.issued.range" class="col-md-3 col-form-label text-end form-label">
             <xed:output i18n="mir.date.issued.range" />
           </label>
           <div class="col-md-6 center-vertical">
             <mir:dateRangeInput xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker mainDate"
-              placeholder="{i18n:mir.placeholder.date}" type="publication" startsWithDateTime="false" showDateTimeOption="false"/>
+              placeholder="{i18n:mir.placeholder.date}" label="mir.date.issued.range" type="publication" startsWithDateTime="false" showDateTimeOption="false"/>
             <span class="fas fa-chevron-down expand-item" title="{i18n:mir.help.expand}" aria-hidden="true"></span>
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.date.issued.10}" pmud="false" />
@@ -960,13 +960,13 @@
 
   <xed:template id="identifier.patent">
     <div class="mir-form-group row">
-      <label for="identifierPatent-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label for="identifierPatent" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.identifier.patent" />
       </label>
       <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
         <div class="col-md-6">
           <div class="controls">
-            <input id="identifierPatent-{xed:generate-id()}" aria-label="{i18n:mir.identifier.patent}" type="text" size="30" class="form-control form-control-inline" />
+            <input id="identifierPatent" aria-label="{i18n:mir.identifier.patent}" type="text" size="30" class="form-control form-control-inline" />
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.identifier.patent}" pmud="true" />
@@ -1200,7 +1200,7 @@
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
           </div>
-          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
         </div>
       </fieldset>
     </xed:repeat>
@@ -1390,7 +1390,7 @@
   <xed:template id="language">
     <xed:repeat xpath="mods:language" max="5">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="langID_{xed:generate-id(..)}" for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end form-label">
+        <label for="lang_{xed:generate-id(.)}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.language" />
         </label>
         <div class="col-md-6">
@@ -1587,7 +1587,7 @@
               <input type="hidden" class="nameType" />
             </xed:bind>
             <xed:bind xpath="mods:displayForm">
-              <input id="publisherOrgLabel-{xed:generate-id(../../..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+              <input id="publisherOrgLabel-{xed:generate-id(../..)}" type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
                 data-search-entity-type="organisation" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
@@ -1808,12 +1808,12 @@
   <xed:template id="cartographics">
     <xed:bind xpath="mods:subjectGEO">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <span id="cartographics-label" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.cartographics.coordinates" />
-        </label>
+        </span>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" role="group" aria-labelledby="cartographics-label" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="false"/>
       </div>
@@ -1824,12 +1824,12 @@
   <xed:template id="cartographics.repeat">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <span id="cartographics-label_{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.cartographics.coordinates" />
-        </label>
+        </span>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" role="group" aria-labelledby="cartographics-label_{xed:generate-id()}" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true"/>
       </div>
@@ -1957,7 +1957,7 @@
                 </div>
                 <div class="col-md-8 text-end mt-2 mt-md-0">
                   <button id="modalFrame-cancel" type="button" class="btn btn-danger me-0 ms-1" aria-label="{i18n:button.cancel}" data-bs-dismiss="modal"></button>
-                  <button id="modalFrame-send" type="button" aria-label="{i18n:button.send}" class="btn btn-primary me-0 ms-1">
+                  <button id="modalFrame-send" type="button" class="btn btn-primary me-0 ms-1">
                     <xed:output i18n="button.select"/>
                   </button>
                 </div>

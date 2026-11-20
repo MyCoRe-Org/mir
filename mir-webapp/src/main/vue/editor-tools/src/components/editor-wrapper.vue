@@ -8,6 +8,7 @@
                     <search-form :searchEnabled="searchEnabled"
                                  @searchSubmitted="searchSubmitted"
                                  :searchTerm="model.searchTerm"
+                                 :labelledby="props.labelledby"
                     />
 
                 </div>
@@ -156,6 +157,9 @@ const providerInstances: Record<string, SearchProvider> = {};
 const PROVIDER_TIMEOUT_MS = 10000;
 let searchCounter = 0;
 
+const props = defineProps<{
+    labelledby?: string;
+}>();
 const model = reactive({
     settings: undefined as EditorSettings | undefined,
     subject: undefined as Subject | undefined,

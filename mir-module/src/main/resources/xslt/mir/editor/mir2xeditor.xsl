@@ -138,12 +138,14 @@
   </xsl:template>
 
   <xsl:template match="mir:dateRange">
+    <xsl:variable name="inputId" select="concat('datetimerange_', generate-id())" />
     <div class="mir-form-group row">
-      <label for="datetimerange_{@label}" class="col-md-3 col-form-label text-end form-label">
+      <label for="{$inputId}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="{@label}" />
       </label>
       <div class="col-md-6 {@class}" data-type="{@type}">
         <xsl:call-template name="mir-dateRange">
+          <xsl:with-param name="inputId" select="$inputId" />
           <xsl:with-param name="showDateTimeOption" select="@showDateTimeOption"/>
           <xsl:with-param name="startsWithDateTime" select="@startsWithDateTime"/>
         </xsl:call-template>
@@ -165,6 +167,7 @@
   </xsl:template>
 
   <xsl:template name="mir-dateRange">
+    <xsl:param name="inputId" select="''" />
     <xsl:param name="showDateTimeOption" select="'false'" />
     <xsl:param name="startsWithDateTime" select="'false'" />
     <xsl:variable name="timeClass">
@@ -206,8 +209,20 @@
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
-          <input id="datetimerange_{@label}" type="text" class="form-control {$timeClass}" autocomplete="off">
-            <xsl:copy-of select="@placeholder" />
+          <input type="text" class="form-control {$timeClass}" autocomplete="off">
+            <xsl:choose>
+              <xsl:when test="$inputId != ''">
+                <xsl:attribute name="id">
+                  <xsl:value-of select="$inputId" />
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:when test="@label">
+                <xsl:attribute name="id">
+                  <xsl:value-of select="concat('datetimerange_', @label)" />
+                </xsl:attribute>
+              </xsl:when>
+            </xsl:choose>
+            <xsl:copy-of select="@placeholder | @aria-label | @aria-labelledby" />
           </input>
         </xed:bind>
         <xsl:call-template name="date-selectFormat">
@@ -216,13 +231,13 @@
       </div>
       <div class="date-range input-group {$hiddenclassrange} input-daterange">
         <xed:bind xpath="{$xpathStart}">
-          <input type="text" class="form-control {$dateRangeWithTime} startDate" data-point="start" aria-label="mcri18n:translate('mir.date.start')">
+          <input type="text" class="form-control {$dateRangeWithTime} startDate" data-point="start" aria-label="{mcri18n:translate('mir.date.start')}">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
         <span class="fas fa-minus input-group-text" aria-hidden="true"></span>
         <xed:bind xpath="{$xpathEnd}">
-          <input type="text" class="form-control {$dateRangeWithTime} endDate" data-point="end" aria-label="mcri18n:translate('mir.date.end')">
+          <input type="text" class="form-control {$dateRangeWithTime} endDate" data-point="end" aria-label="{mcri18n:translate('mir.date.end')}">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
@@ -440,7 +455,7 @@
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="mir-form-group row {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <label class="col-md-3 col-form-label text-end form-label target-person-label">
+            <label class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
