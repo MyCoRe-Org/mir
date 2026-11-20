@@ -483,7 +483,7 @@
       </div>
 
     </div>
-    <xsl:if test="mirorcidutil:is-orcid-enabled()">
+    <xsl:if test="$result-actions = 'orcid-export' and mirorcidutil:is-orcid-enabled()">
       <xsl:call-template name="render-export-to-orcid-modal" />
       <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js" />
     </xsl:if>
