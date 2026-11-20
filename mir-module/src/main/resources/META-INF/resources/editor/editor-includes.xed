@@ -974,7 +974,6 @@
     </xed:repeat>
   </xed:template>
 
-
   <xed:template id="identifier.isbn">
     <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" />
   </xed:template>
