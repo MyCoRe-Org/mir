@@ -958,7 +958,7 @@
     </fieldset>
   </xed:template>
 
-    <xed:template id="identifier.patent">
+  <xed:template id="identifier.patent">
     <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
       <div class="mir-form-group row">
         <label for="identifierPatent-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
