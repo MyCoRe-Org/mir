@@ -41,7 +41,7 @@ public class MIRObjectActionsXSLTest extends MIRXSLTFunctionTestCase {
 
     private static final String XSL = "/xslt/mir/object-page/boxes/object-actions-test.xsl";
 
-    private static final String RESOURCES = "/" + MIRMetadataBoxXSLTest.class.getSimpleName();
+    private static final String RESOURCES = MIRMetadataBoxXSLTest.RESOURCES;
 
     private static final String INCLUDES = "MCR.URIResolver.xslIncludes.objectactions";
 
