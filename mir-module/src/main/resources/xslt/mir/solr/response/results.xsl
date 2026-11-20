@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
-  xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
-  xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:mirconfig="http://www.mycore.de/xslt/mirconfig"
   xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -15,16 +14,19 @@
 
   <xsl:import href="xslImport:badges" />
   <xsl:import href="resource:xslt/mir/guidance-panel/render.xsl" />
+  <xsl:import href="resource:xslt/mir/solr/response/actions/helpers.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/export.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
   <xsl:include href="resource:xslt/mir/solr/response/facets.xsl"/>
   <xsl:include href="resource:xslt/mir/solr/response/utils.xsl" />
+  <xsl:include href="xslInclude:resultactions" />
 
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
+  <xsl:variable name="result-actions" select="mirconfig:get-list('MIR.ResultActions', ())" />
   <xsl:variable name="maxScore" select="./response/result[@name='response'][1]/@maxScore" />
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
@@ -481,7 +483,7 @@
       </div>
 
     </div>
-    <xsl:if test="mirorcidutil:is-orcid-enabled()">
+    <xsl:if test="$result-actions = 'orcid-export' and mirorcidutil:is-orcid-enabled()">
       <xsl:call-template name="render-export-to-orcid-modal" />
       <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js" />
     </xsl:if>
@@ -599,7 +601,15 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="not(mcracl:is-current-user-guest-user())">
+            <xsl:when test="mcracl:is-current-user-guest-user()">
+              <div class="single_hit_option float-end">
+                <xsl:call-template name="basketLink">
+                  <xsl:with-param name="identifier" select="$identifier" />
+                  <xsl:with-param name="dropdown" select="'false'" />
+                </xsl:call-template>
+              </div>
+            </xsl:when>
+            <xsl:when test="exists($result-actions)">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -608,66 +618,15 @@
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <xsl:call-template name="basketLink">
-                        <xsl:with-param name="identifier" select="$identifier" />
-                        <xsl:with-param name="dropdown" select="'true'" />
-                      </xsl:call-template>
-                    </li>
-                        <!-- direct link to editor -->
-                    <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
-                      <li>
-                        <xsl:variable name="editURL">
-                          <xsl:call-template name="mods.getObjectEditURL">
-                            <xsl:with-param name="id" select="$identifier" />
-                            <xsl:with-param name="layout" select="'$'" />
-                          </xsl:call-template>
-                        </xsl:variable>
-                        <a class="hit_option hit_edit dropdown-item">
-                          <xsl:choose>
-                            <xsl:when test="string-length($editURL) &gt; 0">
-                              <xsl:attribute name="href">
-                                    <xsl:value-of select="$editURL" />
-                                  </xsl:attribute>
-                              <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="mcri18n:translate('object.editObject')" />
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <xsl:attribute name="href">
-                                    <xsl:value-of select="'#'" />
-                                  </xsl:attribute>
-                              <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="mcri18n:translate('object.locked')" />
-                            </xsl:otherwise>
-                          </xsl:choose>
-                        </a>
-                      </li>
-                    </xsl:if>
-                    <xsl:if test="mirorcidutil:is-orcid-enabled()">
-                      <xsl:variable name="current-user" select="document('user:current')/user" />
-                      <xsl:variable name="object-name-ids" select="arr[@name='mods.nameIdentifier']/str/string()" />
-
-                      <xsl:call-template name="render-export-to-orcid-menu-item">
-                        <xsl:with-param name="object-id" select="$identifier" />
-                        <xsl:with-param name="disabled" select="
-                          not(mirorcidutil:is-publishable-state(str[@name='state']))
-                          or not(mirorcidutil:has-trusted-matching-id($current-user, $object-name-ids))
-                          or not(mirorcidutil:has-orcid-credential($current-user))
-                        " />
-                      </xsl:call-template>
-                    </xsl:if>
+                    <xsl:call-template name="result-actions">
+                      <xsl:with-param name="names" select="$result-actions" />
+                      <xsl:with-param name="doc" select="." />
+                      <xsl:with-param name="object-id" select="string($identifier)" />
+                    </xsl:call-template>
                   </ul>
                 </div>
               </div>
             </xsl:when>
-            <xsl:otherwise>
-              <div class="single_hit_option float-end">
-                <xsl:call-template name="basketLink">
-                  <xsl:with-param name="identifier" select="$identifier" />
-                  <xsl:with-param name="dropdown" select="'false'" />
-                </xsl:call-template>
-              </div>
-            </xsl:otherwise>
           </xsl:choose>
           
 
@@ -1013,59 +972,6 @@
     <xsl:if test="string-length(normalize-space($searchString))&gt;0 and $searchString!='*'">
       <xsl:value-of select="concat($join, 'q=', $searchString)" />
     </xsl:if>
-  </xsl:template>
-
-  <!-- copied from mods.xsl -> ToDo: refacture! -->
-  <xsl:template name="mods.getObjectEditURL">
-    <xsl:param name="id" />
-    <xsl:param name="layout" select="'$'" />
-    <xsl:param name="collection" select="''" />
-    <xsl:choose>
-      <xsl:when test="doc-available('resource:actionmappings.xml')">
-      <!-- URL mapping enabled -->
-        <xsl:variable name="url">
-          <xsl:choose>
-            <xsl:when test="string-length($collection) &gt; 0">
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update-xml',$collection,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update',$collection,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update-xml',$id,true())" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:get-url-for-id('update',$id,true())" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:choose>
-          <xsl:when test="string-length($url)=0" />
-          <xsl:otherwise>
-            <xsl:value-of select="mcrurl:set-param($url, 'id', $id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-      <!-- URL mapping disabled -->
-        <xsl:choose>
-          <xsl:when test="$layout != '$'">
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-dynamic.xed?id=',$id,'&amp;genre=article&amp;host=standalone')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-admin.xed?id=',$id)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="print.classiFilter">
