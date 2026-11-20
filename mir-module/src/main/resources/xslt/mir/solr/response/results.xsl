@@ -397,7 +397,7 @@
             <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
           <xsl:variable name="buttonDefaultClasses" select="'basket_button btn btn-primary form-control'" />
-          <button type="submit" tabindex="1" value="add">
+          <button type="submit" value="add">
             <xsl:choose>
               <xsl:when test="count($idNodes)=0">
                 <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -775,12 +775,12 @@
                 <!-- when there is no content derivate then use disabled icon -->
                 <xsl:when test="string-length($derivid)=0">
                   <div class="hit_icon">
-                    <img src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
+                    <img src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" alt="" />
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_icon">
-                    <img src="{$WebApplicationBaseURL}images/icons/icon_common.png"/>
+                    <img src="{$WebApplicationBaseURL}images/icons/icon_common.png" alt="" />
                   </div>
                  <!-- if not, then the content type decides a icon -->
                   <xsl:variable name="contentType"
@@ -792,7 +792,7 @@
                       <xsl:with-param name="derivateMaindoc" select="$displayDerivate/str[@name='derivateMaindoc']"/>
                     </xsl:call-template>
                   </xsl:variable>
-                  <img class="hit_icon_overlay" src="{$iconLink}"/>
+                  <img class="hit_icon_overlay" src="{$iconLink}" alt="" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
@@ -1121,7 +1121,6 @@
       <li>
         <xsl:call-template name="print.hyperLink">
           <xsl:with-param name="href" select="replace($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
-          <xsl:with-param name="text" select="@title" />
           <xsl:with-param name="class" select="'dropdown-item'" />
         </xsl:call-template>
       </li>
@@ -1140,7 +1139,6 @@
       </xsl:variable>
       <xsl:call-template name="print.hyperLink">
         <xsl:with-param name="href" select="$filterHref" />
-        <xsl:with-param name="text" select="@title" />
         <xsl:with-param name="class" select="'list-group-item active'" />
         <xsl:with-param name="icon" select="'times'" />
       </xsl:call-template>
@@ -1149,14 +1147,30 @@
 
   <xsl:template name="print.hyperLink">
     <xsl:param name="href" />
-    <xsl:param name="text" />
+    <xsl:param name="text" select="''" />
     <xsl:param name="class" select="''" />
     <xsl:param name="icon" select="''" />
-    <a class="{$class}" href="{$href}" title="{$text}">
+    <xsl:variable name="linkText">
+      <xsl:choose>
+        <xsl:when test="normalize-space($text) != ''">
+          <xsl:value-of select="$text" />
+        </xsl:when>
+        <xsl:when test="normalize-space(@title) != ''">
+          <xsl:value-of select="@title" />
+        </xsl:when>
+        <xsl:when test="normalize-space(.) != ''">
+          <xsl:value-of select="." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="@value" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <a class="{$class}" href="{$href}">
       <xsl:if test="$icon != ''">
         <span aria-hidden="true" class="fas fa-{$icon}"></span>
       </xsl:if>
-      <xsl:value-of select="$text" />
+      <xsl:value-of select="$linkText" />
     </a>
   </xsl:template>
 
