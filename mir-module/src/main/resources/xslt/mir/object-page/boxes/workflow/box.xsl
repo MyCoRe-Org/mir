@@ -21,6 +21,7 @@
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
   <xsl:include href="resource:xslt/mir/object-page/boxes/workflow/utils.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/boxes/workflow/dedup.xsl"/>
 
 
   <xsl:template match="/">
@@ -53,6 +54,7 @@
             </xsl:choose>
           </xsl:when>
         </xsl:choose>
+        <xsl:apply-templates select="/mycoreobject" mode="possibleDuplicates"/>
       </div>
     </xsl:if>
     <xsl:apply-imports/>
