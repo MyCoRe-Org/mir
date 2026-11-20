@@ -8,10 +8,11 @@
   <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="value" />
+  <xsl:param name="action" select="''" />
 
   <xsl:template match="/test-edit-url">
     <result>
-      <xsl:value-of select="mirobject:edit-url($value)" />
+      <xsl:value-of select="if ($action = '') then mirobject:edit-url($value) else mirobject:edit-url($value, $action)" />
     </result>
   </xsl:template>
 

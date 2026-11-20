@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
-  xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
@@ -184,18 +183,8 @@
 
     <xsl:template name="getEditURL">
         <xsl:param name="id"/>
-        <xsl:variable name="admin-edit-url">
-            <xsl:value-of select="mcractionmapping:get-url-for-id('update-admin',$id,true())"/>
-        </xsl:variable>
-        <xsl:variable name="normal-edit-url" select="mirobject:edit-url($id)"/>
-        <xsl:choose>
-            <xsl:when test="string-length($admin-edit-url)&gt;0">
-                <xsl:value-of select="$admin-edit-url"/><xsl:text>&amp;id=</xsl:text><xsl:value-of select="$id"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$normal-edit-url"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="admin-edit-url" select="mirobject:edit-url($id, 'update-admin')"/>
+        <xsl:value-of select="if (string-length($admin-edit-url) &gt; 0) then $admin-edit-url else mirobject:edit-url($id)"/>
     </xsl:template>
 
   <xsl:template name="buildLayout">

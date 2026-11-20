@@ -15,8 +15,14 @@
 
   <xsl:function name="mirobject:edit-url" as="xs:string">
     <xsl:param name="id" as="xs:string" />
+    <xsl:sequence select="mirobject:edit-url($id, 'update')" />
+  </xsl:function>
 
-    <xsl:variable name="url" select="string(mcractionmapping:get-url-for-id('update', $id, true()))" />
+  <xsl:function name="mirobject:edit-url" as="xs:string">
+    <xsl:param name="id" as="xs:string" />
+    <xsl:param name="action" as="xs:string" />
+
+    <xsl:variable name="url" select="string(mcractionmapping:get-url-for-id($action, $id, true()))" />
     <xsl:sequence select="if ($url = '') then '' else string(mcrurl:set-param($url, 'id', $id))" />
   </xsl:function>
 
