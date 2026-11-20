@@ -4,6 +4,7 @@
   xmlns:mirconfig="http://www.mycore.de/xslt/mirconfig"
   xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
   xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -14,14 +15,26 @@
   <xsl:template match="/">
     <xsl:variable name="object" select="mycoreobject" />
     <xsl:variable name="genres" select="mirmods:genres(mirobject:mods($object))" />
-    <xsl:variable name="names" select="mirconfig:get-list('MIR.ObjectActions', $genres)" />
+
+    <xsl:call-template name="object-action-context">
+      <xsl:with-param name="names" select="mirconfig:get-list('MIR.ObjectActions', $genres)" />
+      <xsl:with-param name="object" select="$object" />
+      <xsl:with-param name="genres" select="$genres" />
+      <xsl:with-param name="mods-type" select="string($mods-type)" />
+    </xsl:call-template>
+    <xsl:apply-imports />
+  </xsl:template>
+
+  <xsl:template match="mycoreobject" mode="object-action-box">
+    <xsl:param name="actions" as="element(action)*" tunnel="yes" />
+    <xsl:param name="object-id" as="xs:string" tunnel="yes" />
 
     <div id="mir-edit">
       <div class="btn-group d-flex">
         <xsl:call-template name="object-basket-button">
-          <xsl:with-param name="object-id" select="string($object/@ID)" />
+          <xsl:with-param name="object-id" select="$object-id" />
         </xsl:call-template>
-        <xsl:if test="exists($names)">
+        <xsl:if test="exists($actions)">
           <div class="btn-group w-100">
             <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
               <i class="fas fa-cog">
@@ -30,24 +43,13 @@
               <xsl:value-of select="concat(' ', mcri18n:translate('mir.actions'))" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <xsl:call-template name="object-actions">
-                <xsl:with-param name="names" select="$names" />
-                <xsl:with-param name="object" select="$object" />
-                <xsl:with-param name="genres" select="$genres" />
-                <xsl:with-param name="mods-type" select="string($mods-type)" />
-              </xsl:call-template>
+              <xsl:call-template name="object-actions" />
             </ul>
           </div>
         </xsl:if>
       </div>
-      <xsl:call-template name="object-action-dialogs">
-        <xsl:with-param name="names" select="$names" />
-        <xsl:with-param name="object" select="$object" />
-        <xsl:with-param name="genres" select="$genres" />
-        <xsl:with-param name="mods-type" select="string($mods-type)" />
-      </xsl:call-template>
+      <xsl:call-template name="object-action-dialogs" />
     </div>
-    <xsl:apply-imports />
   </xsl:template>
 
   <xsl:template name="object-basket-button">
