@@ -4,6 +4,8 @@
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
+  xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -16,6 +18,7 @@
   <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
     <xsl:variable name="loginURL" select="$LoginDetourURL" />
+    <xsl:variable name="genres" select="mirmods:genres(mirobject:mods(mycoreobject))" />
 
     <xsl:choose>
       <xsl:when test="mcracl:check-permission(mycoreobject/@ID, 'read')">
@@ -90,6 +93,7 @@
                           <xsl:call-template name="derivate-actions">
                             <xsl:with-param name="derivate" select="." />
                             <xsl:with-param name="object-id" select="string($objID)" />
+                            <xsl:with-param name="genres" select="$genres" />
                           </xsl:call-template>
                           <div class="clearfix" />
                         </div>

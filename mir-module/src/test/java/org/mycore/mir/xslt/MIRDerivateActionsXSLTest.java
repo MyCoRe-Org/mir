@@ -95,6 +95,15 @@ public class MIRDerivateActionsXSLTest extends MIRXSLTFunctionTestCase {
         assertEquals(DERIVATE_ID, link.getAttributeValue("data-derivate-id"));
     }
 
+    @Test
+    @MCRTestConfiguration(properties = {
+        @MCRTestProperty(key = "MIR.DerivateActions.thesis", string = "md5")
+    })
+    void testGenreOverride() throws Exception {
+        assertEquals(List.of("md5"), actions(render(true, "dissertation thesis")));
+        assertEquals(List.of("zip", "edit", "md5", "delete"), actions(render(true, "article")));
+    }
+
     private static <T> T withIncludedModule(String module, Callable<T> action) throws Exception {
         String original = MCRConfiguration2.getStringOrThrow(INCLUDES);
         MCRConfiguration2.set(INCLUDES, original + "," + module);
@@ -106,11 +115,15 @@ public class MIRDerivateActionsXSLTest extends MIRXSLTFunctionTestCase {
     }
 
     private Document render(boolean permitted) throws Exception {
+        return render(permitted, "");
+    }
+
+    private Document render(boolean permitted, String genres) throws Exception {
         MCRAccessMock.setMethodResult(permitted);
         Element derobject = new Element("derobject").setAttribute("href", DERIVATE_ID, XLINK);
         Element object = new Element("mycoreobject").setAttribute("ID", OBJECT_ID)
             .addContent(new Element("structure").addContent(new Element("derobjects").addContent(derobject)));
-        return transformDocument(new Document(object), XSL, Map.of());
+        return transformDocument(new Document(object), XSL, Map.of("genres", genres));
     }
 
     private static List<String> actions(Document result) {
