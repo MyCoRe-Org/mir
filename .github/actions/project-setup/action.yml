@@ -1,0 +1,9 @@
+name: Project Setup
+description: Check out the submodule mir-solr, maven-deploy.yml checks out no submodules.
+
+runs:
+  using: composite
+  steps:
+    - name: Check out submodules
+      shell: bash
+      run: git submodule update --init --recursive
