@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -27,11 +28,12 @@
             <xsl:when test="@children = 'true'">
               <button
                 type="button" class="btn btn-link p-0 border-0"
+                id="cbButton_{$id}"
                 aria-label="{mcri18n:translate('mir.classification.subcategories')}"
                 aria-expanded="false"
                 aria-controls="cbChildren_{$id}"
-                onclick="toogle('{@id}','{$folder.closed}','{$folder.open}');">
-                  <i class="{$folder.closed}" id="cbButton_{$id}" aria-hidden="true" />
+                onclick="toogle('{@id}','{$folder.closed}','{$folder.open}'); this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') !== 'true');">
+                  <i class="{$folder.closed}" aria-hidden="true" />
               </button>
             </xsl:when>
             <xsl:otherwise>

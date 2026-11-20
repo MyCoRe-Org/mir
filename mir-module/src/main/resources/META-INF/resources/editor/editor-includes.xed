@@ -958,21 +958,22 @@
     </fieldset>
   </xed:template>
 
-  <xed:template id="identifier.patent">
-    <div class="mir-form-group row">
-      <label for="identifierPatent" class="col-md-3 col-form-label text-end form-label">
-        <xed:output i18n="mir.identifier.patent" />
-      </label>
-      <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
+    <xed:template id="identifier.patent">
+    <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
+      <div class="mir-form-group row">
+        <label for="identifierPatent-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+          <xed:output i18n="mir.identifier.patent" />
+        </label>
         <div class="col-md-6">
           <div class="controls">
-            <input id="identifierPatent" aria-label="{i18n:mir.identifier.patent}" type="text" size="30" class="form-control form-control-inline" />
+            <input id="identifierPatent-{xed:generate-id()}" type="text" size="30" class="form-control form-control-inline" />
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.identifier.patent}" pmud="true" />
-      </xed:repeat>
-    </div>
+      </div>
+    </xed:repeat>
   </xed:template>
+
 
   <xed:template id="identifier.isbn">
     <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" />
