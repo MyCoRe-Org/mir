@@ -39,16 +39,18 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:label($guidance/labels/label, $CurrentLang, $DefaultLang)" />
-      <div class="mir-guidance-banner" style="margin-bottom: 20px">
-        <xsl:if test="normalize-space($guidance/@banner)">
+      <xsl:variable name="title" select="mirguidancepanel:label($guidance/labels/label, $CurrentLang, $DefaultLang)"/>
+      <xsl:variable name="banners" select="$guidance/banners/banner"/>
+      <xsl:for-each select="($banners[lang($CurrentLang)], $banners[not(@xml:lang)])[1]">
+        <div class="mir-guidance-banner" style="margin-bottom: 20px">
           <xsl:call-template name="render-guidance-panel-banner">
-            <xsl:with-param name="object-id" select="$object-id" />
-            <xsl:with-param name="banner" select="string($guidance/@banner)" />
-            <xsl:with-param name="title" select="$title" />
+            <xsl:with-param name="object-id" select="$object-id"/>
+            <xsl:with-param name="derivate-id" select="$derivate-id"/>
+            <xsl:with-param name="banner" select="."/>
+            <xsl:with-param name="title" select="$title"/>
           </xsl:call-template>
-        </xsl:if>
-      </div>
+        </div>
+      </xsl:for-each>
       <div class="mir-guidance-items">
         <div class="card">
           <div class="card-header">
@@ -88,11 +90,50 @@
 
   <xsl:template name="render-guidance-panel-banner">
     <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="banner" as="xs:string" />
+    <xsl:param name="derivate-id" as="xs:string" />
+    <xsl:param name="banner" as="element(banner)" />
     <xsl:param name="title" as="xs:string" />
-    <a class="mir-guidance-panel-banner" href="{$WebApplicationBaseURL}receive/{$object-id}">
-      <img src="{$WebApplicationBaseURL}{$banner}" class="card-img-top" alt="{$title}" />
+    <xsl:variable name="href">
+      <xsl:choose>
+        <xsl:when test="$banner/@href">
+          <xsl:value-of select="$banner/@href"/>
+        </xsl:when>
+        <xsl:when test="$banner/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $banner/@ref)"/>
+        </xsl:when>
+        <xsl:when test="$banner/@file">
+          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $banner/@file)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="image" select="$banner/image"/>
+    <xsl:variable name="src">
+      <xsl:choose>
+        <xsl:when test="$image/@href">
+          <xsl:value-of select="$image/@href"/>
+        </xsl:when>
+        <xsl:when test="$image/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $image/@ref)"/>
+        </xsl:when>
+        <xsl:when test="$image/@file">
+          <xsl:variable name="fileNodeServletPath" select="'servlets/MCRFileNodeServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $fileNodeServletPath, $derivate-id, '/', $image/@file)"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]" />
+    <a class="mir-guidance-banner-image" href="{$href}">
+      <img src="{$src}" class="card-img-top" alt="{$alt}"/>
     </a>
+    <xsl:if test="$banner/small-print">
+      <small id="mir-guidance-banner-small-print" class="d-flex justify-content-center">
+        <xsl:copy-of select="$banner/small-print/node()"/>
+      </small>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-search-form">
@@ -139,7 +180,7 @@
         </xsl:when>
         <xsl:when test="$item/@file">
           <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath,$derivate-id, '/', $item/@file)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $item/@file)"/>
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
