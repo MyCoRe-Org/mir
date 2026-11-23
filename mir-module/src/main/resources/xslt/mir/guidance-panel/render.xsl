@@ -32,9 +32,12 @@
   <xsl:template name="render-guidance-panel">
     <xsl:param name="object-id" as="xs:string" />
     <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:variable name="guidance" select="if
-      (mirguidancepanel:is-readable($object-id) and mirguidancepanel:is-readable($derivate-id))
-      then mcrderivate:get-file($derivate-id, mcrderivate:get-main-file($derivate-id))/guidance else ()"/>
+    <xsl:variable name="can-read-object" select="mirguidancepanel:is-readable($object-id)"/>
+    <xsl:variable name="can-read-derivate" select="mirguidancepanel:is-readable($derivate-id)"/>
+    <xsl:variable name="main-file" select="normalize-space(mcrderivate:get-main-file($derivate-id))"/>
+    <xsl:variable name="has-main-file" select="boolean($main-file)" as="xs:boolean"/>
+    <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
+      then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
@@ -55,6 +58,7 @@
             <ul>
               <xsl:for-each select="$guidance/item">
                 <xsl:call-template name="render-guidance-panel-item">
+                  <xsl:with-param name="derivate-id" select="$derivate-id" />
                   <xsl:with-param name="item" select="." />
                 </xsl:call-template>
               </xsl:for-each>
@@ -118,11 +122,34 @@
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-item">
+    <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="item" as="element(item)" />
+    <xsl:variable name="href">
+      <xsl:choose>
+        <xsl:when test="$item/@href">
+          <xsl:value-of select="$item/@href"/>
+        </xsl:when>
+        <xsl:when test="$item/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $item/@ref)"/>
+        </xsl:when>
+        <xsl:when test="$item/@file">
+          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath,$derivate-id, '/', $item/@file)"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="label" select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)"/>
     <li>
-      <a href="{if (starts-with($item/@ref, 'http')) then $item/@ref else concat($WebApplicationBaseURL, $item/@ref)}">
-        <xsl:value-of select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)" />
-      </a>
+      <xsl:choose>
+        <xsl:when test="normalize-space($href)">
+          <a href="{$href}">
+            <xsl:value-of select="$label"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$label"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </li>
   </xsl:template>
 
