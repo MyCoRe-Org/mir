@@ -20,7 +20,7 @@
     <xsl:param name="object-id" as="xs:string" />
     <xsl:if test="mirguidancepanel:is-readable($object-id)">
       <xsl:for-each select="mcrobject:get($object-id)/mycoreobject/structure/derobjects
-        /derobject[classification[@classid = 'derivate_types'][@categid = 'navigation']]">
+        /derobject[classification[@classid = 'derivate_types'][@categid = 'guidance']]">
         <xsl:call-template name="render-guidance-panel">
           <xsl:with-param name="object-id" select="$object-id" />
           <xsl:with-param name="derivate-id" select="string(@xlink:href)" />
@@ -32,16 +32,18 @@
   <xsl:template name="render-guidance-panel">
     <xsl:param name="object-id" as="xs:string" />
     <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:variable name="navigation" select="if (mirguidancepanel:is-readable($object-id)
-      and mirguidancepanel:is-readable($derivate-id)) then mcrderivate:get-file($derivate-id, 'navigation.xml')/item else ()" />
-    <xsl:if test="$navigation">
-      <xsl:variable name="title" select="mirguidancepanel:label($navigation/label, $CurrentLang, $DefaultLang)" />
+    <xsl:variable name="guidance" select="if
+      (mirguidancepanel:is-readable($object-id)  and mirguidancepanel:is-readable($derivate-id))
+      then mcrderivate:get-file($derivate-id, 'guidance.xml')/guidance
+      else ()"/>
+    <xsl:if test="$guidance">
+      <xsl:variable name="title" select="mirguidancepanel:label($guidance/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
         <div class="card">
-          <xsl:if test="normalize-space($navigation/@banner)">
+          <xsl:if test="normalize-space($guidance/@banner)">
             <xsl:call-template name="render-guidance-panel-banner">
               <xsl:with-param name="object-id" select="$object-id" />
-              <xsl:with-param name="banner" select="string($navigation/@banner)" />
+              <xsl:with-param name="banner" select="string($guidance/@banner)" />
               <xsl:with-param name="title" select="$title" />
             </xsl:call-template>
           </xsl:if>
@@ -52,7 +54,7 @@
           </div>
           <div class="card-body">
             <ul>
-              <xsl:for-each select="$navigation/item">
+              <xsl:for-each select="$guidance/item">
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="item" select="." />
                 </xsl:call-template>
