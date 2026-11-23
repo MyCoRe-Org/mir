@@ -33,9 +33,8 @@
     <xsl:param name="object-id" as="xs:string" />
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:variable name="guidance" select="if
-      (mirguidancepanel:is-readable($object-id)  and mirguidancepanel:is-readable($derivate-id))
-      then mcrderivate:get-file($derivate-id, 'guidance.xml')/guidance
-      else ()"/>
+      (mirguidancepanel:is-readable($object-id) and mirguidancepanel:is-readable($derivate-id))
+      then mcrderivate:get-file($derivate-id, mcrderivate:get-main-file($derivate-id))/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
