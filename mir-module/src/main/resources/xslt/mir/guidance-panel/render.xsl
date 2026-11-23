@@ -71,13 +71,16 @@
               </xsl:if>
             </ul>
           </div>
-          <div class="card-footer">
-            <xsl:call-template name="render-guidance-panel-search-form">
-              <xsl:with-param name="object-id" select="$object-id" />
-              <xsl:with-param name="derivate-id" select="$derivate-id" />
-              <xsl:with-param name="title" select="$title" />
-            </xsl:call-template>
-          </div>
+          <xsl:variable name="search" select="normalize-space($guidance/items/@search)" />
+          <xsl:if test="not($search) or lower-case($search)='true'">
+            <div class="card-footer">
+              <xsl:call-template name="render-guidance-panel-search-form">
+                <xsl:with-param name="object-id" select="$object-id" />
+                <xsl:with-param name="derivate-id" select="$derivate-id" />
+                <xsl:with-param name="title" select="$title" />
+              </xsl:call-template>
+            </div>
+          </xsl:if>
         </div>
       </div>
     </xsl:if>
