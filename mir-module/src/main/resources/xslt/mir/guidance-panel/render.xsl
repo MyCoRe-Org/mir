@@ -39,23 +39,25 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:label($guidance/lebels/label, $CurrentLang, $DefaultLang)" />
-      <div class="mir-guidance-panel">
+      <xsl:variable name="title" select="mirguidancepanel:label($guidance/labels/label, $CurrentLang, $DefaultLang)" />
+      <div class="mir-guidance-banner" style="margin-bottom: 20px">
+        <xsl:if test="normalize-space($guidance/@banner)">
+          <xsl:call-template name="render-guidance-panel-banner">
+            <xsl:with-param name="object-id" select="$object-id" />
+            <xsl:with-param name="banner" select="string($guidance/@banner)" />
+            <xsl:with-param name="title" select="$title" />
+          </xsl:call-template>
+        </xsl:if>
+      </div>
+      <div class="mir-guidance-items">
         <div class="card">
-          <xsl:if test="normalize-space($guidance/@banner)">
-            <xsl:call-template name="render-guidance-panel-banner">
-              <xsl:with-param name="object-id" select="$object-id" />
-              <xsl:with-param name="banner" select="string($guidance/@banner)" />
-              <xsl:with-param name="title" select="$title" />
-            </xsl:call-template>
-          </xsl:if>
           <div class="card-header">
             <h3 class="card-title">
               <xsl:value-of select="$title" />
             </h3>
           </div>
           <div class="card-body">
-            <ul>
+            <ul class="mb-0">
               <xsl:for-each select="$guidance/items/item">
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="derivate-id" select="$derivate-id" />
