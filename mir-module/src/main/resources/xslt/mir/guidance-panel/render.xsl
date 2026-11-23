@@ -39,7 +39,7 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:label($guidance/label, $CurrentLang, $DefaultLang)" />
+      <xsl:variable name="title" select="mirguidancepanel:label($guidance/lebels/label, $CurrentLang, $DefaultLang)" />
       <div class="mir-guidance-panel">
         <div class="card">
           <xsl:if test="normalize-space($guidance/@banner)">
@@ -56,7 +56,7 @@
           </div>
           <div class="card-body">
             <ul>
-              <xsl:for-each select="$guidance/item">
+              <xsl:for-each select="$guidance/items/item">
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="derivate-id" select="$derivate-id" />
                   <xsl:with-param name="item" select="." />
