@@ -60,8 +60,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *   <li>builds the {@code mycoreobject} from the imported metadata (identifier lookup in external
  *       databases) and stores it in the current session under a generated key,</li>
  *   <li>asks the deduplication component (via {@code dedup:duplicates-for-session:{key}}) for existing
- *       objects sharing a deduplication key, ignoring those the current user may not read or that are in a
- *       state listed in {@code MIR.Dedup.FilterDocumentsInStates},</li>
+ *       objects sharing a deduplication key, ignoring those that no longer exist, that the current user
+ *       may not read or that are in a state listed in {@code MIR.Dedup.FilterDocumentsInStates},</li>
  *   <li>if none are found (or none is readable), redirects straight to the editor, loading the cached object from the
  *       session ({@code session:{key}}),</li>
  *   <li>otherwise renders a confirmation page listing the possible duplicates. Only when the user
@@ -149,6 +149,7 @@ public class MIRImportServlet extends MCRServlet {
             .stream()
             .map(duplicate -> duplicate.getAttributeValue("id"))
             .distinct()
+            .filter(MIRImportServlet::exists)
             .filter(id -> MCRAccessManager.checkPermission(id, MCRAccessManager.PERMISSION_READ))
             .filter(id -> !isInState(id, filteredStates))
             .toList();
@@ -166,6 +167,19 @@ public class MIRImportServlet extends MCRServlet {
         Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicateIds,
             describeImport(object, modsId.trim(), type));
         getLayoutService().doLayout(request, response, new MCRJDOMContent(page));
+    }
+
+    /**
+     * Checks whether a possible duplicate still exists. The deduplication keys of an object may outlive it,
+     * for example if it was deleted before the deduplication event handler was active. Such entries are
+     * skipped instead of failing the import.
+     */
+    private static boolean exists(String objectId) {
+        if (!MCRObjectID.isValid(objectId) || !MCRMetadataManager.exists(MCRObjectID.getInstance(objectId))) {
+            LOGGER.warn("Ignoring possible duplicate {}, the object does not exist", objectId);
+            return false;
+        }
+        return true;
     }
 
     private static boolean isInState(String objectId, List<String> states) {
