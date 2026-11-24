@@ -687,10 +687,10 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==
 
-jquery-migrate@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-1.4.1.tgz#85152f3ec99a95625f4f7d0bcf62e9b8638f5a76"
-  integrity sha512-RwIqqAaEC1gQ9KFtdw69wse2bUGQnGNwbkZBkCwSCYkAICMlpVxAbHmfvWaS7SfLGJrYd13FZTuuQgZ6gBotJQ==
+jquery-migrate@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-3.6.0.tgz#9bbad8e222cef02091b3842568dde261f517a77a"
+  integrity sha512-2k3GMQXXEellCOkj8tczgCd/Y0KMm7LErz4rE6CkHIZV1JTUDlgs7XFN+GpwGKXDQtw/HsjtJuE+CS8IfEOnPg==
 
 jquery@3.5.1:
   version "3.5.1"
