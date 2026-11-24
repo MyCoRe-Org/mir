@@ -10,35 +10,35 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl" />
+  <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl"/>
 
-  <xsl:param name="CurrentLang" />
-  <xsl:param name="DefaultLang" />
-  <xsl:param name="ServletsBaseURL" />
-  <xsl:param name="WebApplicationBaseURL" />
+  <xsl:param name="CurrentLang"/>
+  <xsl:param name="DefaultLang"/>
+  <xsl:param name="ServletsBaseURL"/>
+  <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template name="render-guidance-panels">
-    <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="marketing-url" as="xs:string?" />
+    <xsl:param name="object-id" as="xs:string"/>
+    <xsl:param name="marketing-url" as="xs:string?"/>
     <xsl:if test="mirguidancepanel:is-readable($object-id)">
       <xsl:variable name="mycoreobject" select="mcrobject:get($object-id)/mycoreobject" as="element(mycoreobject)?"/>
       <xsl:for-each select="$mycoreobject/structure/derobjects
         /derobject[classification[@classid='derivate_types'][@categid='guidance']]">
         <xsl:call-template name="render-guidance-panel">
-          <xsl:with-param name="mycoreobject" select="$mycoreobject" />
-          <xsl:with-param name="object-id" select="$object-id" />
-          <xsl:with-param name="derivate-id" select="string(@xlink:href)" />
-          <xsl:with-param name="marketing-url" select="$marketing-url" />
+          <xsl:with-param name="mycoreobject" select="$mycoreobject"/>
+          <xsl:with-param name="object-id" select="$object-id"/>
+          <xsl:with-param name="derivate-id" select="string(@xlink:href)"/>
+          <xsl:with-param name="marketing-url" select="$marketing-url"/>
         </xsl:call-template>
       </xsl:for-each>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel">
-    <xsl:param name="mycoreobject" as="element(mycoreobject)" />
-    <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:param name="marketing-url" as="xs:string?" />
+    <xsl:param name="mycoreobject" as="element(mycoreobject)"/>
+    <xsl:param name="object-id" as="xs:string"/>
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="marketing-url" as="xs:string?"/>
     <xsl:variable name="can-read-object" select="mirguidancepanel:is-readable($object-id)"/>
     <xsl:variable name="can-read-derivate" select="mirguidancepanel:is-readable($derivate-id)"/>
     <xsl:variable name="main-file" select="normalize-space(mcrderivate:get-main-file($derivate-id))"/>
@@ -72,7 +72,7 @@
         <div class="mir-guidance-buttons mb-3">
           <xsl:for-each select="$guidance/about-button">
             <xsl:call-template name="render-guidance-panel-about-button">
-              <xsl:with-param name="mycoreobject" select="$mycoreobject" />
+              <xsl:with-param name="mycoreobject" select="$mycoreobject"/>
               <xsl:with-param name="object-id" select="$object-id"/>
               <xsl:with-param name="derivate-id" select="$derivate-id"/>
               <xsl:with-param name="about-button" select="."/>
@@ -94,32 +94,32 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">
-              <xsl:value-of select="$title" />
+              <xsl:value-of select="$title"/>
             </h3>
           </div>
           <div class="card-body">
             <ul class="mb-0">
               <xsl:for-each select="$guidance/items/item[lang($CurrentLang)] | $guidance/items/item[not(@xml:lang)]">
                 <xsl:call-template name="render-guidance-panel-item">
-                  <xsl:with-param name="derivate-id" select="$derivate-id" />
-                  <xsl:with-param name="item" select="." />
+                  <xsl:with-param name="derivate-id" select="$derivate-id"/>
+                  <xsl:with-param name="item" select="."/>
                   <xsl:with-param name="base" select="$base"/>
                 </xsl:call-template>
               </xsl:for-each>
               <xsl:if test="mirguidancepanel:is-enabled('RSS')">
                 <xsl:call-template name="render-guidance-panel-rss-item">
-                  <xsl:with-param name="object-id" select="$object-id" />
+                  <xsl:with-param name="object-id" select="$object-id"/>
                 </xsl:call-template>
               </xsl:if>
             </ul>
           </div>
-          <xsl:variable name="search" select="normalize-space($guidance/items/@search)" />
+          <xsl:variable name="search" select="normalize-space($guidance/items/@search)"/>
           <xsl:if test="not($search) or lower-case($search)='true'">
             <div class="card-footer">
               <xsl:call-template name="render-guidance-panel-search-form">
-                <xsl:with-param name="object-id" select="$object-id" />
-                <xsl:with-param name="derivate-id" select="$derivate-id" />
-                <xsl:with-param name="title" select="$title" />
+                <xsl:with-param name="object-id" select="$object-id"/>
+                <xsl:with-param name="derivate-id" select="$derivate-id"/>
+                <xsl:with-param name="title" select="$title"/>
               </xsl:call-template>
             </div>
           </xsl:if>
@@ -129,11 +129,11 @@
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-banner">
-    <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:param name="banner" as="element(banner)" />
-    <xsl:param name="title" as="xs:string" />
-    <xsl:param name="base" as="xs:string" />
+    <xsl:param name="object-id" as="xs:string"/>
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="banner" as="element(banner)"/>
+    <xsl:param name="title" as="xs:string"/>
+    <xsl:param name="base" as="xs:string"/>
     <xsl:variable name="link" select="($banner/link[lang($CurrentLang)], $banner/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
@@ -173,7 +173,7 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]" />
+    <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]"/>
     <a class="mir-guidance-banner-image" href="{$href}">
       <img src="{$src}" class="card-img-top" alt="{$alt}"/>
     </a>
@@ -185,12 +185,12 @@
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-about-button">
-    <xsl:param name="mycoreobject" as="element(mycoreobject)" />
-    <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:param name="about-button" as="element(about-button)" />
-    <xsl:param name="title" as="xs:string" />
-    <xsl:param name="base" as="xs:string" />
+    <xsl:param name="mycoreobject" as="element(mycoreobject)"/>
+    <xsl:param name="object-id" as="xs:string"/>
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="about-button" as="element(about-button)"/>
+    <xsl:param name="title" as="xs:string"/>
+    <xsl:param name="base" as="xs:string"/>
     <xsl:variable name="link" select="($about-button/link[lang($CurrentLang)], $about-button/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
@@ -231,16 +231,16 @@
     </xsl:variable>
     <xsl:variable name="type" select="($about-button/@type, 'primary')[1]"/>
     <div class="mir-guidance-button-about mb-1">
-        <a href="{$href}" class="btn btn-{$type} w-100">
-          <i aria-hidden="true" class="fas fa-info-circle"/>
-          <xsl:value-of select="$label"/>
-        </a>
+      <a href="{$href}" class="btn btn-{$type} w-100">
+        <i aria-hidden="true" class="fas fa-info-circle"/>
+        <xsl:value-of select="$label"/>
+      </a>
     </div>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-marketing-button">
-    <xsl:param name="marketing-button" as="element(marketing-button)" />
-    <xsl:param name="marketing-url" as="xs:string" />
+    <xsl:param name="marketing-button" as="element(marketing-button)"/>
+    <xsl:param name="marketing-url" as="xs:string"/>
     <xsl:variable name="type" select="($marketing-button/@type, 'primary')[1]"/>
     <div class="mir-guidance-button-marketing mb-1">
       <a href="{$marketing-url}" class="btn btn-{$type} w-100">
@@ -251,44 +251,44 @@
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-search-form">
-    <xsl:param name="object-id" as="xs:string" />
-    <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:param name="title" as="xs:string" />
+    <xsl:param name="object-id" as="xs:string"/>
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="title" as="xs:string"/>
     <!-- unique, a page may contain several panels -->
-    <xsl:variable name="search-label" select="mcri18n:translate-with-params('mir.guidancePanel.search', $title)" />
+    <xsl:variable name="search-label" select="mcri18n:translate-with-params('mir.guidancePanel.search', $title)"/>
     <form role="search" action="{$ServletsBaseURL}solr/find">
       <xsl:if test="not(mirguidancepanel:is-enabled('SearchPanel')) and mirguidancepanel:is-enabled('SearchFacet')">
         <input type="hidden" name="facet.field" value="{{!facet.prefix={$object-id}}}mods.relatedItem.root"/>
         <input type="hidden" name="facet.label.{$object-id}" value="{$title}"/>
       </xsl:if>
       <input type="hidden" name="fq" value="mods.relatedItem.root:{$object-id}"/>
-      <xsl:variable name="input-id" select="concat('mir-guidance-panel-search-', $derivate-id)" />
+      <xsl:variable name="input-id" select="concat('mir-guidance-panel-search-', $derivate-id)"/>
       <label class="visually-hidden" for="{$input-id}">
         <xsl:value-of select="$search-label"/>
       </label>
       <div class="input-group">
-        <input id="{$input-id}" type="text" name="condQuery" class="form-control" placeholder="{$search-label}" />
+        <input id="{$input-id}" type="text" name="condQuery" class="form-control" placeholder="{$search-label}"/>
         <button class="btn btn-primary" type="submit" aria-label="{$search-label}">
-          <i class="fas fa-search" aria-hidden="true" />
+          <i class="fas fa-search" aria-hidden="true"/>
         </button>
       </div>
     </form>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-rss-item">
-    <xsl:param name="object-id" as="xs:string" />
+    <xsl:param name="object-id" as="xs:string"/>
     <li>
       <a href="{$WebApplicationBaseURL}receive/{$object-id}?XSL.Style=rss">
-        <i class="fas fa-rss" aria-hidden="true" />
-        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.rss'))" />
+        <i class="fas fa-rss" aria-hidden="true"/>
+        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.rss'))"/>
       </a>
     </li>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-item">
-    <xsl:param name="derivate-id" as="xs:string" />
-    <xsl:param name="item" as="element(item)" />
-    <xsl:param name="base" as="xs:string" />
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="item" as="element(item)"/>
+    <xsl:param name="base" as="xs:string"/>
     <xsl:variable name="link" select="($item/link[lang($CurrentLang)], $item/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
