@@ -4,6 +4,7 @@
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrobject="http://www.mycore.de/xslt/object"
   xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
+  xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -18,20 +19,26 @@
 
   <xsl:template name="render-guidance-panels">
     <xsl:param name="object-id" as="xs:string" />
+    <xsl:param name="marketing-url" as="xs:string?" />
     <xsl:if test="mirguidancepanel:is-readable($object-id)">
-      <xsl:for-each select="mcrobject:get($object-id)/mycoreobject/structure/derobjects
-        /derobject[classification[@classid = 'derivate_types'][@categid = 'guidance']]">
+      <xsl:variable name="mycoreobject" select="mcrobject:get($object-id)/mycoreobject" as="element(mycoreobject)?"/>
+      <xsl:for-each select="$mycoreobject/structure/derobjects
+        /derobject[classification[@classid='derivate_types'][@categid='guidance']]">
         <xsl:call-template name="render-guidance-panel">
+          <xsl:with-param name="mycoreobject" select="$mycoreobject" />
           <xsl:with-param name="object-id" select="$object-id" />
           <xsl:with-param name="derivate-id" select="string(@xlink:href)" />
+          <xsl:with-param name="marketing-url" select="$marketing-url" />
         </xsl:call-template>
       </xsl:for-each>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel">
+    <xsl:param name="mycoreobject" as="element(mycoreobject)" />
     <xsl:param name="object-id" as="xs:string" />
     <xsl:param name="derivate-id" as="xs:string" />
+    <xsl:param name="marketing-url" as="xs:string?" />
     <xsl:variable name="can-read-object" select="mirguidancepanel:is-readable($object-id)"/>
     <xsl:variable name="can-read-derivate" select="mirguidancepanel:is-readable($derivate-id)"/>
     <xsl:variable name="main-file" select="normalize-space(mcrderivate:get-main-file($derivate-id))"/>
@@ -40,17 +47,40 @@
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/labels/label, $CurrentLang, $DefaultLang)"/>
-      <xsl:variable name="banners" select="$guidance/banners/banner"/>
-      <xsl:for-each select="($banners[lang($CurrentLang)], $banners[not(@xml:lang)])[1]">
-        <div class="mir-guidance-banner" style="margin-bottom: 20px">
-          <xsl:call-template name="render-guidance-panel-banner">
-            <xsl:with-param name="object-id" select="$object-id"/>
-            <xsl:with-param name="derivate-id" select="$derivate-id"/>
-            <xsl:with-param name="banner" select="."/>
-            <xsl:with-param name="title" select="$title"/>
-          </xsl:call-template>
+      <xsl:where-populated>
+        <div class="mir-guidance-banner mb-3">
+          <xsl:variable name="banners" select="$guidance/banners/banner"/>
+          <xsl:for-each select="($banners[lang($CurrentLang)], $banners[not(@xml:lang)])[1]">
+            <xsl:call-template name="render-guidance-panel-banner">
+              <xsl:with-param name="object-id" select="$object-id"/>
+              <xsl:with-param name="derivate-id" select="$derivate-id"/>
+              <xsl:with-param name="banner" select="."/>
+              <xsl:with-param name="title" select="$title"/>
+            </xsl:call-template>
+          </xsl:for-each>
         </div>
-      </xsl:for-each>
+      </xsl:where-populated>
+      <xsl:where-populated>
+        <div class="mir-guidance-buttons mb-3">
+          <xsl:for-each select="$guidance/buttons/about-button">
+            <xsl:call-template name="render-guidance-panel-about-button">
+              <xsl:with-param name="mycoreobject" select="$mycoreobject" />
+              <xsl:with-param name="object-id" select="$object-id"/>
+              <xsl:with-param name="derivate-id" select="$derivate-id"/>
+              <xsl:with-param name="about-button" select="."/>
+              <xsl:with-param name="title" select="$title"/>
+            </xsl:call-template>
+          </xsl:for-each>
+          <xsl:if test="normalize-space($marketing-url)">
+            <xsl:for-each select="$guidance/buttons/marketing-button">
+              <xsl:call-template name="render-guidance-panel-marketing-button">
+                <xsl:with-param name="marketing-button" select="."/>
+                <xsl:with-param name="marketing-url" select="$marketing-url"/>
+              </xsl:call-template>
+            </xsl:for-each>
+          </xsl:if>
+        </div>
+      </xsl:where-populated>
       <div class="mir-guidance-items">
         <div class="card">
           <div class="card-header">
@@ -130,10 +160,71 @@
       <img src="{$src}" class="card-img-top" alt="{$alt}"/>
     </a>
     <xsl:if test="$banner/small-print">
-      <small id="mir-guidance-banner-small-print" class="d-flex justify-content-center">
+      <small class="mir-guidance-banner-small-print d-flex justify-content-center">
         <xsl:copy-of select="$banner/small-print/node()"/>
       </small>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="render-guidance-panel-about-button">
+    <xsl:param name="mycoreobject" as="element(mycoreobject)" />
+    <xsl:param name="object-id" as="xs:string" />
+    <xsl:param name="derivate-id" as="xs:string" />
+    <xsl:param name="about-button" as="element(about-button)" />
+    <xsl:param name="title" as="xs:string" />
+    <xsl:variable name="href">
+      <xsl:choose>
+        <xsl:when test="$about-button/@href">
+          <xsl:value-of select="$about-button/@href"/>
+        </xsl:when>
+        <xsl:when test="$about-button/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $about-button/@ref)"/>
+        </xsl:when>
+        <xsl:when test="$about-button/@file">
+          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $about-button/@file)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="mode" select="($about-button/@mode, 'genre')[1]"/>
+    <xsl:variable name="mods" select="$mycoreobject/metadata//mods:mods"/>
+    <xsl:variable name="modsGenre" select="substring-after($mods/mods:genre[@type='intern']/@valueURI,'#')"/>
+    <xsl:variable name="genre" select="(about-button/@genre, $modsGenre)"/>
+    <xsl:variable name="label">
+      <xsl:value-of select="mcri18n:translate('mir.guidancePanel.about')"/>
+      <xsl:choose>
+        <xsl:when test="$mode='title'">
+          <xsl:value-of select="' '"/>
+          <xsl:value-of select="$title"/>
+        </xsl:when>
+        <xsl:when test="mcri18n:exists(concat('mir.guidancePanel.about.', $genre))">
+          <xsl:value-of select="' '"/>
+          <xsl:value-of select="mcri18n:translate(concat('mir.guidancePanel.about.', $genre))"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="type" select="($about-button/@type, 'primary')[1]"/>
+    <div class="mir-guidance-button-about mb-1">
+        <a href="{$href}" class="btn btn-{$type} w-100">
+          <i aria-hidden="true" class="fas fa-info-circle"/>
+          <xsl:value-of select="$label"/>
+        </a>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="render-guidance-panel-marketing-button">
+    <xsl:param name="marketing-button" as="element(marketing-button)" />
+    <xsl:param name="marketing-url" as="xs:string" />
+    <xsl:variable name="type" select="($marketing-button/@type, 'primary')[1]"/>
+    <div class="mir-guidance-button-marketing mb-1">
+      <a href="{$marketing-url}" class="btn btn-{$type} w-100">
+        <i aria-hidden="true" class="fas fa-shopping-cart"/>
+        <xsl:value-of select="mcri18n:translate('mir.guidancePanel.buyPrintedCopy')"/>
+      </a>
+    </div>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-search-form">

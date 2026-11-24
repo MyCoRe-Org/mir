@@ -462,6 +462,7 @@
             [starts-with(., 'mods.relatedItem.root:')] ! substring-after(., 'mods.relatedItem.root:'))">
             <xsl:call-template name="render-guidance-panels">
               <xsl:with-param name="object-id" select="." />
+              <xsl:with-param name="is-root" select="true()" />
             </xsl:call-template>
           </xsl:for-each>
         </xsl:if>

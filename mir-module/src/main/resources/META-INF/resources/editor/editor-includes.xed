@@ -117,6 +117,14 @@
     <xed:cleanup-rule xpath="//service/servflags" relevant-if="servflag" />
   </xed:template>
 
+  <!-- ========== marketing URL ========== -->
+  <xed:template id="marketing-url">
+    <mir:textfield xpath="../../../../service/servflags[@class='MCRMetaLangText']/servflag[@type='marketing-url']"
+      label="component.mods.metaData.dictionary.marketingUrl"/>
+    <xed:cleanup-rule xpath="//service/servflags/servflag" relevant-if="string-length(text()) &gt; 0"/>
+    <xed:cleanup-rule xpath="//service/servflags" relevant-if="servflag"/>
+  </xed:template>
+
   <xed:template id="status">
     <div class="mir-form-group row">
       <label id="statusLabel" for="publicationState" class="col-md-3 col-form-label text-end form-label">
