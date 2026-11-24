@@ -26,6 +26,7 @@ import org.mycore.backend.jpa.access.MCRACCESSPK_;
 import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
@@ -41,7 +42,6 @@ import org.mycore.mods.MCRMODSEmbargoUtils;
 import org.mycore.pi.MCRPIManager;
 import org.mycore.pi.MCRPIRegistrationInfo;
 import org.mycore.pi.MCRPIServiceManager;
-import org.mycore.user2.MCRUserManager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -266,7 +266,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private boolean canEditPI() {
         return MCRConfiguration2.getOrThrow(EDIT_PI_ROLES, MCRConfiguration2::splitValue)
-            .anyMatch(MCRUserManager.getCurrentUser()::isUserInRole);
+            .anyMatch(MCRSessionMgr.getCurrentSession().getUserInformation()::isUserInRole);
     }
 
     private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
