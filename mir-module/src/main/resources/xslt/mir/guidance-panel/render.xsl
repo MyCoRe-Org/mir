@@ -46,7 +46,7 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:label($guidance/labels/label, $CurrentLang, $DefaultLang)"/>
+      <xsl:variable name="title" select="mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
           <xsl:variable name="banners" select="$guidance/banners/banner"/>
@@ -62,7 +62,7 @@
       </xsl:where-populated>
       <xsl:where-populated>
         <div class="mir-guidance-buttons mb-3">
-          <xsl:for-each select="$guidance/buttons/about-button">
+          <xsl:for-each select="$guidance/about-button">
             <xsl:call-template name="render-guidance-panel-about-button">
               <xsl:with-param name="mycoreobject" select="$mycoreobject" />
               <xsl:with-param name="object-id" select="$object-id"/>
@@ -72,7 +72,7 @@
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($marketing-url)">
-            <xsl:for-each select="$guidance/buttons/marketing-button">
+            <xsl:for-each select="$guidance/marketing-button">
               <xsl:call-template name="render-guidance-panel-marketing-button">
                 <xsl:with-param name="marketing-button" select="."/>
                 <xsl:with-param name="marketing-url" select="$marketing-url"/>
@@ -90,7 +90,7 @@
           </div>
           <div class="card-body">
             <ul class="mb-0">
-              <xsl:for-each select="$guidance/items/item">
+              <xsl:for-each select="$guidance/items/item[lang($CurrentLang)] | $guidance/items/item[not(@xml:lang)]">
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="derivate-id" select="$derivate-id" />
                   <xsl:with-param name="item" select="." />
@@ -123,24 +123,25 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="banner" as="element(banner)" />
     <xsl:param name="title" as="xs:string" />
+    <xsl:variable name="link" select="($banner/link[lang($CurrentLang)], $banner/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
-        <xsl:when test="$banner/@href">
-          <xsl:value-of select="$banner/@href"/>
+        <xsl:when test="$link/@href">
+          <xsl:value-of select="$link/@href"/>
         </xsl:when>
-        <xsl:when test="$banner/@ref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $banner/@ref)"/>
+        <xsl:when test="$link/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
         </xsl:when>
-        <xsl:when test="$banner/@file">
+        <xsl:when test="$link/@file">
           <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $banner/@file)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="image" select="$banner/image"/>
+    <xsl:variable name="image" select="($banner/image[lang($CurrentLang)], $banner/image[not(@xml:lang)])[1]"/>
     <xsl:variable name="src">
       <xsl:choose>
         <xsl:when test="$image/@href">
@@ -159,11 +160,11 @@
     <a class="mir-guidance-banner-image" href="{$href}">
       <img src="{$src}" class="card-img-top" alt="{$alt}"/>
     </a>
-    <xsl:if test="$banner/small-print">
+    <xsl:for-each select="($banner/small-print[lang($CurrentLang)], $banner/small-print[not(@xml:lang)])[1]">
       <small class="mir-guidance-banner-small-print d-flex justify-content-center">
         <xsl:copy-of select="$banner/small-print/node()"/>
       </small>
-    </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-about-button">
@@ -172,17 +173,18 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="about-button" as="element(about-button)" />
     <xsl:param name="title" as="xs:string" />
+    <xsl:variable name="link" select="($about-button/link[lang($CurrentLang)], $about-button/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
-        <xsl:when test="$about-button/@href">
-          <xsl:value-of select="$about-button/@href"/>
+        <xsl:when test="$link/@href">
+          <xsl:value-of select="$link/@href"/>
         </xsl:when>
-        <xsl:when test="$about-button/@ref">
+        <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $about-button/@ref)"/>
         </xsl:when>
-        <xsl:when test="$about-button/@file">
+        <xsl:when test="$link/@file">
           <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $about-button/@file)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
@@ -265,33 +267,36 @@
   <xsl:template name="render-guidance-panel-item">
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="item" as="element(item)" />
+    <xsl:variable name="link" select="($item/link[lang($CurrentLang)], $item/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
-        <xsl:when test="$item/@href">
-          <xsl:value-of select="$item/@href"/>
+        <xsl:when test="$link/@href">
+          <xsl:value-of select="$link/@href"/>
         </xsl:when>
-        <xsl:when test="$item/@ref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $item/@ref)"/>
+        <xsl:when test="$link/@ref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
         </xsl:when>
-        <xsl:when test="$item/@file">
+        <xsl:when test="$link/@file">
           <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $item/@file)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="label" select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)"/>
-    <li>
-      <xsl:choose>
-        <xsl:when test="normalize-space($href)">
-          <a href="{$href}">
+    <xsl:if test="normalize-space($label)">
+      <li>
+        <xsl:choose>
+          <xsl:when test="normalize-space($href)">
+            <a href="{$href}">
+              <xsl:value-of select="$label"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:value-of select="$label"/>
-          </a>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$label"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </li>
+          </xsl:otherwise>
+        </xsl:choose>
+      </li>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
