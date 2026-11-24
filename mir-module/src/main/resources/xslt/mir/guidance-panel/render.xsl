@@ -47,6 +47,13 @@
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang)"/>
+      <xsl:variable name="raw-base" select="$guidance/@base"/>
+      <xsl:variable name="base">
+        <xsl:if test="normalize-space($raw-base)">
+          <xsl:value-of select="if (starts-with($raw-base, '/')) then substring($raw-base, 2) else $raw-base"/>
+          <xsl:value-of select="if (ends-with($raw-base, '/')) then '' else '/'"/>
+        </xsl:if>
+      </xsl:variable>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
           <xsl:variable name="banners" select="$guidance/banners/banner"/>
@@ -56,6 +63,7 @@
               <xsl:with-param name="derivate-id" select="$derivate-id"/>
               <xsl:with-param name="banner" select="."/>
               <xsl:with-param name="title" select="$title"/>
+              <xsl:with-param name="base" select="$base"/>
             </xsl:call-template>
           </xsl:for-each>
         </div>
@@ -69,6 +77,7 @@
               <xsl:with-param name="derivate-id" select="$derivate-id"/>
               <xsl:with-param name="about-button" select="."/>
               <xsl:with-param name="title" select="$title"/>
+              <xsl:with-param name="base" select="$base"/>
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($marketing-url)">
@@ -94,6 +103,7 @@
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="derivate-id" select="$derivate-id" />
                   <xsl:with-param name="item" select="." />
+                  <xsl:with-param name="base" select="$base"/>
                 </xsl:call-template>
               </xsl:for-each>
               <xsl:if test="mirguidancepanel:is-enabled('RSS')">
@@ -123,6 +133,7 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="banner" as="element(banner)" />
     <xsl:param name="title" as="xs:string" />
+    <xsl:param name="base" as="xs:string" />
     <xsl:variable name="link" select="($banner/link[lang($CurrentLang)], $banner/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
@@ -132,9 +143,12 @@
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
         </xsl:when>
+        <xsl:when test="$link/@file and normalize-space($base)">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
+        </xsl:when>
         <xsl:when test="$link/@file">
-          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
+          <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
@@ -150,9 +164,12 @@
         <xsl:when test="$image/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $image/@ref)"/>
         </xsl:when>
+        <xsl:when test="$image/@file and normalize-space($base)">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $image/@file)"/>
+        </xsl:when>
         <xsl:when test="$image/@file">
-          <xsl:variable name="fileNodeServletPath" select="'servlets/MCRFileNodeServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $fileNodeServletPath, $derivate-id, '/', $image/@file)"/>
+          <xsl:variable name="servlet-path" select="'servlets/MCRFileNodeServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $image/@file)"/>
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
@@ -173,6 +190,7 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="about-button" as="element(about-button)" />
     <xsl:param name="title" as="xs:string" />
+    <xsl:param name="base" as="xs:string" />
     <xsl:variable name="link" select="($about-button/link[lang($CurrentLang)], $about-button/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
@@ -182,9 +200,12 @@
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $about-button/@ref)"/>
         </xsl:when>
+        <xsl:when test="$link/@file and normalize-space($base)">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
+        </xsl:when>
         <xsl:when test="$link/@file">
-          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
+          <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
@@ -267,6 +288,7 @@
   <xsl:template name="render-guidance-panel-item">
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="item" as="element(item)" />
+    <xsl:param name="base" as="xs:string" />
     <xsl:variable name="link" select="($item/link[lang($CurrentLang)], $item/link[not(@xml:lang)])[1]"/>
     <xsl:variable name="href">
       <xsl:choose>
@@ -276,9 +298,12 @@
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
         </xsl:when>
+        <xsl:when test="$link/@file and normalize-space($base)">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
+        </xsl:when>
         <xsl:when test="$link/@file">
-          <xsl:variable name="derivateContentServletPath" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-          <xsl:value-of select="concat($WebApplicationBaseURL, $derivateContentServletPath, $derivate-id, '/', $link/@file)"/>
+          <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $link/@file)"/>
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
