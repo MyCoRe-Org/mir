@@ -96,7 +96,7 @@
                   <xsl:with-param name="item" select="." />
                 </xsl:call-template>
               </xsl:for-each>
-              <xsl:if test="mirguidancepanel:is-rss-enabled()">
+              <xsl:if test="mirguidancepanel:is-enabled('RSS')">
                 <xsl:call-template name="render-guidance-panel-rss-item">
                   <xsl:with-param name="object-id" select="$object-id" />
                 </xsl:call-template>
@@ -232,12 +232,16 @@
     <xsl:param name="derivate-id" as="xs:string" />
     <xsl:param name="title" as="xs:string" />
     <!-- unique, a page may contain several panels -->
-    <xsl:variable name="input-id" select="concat('mir-guidance-panel-search-', $derivate-id)" />
     <xsl:variable name="search-label" select="mcri18n:translate-with-params('mir.guidancePanel.search', $title)" />
     <form role="search" action="{$ServletsBaseURL}solr/find">
-      <input type="hidden" name="fq" value="mods.relatedItem.root:{$object-id}" />
+      <xsl:if test="not(mirguidancepanel:is-enabled('SearchPanel')) and mirguidancepanel:is-enabled('SearchFacet')">
+        <input type="hidden" name="facet.field" value="{{!facet.prefix={$object-id}}}mods.relatedItem.root"/>
+        <input type="hidden" name="facet.label.{$object-id}" value="{$title}"/>
+      </xsl:if>
+      <input type="hidden" name="fq" value="mods.relatedItem.root:{$object-id}"/>
+      <xsl:variable name="input-id" select="concat('mir-guidance-panel-search-', $derivate-id)" />
       <label class="visually-hidden" for="{$input-id}">
-        <xsl:value-of select="$search-label" />
+        <xsl:value-of select="$search-label"/>
       </label>
       <div class="input-group">
         <input id="{$input-id}" type="text" name="condQuery" class="form-control" placeholder="{$search-label}" />

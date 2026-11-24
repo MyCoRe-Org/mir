@@ -456,13 +456,12 @@
           </div>
         </div>
 
-        <xsl:if test="mirguidancepanel:is-enabled()">
+        <xsl:if test="mirguidancepanel:is-enabled() and mirguidancepanel:is-enabled('SearchResults')">
           <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']" />
           <xsl:for-each select="distinct-values(($params/str[@name = ('q', 'fq')], $params/arr[@name = 'fq']/str)
             [starts-with(., 'mods.relatedItem.root:')] ! substring-after(., 'mods.relatedItem.root:'))">
             <xsl:call-template name="render-guidance-panels">
               <xsl:with-param name="object-id" select="." />
-              <xsl:with-param name="is-root" select="true()" />
             </xsl:call-template>
           </xsl:for-each>
         </xsl:if>
