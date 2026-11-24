@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@jsr/mycore__js-common": "^0.0.7"
+    "@jsr/mycore__js-common": "^0.0.8"
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.8",
@@ -21,7 +21,7 @@
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
-    "prettier": "3.0.0",
+    "prettier": "3.10.1",
     "rollup": "^2.25.0",
     "rollup-plugin-external-globals": "^0.13.0",
     "typescript": "^5.7.2",
