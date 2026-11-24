@@ -36,20 +36,20 @@
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.tomcat.connector.maxHttpHeaderSize>8192</cargo.tomcat.connector.maxHttpHeaderSize>
-    <cargo.version>1.10.15</cargo.version>
+    <cargo.version>1.10.30</cargo.version>
     <changelog.since>2024-12-18</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2025.02</changes.version>
     <java.target.version>25</java.target.version>
     <jetty.version>12.1.6</jetty.version>
-    <junit.version>6.1.2</junit.version>
+    <junit.version>6.1.3</junit.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2026.12.0-SNAPSHOT</mycore.version>
     <node.version>v22.22.2</node.version>
     <pmd.failOnViolation>true</pmd.failOnViolation>
     <pmd.version>7.16.0</pmd.version>
     <selenium-utils.version>0.12-SNAPSHOT</selenium-utils.version>
-    <selenium.version>4.49.0</selenium.version>
+    <selenium.version>4.53.0</selenium.version>
     <site.suffix />
     <solr-runner.solrVersionString>9.10.1</solr-runner.solrVersionString>
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
@@ -234,7 +234,7 @@
               <dependency>
                 <groupId>org.commonjava.maven.enforcer</groupId>
                 <artifactId>enforce-managed-deps-rule</artifactId>
-                <version>1.0</version>
+                <version>1.3</version>
               </dependency>
             </dependencies>
             <executions>
@@ -421,7 +421,7 @@
       <dependency>
         <groupId>org.jsoup</groupId>
         <artifactId>jsoup</artifactId>
-        <version>1.23.2</version>
+        <version>1.24.1</version>
         <scope>compile</scope>
       </dependency>
       <dependency>
