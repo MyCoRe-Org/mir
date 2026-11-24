@@ -12,12 +12,12 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         submodules: recursive
 
     - name: Set up JDK
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@v6
       with:
         java-version: 25
         distribution: temurin
@@ -36,7 +36,7 @@ jobs:
 
     - name: Fetch Bibutils cache
       id: bibutils-cache
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       with:
         path: ~/bibutils
         key: ${{ env.BIBUTILS_VERSION }}
@@ -65,7 +65,7 @@ jobs:
         mvn -P!standard-with-extra-repos -B javadoc:javadoc javadoc:test-javadoc -T1C
     - name: Login to Docker Hub
       if: contains('refs/heads/2022.06.x refs/heads/2023.06.x refs/heads/2024.06.x refs/heads/2025.06.x refs/heads/2025.12.x refs/heads/2026.06.x refs/heads/main', github.ref) && github.event_name=='push' && success()
-      uses: docker/login-action@v2
+      uses: docker/login-action@v4
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
         docker push mycoreorg/mir-solr:${GITHUB_REF_NAME}-${BUILD_START}
     - name: Upload logs on build failure
       if: failure()
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: test-results
         path: |
