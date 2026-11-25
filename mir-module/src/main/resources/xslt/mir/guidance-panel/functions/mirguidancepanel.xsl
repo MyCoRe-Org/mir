@@ -34,4 +34,48 @@
     <xsl:sequence select="string(($labels[lang($current-lang)], $labels[lang($default-lang)], $labels)[1])" />
   </xsl:function>
 
+  <!-- normalizes and removes leading slash, so the value can be appended to, for example $WebApplicationBaseURL -->
+  <xsl:function name="mirguidancepanel:rel-path" as="xs:string">
+    <xsl:param name="path" as="xs:string?"/>
+    <xsl:variable name="normalized-path" select="normalize-space($path)"/>
+    <xsl:variable name="rel-path">
+      <xsl:if test="$normalized-path">
+        <xsl:choose>
+          <xsl:when test="starts-with($normalized-path, '/')">
+            <xsl:value-of select="substring($normalized-path, 2)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$normalized-path"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:sequence select="($rel-path)"/>
+  </xsl:function>
+
+  <!--
+    normalizes and removes leading slash, so the value can be appended to, for example $WebApplicationBaseURL
+    and adds trailing slash, so another rel-p[ath can be appended
+  -->
+  <xsl:function name="mirguidancepanel:rel-path-segment" as="xs:string">
+    <xsl:param name="path" as="xs:string?"/>
+    <xsl:variable name="normalized-path" select="normalize-space($path)"/>
+    <xsl:variable name="rel-path-segment">
+      <xsl:if test="$normalized-path">
+        <xsl:choose>
+          <xsl:when test="starts-with($normalized-path, '/') and string-length($normalized-path) gt 1">
+            <xsl:value-of select="substring($normalized-path, 2)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$normalized-path"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="not(ends-with($normalized-path, '/'))">
+          <xsl:value-of select="'/'"/>
+        </xsl:if>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:sequence select="($rel-path-segment)"/>
+  </xsl:function>
+
 </xsl:stylesheet>

@@ -47,13 +47,7 @@
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang)"/>
-      <xsl:variable name="raw-base" select="$guidance/@base"/>
-      <xsl:variable name="base">
-        <xsl:if test="normalize-space($raw-base)">
-          <xsl:value-of select="if (starts-with($raw-base, '/')) then substring($raw-base, 2) else $raw-base"/>
-          <xsl:value-of select="if (ends-with($raw-base, '/')) then '' else '/'"/>
-        </xsl:if>
-      </xsl:variable>
+      <xsl:variable name="base" select="mirguidancepanel:rel-path-segment($guidance/@base)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
           <xsl:variable name="banners" select="$guidance/banners/banner"/>
@@ -141,10 +135,10 @@
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
         <xsl:when test="$link/@bref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, mirguidancepanel:rel-path($link/@bref))"/>
         </xsl:when>
         <xsl:when test="$link/@ref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, mirguidancepanel:rel-path($link/@ref))"/>
         </xsl:when>
         <xsl:when test="$link/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
@@ -198,7 +192,7 @@
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
         <xsl:when test="$link/@bref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, mirguidancepanel:rel-path($link/@bref))"/>
         </xsl:when>
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $about-button/@ref)"/>
@@ -296,10 +290,10 @@
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
         <xsl:when test="$link/@bref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, mirguidancepanel:rel-path($link/@bref))"/>
         </xsl:when>
         <xsl:when test="$link/@ref">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
+          <xsl:value-of select="concat($WebApplicationBaseURL, mirguidancepanel:rel-path($link/@ref))"/>
         </xsl:when>
         <xsl:when test="$link/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
