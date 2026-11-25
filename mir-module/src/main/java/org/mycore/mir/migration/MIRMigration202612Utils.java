@@ -19,6 +19,7 @@
 package org.mycore.mir.migration;
 
 import java.io.StringReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -31,7 +32,9 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
+import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaderXSDFactory;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.transform.JDOMResult;
@@ -60,19 +63,20 @@ public class MIRMigration202612Utils {
 
     @MCRCommand(syntax = "migrate navigation", order = 100)
     public static List<String> migrateNavigation() {
-
         return List.of(
-            "migrate navigation step 1 - create guidance derivate type",
-            "migrate navigation step 2 - select navigation derivates",
+            "create guidance derivate type",
+            "select navigation derivates",
             "list selected",
-            "execute for selected migrate navigation step 3 - migrate navigation derivate {x}",
-            "migrate navigation step 4 - select guidance derivates",
+            "execute for selected verify navigation derivate {x}",
+            "execute for selected migrate navigation derivate {x}",
+            "select guidance derivates",
             "list selected",
-            "execute for selected migrate navigation step 5 - migrate guidance derivate {x} main document",
-            "migrate navigation step 6 - delete navigation derivate type");
+            "execute for selected migrate guidance derivate {x} main document",
+            "execute for selected verify guidance file guidance.xml in derivate {x}",
+            "delete navigation derivate type");
     }
 
-    @MCRCommand(syntax = "migrate navigation step 1 - create guidance derivate type", order = 20)
+    @MCRCommand(syntax = "create guidance derivate type", order = 20)
     public static void createGuidanceDerivateType() {
 
         MCRCategoryID derivateTypesCategoryId = new MCRCategoryID("derivate_types");
@@ -98,14 +102,37 @@ public class MIRMigration202612Utils {
 
     }
 
-    @MCRCommand(syntax = "migrate navigation step 2 - select navigation derivates", order = 20)
+    @MCRCommand(syntax = "select navigation derivates", order = 20)
     public static List<String> selectNavigationDerivates() {
         return List.of("select derivates with xpath /mycorederivate/derivate"
             + "[internals/internal[@maindoc and @maindoc!='guidance.xml']]"
             + "[classifications/classification[@classid='derivate_types' and @categid='navigation']]");
     }
 
-    @MCRCommand(syntax = "migrate navigation step 3 - migrate navigation derivate {0}", order = 20)
+    @MCRCommand(syntax = "verify navigation derivate {0}", order = 20)
+    public static void verifyNavigationDerivate(String derivateIdString) throws Exception {
+
+        MCRPath navigationPath = MCRPath.getPath(derivateIdString, "navigation.xml");
+
+        if (!Files.exists(navigationPath)) {
+            throw new MCRException("File navigation.xml doesn't exist in derivate " + derivateIdString);
+        }
+
+        String navigationXsdPath = "xsd/mir/migration/navigation.xsd";
+        URL navigationXsdUrl = MCRResourceHelper.getResourceUrl(navigationXsdPath);
+
+        SAXBuilder builder = new SAXBuilder(new XMLReaderXSDFactory(navigationXsdUrl));
+        String navigationXml = Files.readString(navigationPath, StandardCharsets.UTF_8);
+
+        try {
+            builder.build(new StringReader(navigationXml));
+        } catch (JDOMException e) {
+            LOGGER.warn("Validation of {}/navigation.xml failed", derivateIdString, e);
+        }
+
+    }
+
+    @MCRCommand(syntax = "migrate navigation derivate {0}", order = 20)
     public static void migrateNavigationDerivate(String derivateIdString) throws Exception {
 
         MCRObjectID derivateId = MCRObjectID.getInstance(derivateIdString);
@@ -138,14 +165,14 @@ public class MIRMigration202612Utils {
 
     }
 
-    @MCRCommand(syntax = "migrate navigation step 4 - select guidance derivates", order = 20)
+    @MCRCommand(syntax = "select guidance derivates", order = 20)
     public static List<String> selectGuidanceDerivates() {
         return List.of("select derivates with xpath /mycorederivate/derivate"
             + "[internals/internal[@maindoc='guidance.xml']]"
             + "[classifications/classification[@classid='derivate_types' and @categid='guidance']]");
     }
 
-    @MCRCommand(syntax = "migrate navigation step 5 - migrate guidance derivate {0} main document", order = 20)
+    @MCRCommand(syntax = "migrate guidance derivate {0} main document", order = 20)
     public static void migrateGuidanceDerivateMainDocument(String derivateIdString) throws Exception {
 
         MCRObjectID derivateId = MCRObjectID.getInstance(derivateIdString);
@@ -184,7 +211,7 @@ public class MIRMigration202612Utils {
 
     }
 
-    @MCRCommand(syntax = "migrate navigation step 6 - delete navigation derivate type", order = 20)
+    @MCRCommand(syntax = "delete navigation derivate type", order = 20)
     public static void deleteNavigationDerivateType() {
 
         MCRCategoryID navigationCategoryId = new MCRCategoryID("derivate_types", "navigation");

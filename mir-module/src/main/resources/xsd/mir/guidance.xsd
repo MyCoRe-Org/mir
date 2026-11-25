@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="migration/xml.xsd"/>
+
+  <xs:element name="guidance" type="GuidanceType"/>
+
+  <xs:complexType name="GuidanceType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="title" type="TitleType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="banners" type="BannersType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="about-button" type="AboutButtonType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="marketing-button" type="MarketingButtonType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="items" type="ItemsType" minOccurs="0" maxOccurs="1"/>
+    </xs:choice>
+    <xs:attribute name="base" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="TitleType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="label" type="LabelType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="BannersType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="banner" type="BannerType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="BannerType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="link" type="LinkType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="image" type="ImageType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="small-print" type="SmallPrintType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute ref="xml:lang" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="LinkType">
+    <xs:attribute ref="xml:lang" use="optional"/>
+    <xs:attribute name="href" type="xs:string" use="optional"/>
+    <xs:attribute name="bref" type="xs:string" use="optional"/>
+    <xs:attribute name="ref" type="xs:string" use="optional"/>
+    <xs:attribute name="file" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ImageType">
+    <xs:attribute ref="xml:lang" use="optional"/>
+    <xs:attribute name="href" type="xs:string" use="optional"/>
+    <xs:attribute name="bref" type="xs:string" use="optional"/>
+    <xs:attribute name="ref" type="xs:string" use="optional"/>
+    <xs:attribute name="file" type="xs:string" use="optional"/>
+    <xs:attribute name="alt" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="SmallPrintType">
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="AboutButtonType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="link" type="LinkType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="mode" type="mode" use="optional"/>
+    <xs:attribute name="genre" type="xs:string" use="optional"/>
+    <xs:attribute name="type" type="buttonType" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="MarketingButtonType">
+    <xs:attribute name="type" type="buttonType" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ItemsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="search" type="boolean" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ItemType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="link" type="LinkType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="label" type="LabelType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute ref="xml:lang" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="LabelType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute ref="xml:lang" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:simpleType name="boolean">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+      <xs:enumeration value="false"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="mode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="genre"/>
+      <xs:enumeration value="title"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="buttonType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="primary"/>
+      <xs:enumeration value="secondary"/>
+      <xs:enumeration value="success"/>
+      <xs:enumeration value="danger"/>
+      <xs:enumeration value="warning"/>
+      <xs:enumeration value="info"/>
+      <xs:enumeration value="light"/>
+      <xs:enumeration value="dark"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+
+  <xs:element name="item" type="RootItemType"/>
+
+  <xs:complexType name="RootItemType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="label" type="LabelType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="banner" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ItemType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="label" type="LabelType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="ref" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="LabelType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute ref="xml:lang" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>
