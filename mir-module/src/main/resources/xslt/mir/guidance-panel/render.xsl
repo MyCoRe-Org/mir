@@ -140,11 +140,11 @@
         <xsl:when test="$link/@href">
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
+        <xsl:when test="$link/@bref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+        </xsl:when>
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
-        </xsl:when>
-        <xsl:when test="$link/@file and normalize-space($base)">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
         </xsl:when>
         <xsl:when test="$link/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
@@ -161,11 +161,11 @@
         <xsl:when test="$image/@href">
           <xsl:value-of select="$image/@href"/>
         </xsl:when>
+        <xsl:when test="$image/@bref and normalize-space($base)">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $image/@bref)"/>
+        </xsl:when>
         <xsl:when test="$image/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $image/@ref)"/>
-        </xsl:when>
-        <xsl:when test="$image/@file and normalize-space($base)">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $image/@file)"/>
         </xsl:when>
         <xsl:when test="$image/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRFileNodeServlet/'"/>
@@ -197,11 +197,11 @@
         <xsl:when test="$link/@href">
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
+        <xsl:when test="$link/@bref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+        </xsl:when>
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $about-button/@ref)"/>
-        </xsl:when>
-        <xsl:when test="$link/@file and normalize-space($base)">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
         </xsl:when>
         <xsl:when test="$link/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
@@ -295,11 +295,11 @@
         <xsl:when test="$link/@href">
           <xsl:value-of select="$link/@href"/>
         </xsl:when>
+        <xsl:when test="$link/@bref">
+          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@bref)"/>
+        </xsl:when>
         <xsl:when test="$link/@ref">
           <xsl:value-of select="concat($WebApplicationBaseURL, $link/@ref)"/>
-        </xsl:when>
-        <xsl:when test="$link/@file and normalize-space($base)">
-          <xsl:value-of select="concat($WebApplicationBaseURL, $base, $link/@file)"/>
         </xsl:when>
         <xsl:when test="$link/@file">
           <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
