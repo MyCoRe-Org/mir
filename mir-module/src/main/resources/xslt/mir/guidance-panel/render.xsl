@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
-   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-   xmlns:mcrobject="http://www.mycore.de/xslt/object"
-   xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
-   xmlns:mods="http://www.loc.gov/mods/v3"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   exclude-result-prefixes="#all">
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrobject="http://www.mycore.de/xslt/object"
+  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl"/>
 
@@ -138,6 +138,7 @@
         <xsl:with-param name="main-file" select="$main-file"/>
         <xsl:with-param name="link" select="$link"/>
         <xsl:with-param name="base" select="$base"/>
+        <xsl:with-param name="default" select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="image" select="mirguidancepanel:select-one($banner, 'image', $CurrentLang)"/>
@@ -150,9 +151,18 @@
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]"/>
-    <a class="mir-guidance-banner-image" href="{$href}">
-      <img src="{$src}" class="card-img-top" alt="{$alt}"/>
-    </a>
+    <xsl:choose>
+      <xsl:when test="normalize-space($href)">
+        <a class="mir-guidance-banner-image" href="{$href}">
+          <img src="{$src}" class="card-img-top" alt="{$alt}"/>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <span class="mir-guidance-banner-image">
+          <img src="{$src}" class="card-img-top" alt="{$alt}"/>
+        </span>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:for-each select="mirguidancepanel:select-one($banner, 'small-print', $CurrentLang)">
       <small class="mir-guidance-banner-small-print d-flex justify-content-center">
         <xsl:copy-of select="$banner/small-print/node()"/>
@@ -195,12 +205,14 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="type" select="($about-button/@type, 'primary')[1]"/>
-    <div class="mir-guidance-button-about mb-1">
-      <a href="{$href}" class="btn btn-{$type} w-100">
-        <i aria-hidden="true" class="fas fa-info-circle"/>
-        <xsl:value-of select="$label"/>
-      </a>
-    </div>
+    <xsl:if test="normalize-space($href)">
+      <div class="mir-guidance-button-about mb-1">
+        <a href="{$href}" class="btn btn-{$type} w-100">
+          <i aria-hidden="true" class="fas fa-info-circle"/>
+          <xsl:value-of select="$label"/>
+        </a>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-marketing-button">
@@ -286,6 +298,7 @@
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="link" as="element(link)?"/>
     <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="default" as="xs:string?"/>
     <xsl:if test="count(($link/@href, $link/@bref, $link/@ref, $link/@file)) gt 1">
       <xsl:message terminate="no" expand-text="yes">
         Warning: Element link in file {$derivate-id}/{$main-file} has conflicting attributes:
@@ -307,6 +320,9 @@
         <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
         <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $link/@file)"/>
       </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$default"/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
