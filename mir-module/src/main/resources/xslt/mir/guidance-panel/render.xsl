@@ -47,7 +47,7 @@
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
       <xsl:variable name="title" select="mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang)"/>
-      <xsl:variable name="base" select="mirguidancepanel:rel-path-segment($guidance/@base)"/>
+      <xsl:variable name="bref-base" select="mirguidancepanel:rel-path-segment($guidance/@bref-base)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
           <xsl:for-each select="mirguidancepanel:select-one($guidance/banners, 'banner', $CurrentLang)">
@@ -57,7 +57,7 @@
               <xsl:with-param name="main-file" select="$main-file"/>
               <xsl:with-param name="banner" select="."/>
               <xsl:with-param name="title" select="$title"/>
-              <xsl:with-param name="base" select="$base"/>
+              <xsl:with-param name="bref-base" select="$bref-base"/>
             </xsl:call-template>
           </xsl:for-each>
         </div>
@@ -72,7 +72,7 @@
               <xsl:with-param name="main-file" select="$main-file"/>
               <xsl:with-param name="about-button" select="."/>
               <xsl:with-param name="title" select="$title"/>
-              <xsl:with-param name="base" select="$base"/>
+              <xsl:with-param name="bref-base" select="$bref-base"/>
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($marketing-url)">
@@ -99,7 +99,7 @@
                   <xsl:with-param name="derivate-id" select="$derivate-id"/>
                   <xsl:with-param name="main-file" select="$main-file"/>
                   <xsl:with-param name="item" select="."/>
-                  <xsl:with-param name="base" select="$base"/>
+                  <xsl:with-param name="bref-base" select="$bref-base"/>
                 </xsl:call-template>
               </xsl:for-each>
               <xsl:if test="mirguidancepanel:is-enabled('RSS')">
@@ -130,14 +130,14 @@
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="banner" as="element(banner)"/>
     <xsl:param name="title" as="xs:string"/>
-    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($banner, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:call-template name="choose-link-href">
         <xsl:with-param name="derivate-id" select="$derivate-id"/>
         <xsl:with-param name="main-file" select="$main-file"/>
         <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="base" select="$base"/>
+        <xsl:with-param name="bref-base" select="$bref-base"/>
         <xsl:with-param name="default" select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
       </xsl:call-template>
     </xsl:variable>
@@ -147,7 +147,7 @@
         <xsl:with-param name="derivate-id" select="$derivate-id"/>
         <xsl:with-param name="main-file" select="$main-file"/>
         <xsl:with-param name="image" select="$image"/>
-        <xsl:with-param name="base" select="$base"/>
+        <xsl:with-param name="bref-base" select="$bref-base"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]"/>
@@ -177,14 +177,14 @@
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="about-button" as="element(about-button)"/>
     <xsl:param name="title" as="xs:string"/>
-    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($about-button, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:call-template name="choose-link-href">
         <xsl:with-param name="derivate-id" select="$derivate-id"/>
         <xsl:with-param name="main-file" select="$main-file"/>
         <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="base" select="$base"/>
+        <xsl:with-param name="bref-base" select="$bref-base"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="mode" select="($about-button/@mode, 'genre')[1]"/>
@@ -266,14 +266,14 @@
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="item" as="element(item)"/>
-    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($item, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:call-template name="choose-link-href">
         <xsl:with-param name="derivate-id" select="$derivate-id"/>
         <xsl:with-param name="main-file" select="$main-file"/>
         <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="base" select="$base"/>
+        <xsl:with-param name="bref-base" select="$bref-base"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="label" select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)"/>
@@ -297,7 +297,7 @@
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="link" as="element(link)?"/>
-    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
     <xsl:param name="default" as="xs:string?"/>
     <xsl:if test="count(($link/@href, $link/@bref, $link/@ref, $link/@file)) gt 1">
       <xsl:message terminate="no" expand-text="yes">
@@ -311,7 +311,7 @@
         <xsl:value-of select="$link/@href"/>
       </xsl:when>
       <xsl:when test="$link/@bref">
-        <xsl:value-of select="concat($WebApplicationBaseURL, $base, mirguidancepanel:rel-path($link/@bref))"/>
+        <xsl:value-of select="concat($WebApplicationBaseURL, $bref-base, mirguidancepanel:rel-path($link/@bref))"/>
       </xsl:when>
       <xsl:when test="$link/@ref">
         <xsl:value-of select="concat($WebApplicationBaseURL, mirguidancepanel:rel-path($link/@ref))"/>
@@ -330,7 +330,7 @@
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="image" as="element(image)?"/>
-    <xsl:param name="base" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
     <xsl:if test="count(($image/@href, $image/@bref, $image/@ref, $image/@file)) gt 1">
       <xsl:message terminate="no" expand-text="yes">
         Warning: Element image in file {$derivate-id}/{$main-file} has conflicting attributes:
@@ -342,8 +342,8 @@
       <xsl:when test="$image/@href">
         <xsl:value-of select="$image/@href"/>
       </xsl:when>
-      <xsl:when test="$image/@bref and normalize-space($base)">
-        <xsl:value-of select="concat($WebApplicationBaseURL, $base, $image/@bref)"/>
+      <xsl:when test="$image/@bref">
+        <xsl:value-of select="concat($WebApplicationBaseURL, $bref-base, $image/@bref)"/>
       </xsl:when>
       <xsl:when test="$image/@ref">
         <xsl:value-of select="concat($WebApplicationBaseURL, $image/@ref)"/>

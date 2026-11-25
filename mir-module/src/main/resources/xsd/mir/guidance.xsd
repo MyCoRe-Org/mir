@@ -13,7 +13,7 @@
       <xs:element name="marketing-button" type="MarketingButtonType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="items" type="ItemsType" minOccurs="0" maxOccurs="1"/>
     </xs:choice>
-    <xs:attribute name="base" type="xs:string" use="optional"/>
+    <xs:attribute name="bref-base" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <xs:complexType name="TitleType">
