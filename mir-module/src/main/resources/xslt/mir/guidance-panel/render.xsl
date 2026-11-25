@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
-  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-  xmlns:mcrobject="http://www.mycore.de/xslt/object"
-  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="#all">
+                xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
+                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+                xmlns:mcrobject="http://www.mycore.de/xslt/object"
+                xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl"/>
 
@@ -50,8 +50,7 @@
       <xsl:variable name="base" select="mirguidancepanel:rel-path-segment($guidance/@base)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
-          <xsl:variable name="banners" select="$guidance/banners/banner"/>
-          <xsl:for-each select="($banners[lang($CurrentLang)], $banners[not(@xml:lang)])[1]">
+          <xsl:for-each select="mirguidancepanel:select-one($guidance/banners, 'banner', $CurrentLang)">
             <xsl:call-template name="render-guidance-panel-banner">
               <xsl:with-param name="object-id" select="$object-id"/>
               <xsl:with-param name="derivate-id" select="$derivate-id"/>
@@ -93,7 +92,7 @@
           </div>
           <div class="card-body">
             <ul class="mb-0">
-              <xsl:for-each select="$guidance/items/item[lang($CurrentLang)] | $guidance/items/item[not(@xml:lang)]">
+              <xsl:for-each select="mirguidancepanel:select-all($guidance/items, 'item', $CurrentLang)">
                 <xsl:call-template name="render-guidance-panel-item">
                   <xsl:with-param name="derivate-id" select="$derivate-id"/>
                   <xsl:with-param name="item" select="."/>
@@ -128,7 +127,7 @@
     <xsl:param name="banner" as="element(banner)"/>
     <xsl:param name="title" as="xs:string"/>
     <xsl:param name="base" as="xs:string"/>
-    <xsl:variable name="link" select="($banner/link[lang($CurrentLang)], $banner/link[not(@xml:lang)])[1]"/>
+    <xsl:variable name="link" select="mirguidancepanel:select-one($banner, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:choose>
         <xsl:when test="$link/@href">
@@ -149,7 +148,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="image" select="($banner/image[lang($CurrentLang)], $banner/image[not(@xml:lang)])[1]"/>
+    <xsl:variable name="image" select="mirguidancepanel:select-one($banner, 'image', $CurrentLang)"/>
     <xsl:variable name="src">
       <xsl:choose>
         <xsl:when test="$image/@href">
@@ -171,7 +170,7 @@
     <a class="mir-guidance-banner-image" href="{$href}">
       <img src="{$src}" class="card-img-top" alt="{$alt}"/>
     </a>
-    <xsl:for-each select="($banner/small-print[lang($CurrentLang)], $banner/small-print[not(@xml:lang)])[1]">
+    <xsl:for-each select="mirguidancepanel:select-one($banner, 'small-print', $CurrentLang)">
       <small class="mir-guidance-banner-small-print d-flex justify-content-center">
         <xsl:copy-of select="$banner/small-print/node()"/>
       </small>
@@ -185,7 +184,7 @@
     <xsl:param name="about-button" as="element(about-button)"/>
     <xsl:param name="title" as="xs:string"/>
     <xsl:param name="base" as="xs:string"/>
-    <xsl:variable name="link" select="($about-button/link[lang($CurrentLang)], $about-button/link[not(@xml:lang)])[1]"/>
+    <xsl:variable name="link" select="mirguidancepanel:select-one($about-button, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:choose>
         <xsl:when test="$link/@href">
@@ -283,7 +282,7 @@
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="item" as="element(item)"/>
     <xsl:param name="base" as="xs:string"/>
-    <xsl:variable name="link" select="($item/link[lang($CurrentLang)], $item/link[not(@xml:lang)])[1]"/>
+    <xsl:variable name="link" select="mirguidancepanel:select-one($item, 'link', $CurrentLang)"/>
     <xsl:variable name="href">
       <xsl:choose>
         <xsl:when test="$link/@href">

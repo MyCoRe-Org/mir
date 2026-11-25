@@ -34,6 +34,22 @@
     <xsl:sequence select="string(($labels[lang($current-lang)], $labels[lang($default-lang)], $labels)[1])" />
   </xsl:function>
 
+  <!-- select first child element with given name and current language or no language -->
+  <xsl:function name="mirguidancepanel:select-one" as="element()?">
+    <xsl:param name="base" as="element()"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:param name="current-lang" as="xs:string"/>
+    <xsl:sequence select="($base/*[name()=$name][lang($current-lang)], $base/*[name()=$name][not(@xml:lang)])[1]"/>
+  </xsl:function>
+
+  <!-- select child elements with given name and current language or no language -->
+  <xsl:function name="mirguidancepanel:select-all" as="element()*">
+    <xsl:param name="base" as="element()"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:param name="current-lang" as="xs:string"/>
+    <xsl:sequence select="($base/*[name()=$name][lang($current-lang)] | $base/*[name()=$name][not(@xml:lang)])"/>
+  </xsl:function>
+
   <!-- normalizes and removes leading slash, so the value can be appended to, for example $WebApplicationBaseURL -->
   <xsl:function name="mirguidancepanel:rel-path" as="xs:string">
     <xsl:param name="path" as="xs:string?"/>
