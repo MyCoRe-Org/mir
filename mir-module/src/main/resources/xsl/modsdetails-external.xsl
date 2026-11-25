@@ -801,11 +801,11 @@
       <div class="hit_download_box">
         <xsl:choose>
         <!-- we got a derivate -->
-        <xsl:when test="../../../../structure/derobjects">
+        <xsl:when test="../../../../structure/derobjects/derobject[maindoc]">
           <xsl:variable name="identifier" select="../../../../@ID" />
-          <xsl:variable name="derivid" select="../../../../structure/derobjects/derobject[1]/@xlink:href" />
-          <xsl:variable name="derivate" select="document(concat('mcrobject:',$derivid))" />
-          <xsl:variable name="maindoc" select="$derivate/mycorederivate/derivate/internals/internal/@maindoc" />
+          <xsl:variable name="derivate" select="../../../../structure/derobjects/derobject[classification/@categid = 'thumbnail' and maindoc][1] | ../../../../structure/derobjects/derobject[maindoc][not(../derobject[classification/@categid = 'thumbnail' and maindoc])][1]" />
+          <xsl:variable name="derivid" select="$derivate/@xlink:href" />
+          <xsl:variable name="maindoc" select="$derivate/maindoc" />
           <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
 
           <xsl:choose>
