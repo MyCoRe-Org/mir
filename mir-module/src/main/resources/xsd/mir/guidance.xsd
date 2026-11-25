@@ -9,8 +9,7 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element name="title" type="TitleType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="banners" type="BannersType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="about-button" type="AboutButtonType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="marketing-button" type="MarketingButtonType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="buttons" type="ButtonsType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="items" type="ItemsType" minOccurs="0" maxOccurs="1"/>
     </xs:choice>
     <xs:attribute name="bref-base" type="xs:string" use="optional"/>
@@ -59,6 +58,13 @@
       <xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="ref" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ButtonsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="about-button" type="AboutButtonType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="marketing-button" type="MarketingButtonType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="AboutButtonType">

@@ -46,7 +46,8 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang)"/>
+      <xsl:variable name="title" select="mirguidancepanel:or-else(
+      mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang), $object-id)"/>
       <xsl:variable name="bref-base" select="mirguidancepanel:rel-path-segment($guidance/@bref-base)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
@@ -64,10 +65,9 @@
       </xsl:where-populated>
       <xsl:where-populated>
         <div class="mir-guidance-buttons mb-3">
-          <xsl:for-each select="$guidance/about-button">
+          <xsl:for-each select="mirguidancepanel:select-one($guidance/buttons, 'about-button', $CurrentLang)">
             <xsl:call-template name="render-guidance-panel-about-button">
               <xsl:with-param name="mycoreobject" select="$mycoreobject"/>
-              <xsl:with-param name="object-id" select="$object-id"/>
               <xsl:with-param name="derivate-id" select="$derivate-id"/>
               <xsl:with-param name="main-file" select="$main-file"/>
               <xsl:with-param name="about-button" select="."/>
@@ -76,7 +76,7 @@
             </xsl:call-template>
           </xsl:for-each>
           <xsl:if test="normalize-space($marketing-url)">
-            <xsl:for-each select="$guidance/marketing-button">
+            <xsl:for-each select="mirguidancepanel:select-one($guidance/buttons, 'marketing-button', $CurrentLang)">
               <xsl:call-template name="render-guidance-panel-marketing-button">
                 <xsl:with-param name="marketing-button" select="."/>
                 <xsl:with-param name="marketing-url" select="$marketing-url"/>
@@ -150,7 +150,7 @@
         <xsl:with-param name="bref-base" select="$bref-base"/>
       </xsl:call-template>
     </xsl:variable>
-    <xsl:variable name="alt" select="(normalize-space($image/@alt)[.], $title)[1]"/>
+    <xsl:variable name="alt" select="mirguidancepanel:or-else(normalize-space($image/@alt), $title)"/>
     <xsl:choose>
       <xsl:when test="normalize-space($href)">
         <a class="mir-guidance-banner-image" href="{$href}">
@@ -164,15 +164,14 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:for-each select="mirguidancepanel:select-one($banner, 'small-print', $CurrentLang)">
-      <small class="mir-guidance-banner-small-print d-flex justify-content-center">
-        <xsl:copy-of select="$banner/small-print/node()"/>
+      <small class="mir-guidance-banner-small-print d-block text-center">
+        <xsl:copy-of select="./node()"/>
       </small>
     </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-about-button">
     <xsl:param name="mycoreobject" as="element(mycoreobject)"/>
-    <xsl:param name="object-id" as="xs:string"/>
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="about-button" as="element(about-button)"/>
@@ -205,22 +204,21 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="type" select="($about-button/@type, 'primary')[1]"/>
-    <xsl:if test="normalize-space($href)">
       <div class="mir-guidance-button-about mb-1">
-        <a href="{$href}" class="btn btn-{$type} w-100">
+        <a href="{$href}" class="btn btn-{$type} w-100{if (normalize-space($href)) then '' else ' disabled'}">
           <i aria-hidden="true" class="fas fa-info-circle"/>
           <xsl:value-of select="$label"/>
         </a>
       </div>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-marketing-button">
     <xsl:param name="marketing-button" as="element(marketing-button)"/>
     <xsl:param name="marketing-url" as="xs:string"/>
     <xsl:variable name="type" select="($marketing-button/@type, 'primary')[1]"/>
+    <xsl:variable name="href" select="$marketing-url"/>
     <div class="mir-guidance-button-marketing mb-1">
-      <a href="{$marketing-url}" class="btn btn-{$type} w-100">
+      <a href="{$href}" class="btn btn-{$type} w-100{if (normalize-space($href)) then '' else ' disabled'}">
         <i aria-hidden="true" class="fas fa-shopping-cart"/>
         <xsl:value-of select="mcri18n:translate('mir.guidancePanel.buyPrintedCopy')"/>
       </a>
@@ -276,7 +274,8 @@
         <xsl:with-param name="bref-base" select="$bref-base"/>
       </xsl:call-template>
     </xsl:variable>
-    <xsl:variable name="label" select="mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang)"/>
+    <xsl:variable name="label" select="mirguidancepanel:or-else(
+    mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang), 'n/a')"/>
     <xsl:if test="normalize-space($label)">
       <li>
         <xsl:choose>

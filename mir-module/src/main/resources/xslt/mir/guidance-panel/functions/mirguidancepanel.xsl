@@ -34,9 +34,16 @@
     <xsl:sequence select="string(($labels[lang($current-lang)], $labels[lang($default-lang)], $labels)[1])" />
   </xsl:function>
 
+  <!-- returns the fallback if the value is empty -->
+  <xsl:function name="mirguidancepanel:or-else" as="xs:string">
+    <xsl:param name="value" as="xs:string" />
+    <xsl:param name="fallback" as="xs:string" />
+    <xsl:sequence select="($value[.], $fallback)[1]" />
+  </xsl:function>
+
   <!-- select first child element with given name and current language or no language -->
   <xsl:function name="mirguidancepanel:select-one" as="element()?">
-    <xsl:param name="base" as="element()"/>
+    <xsl:param name="base" as="element()?"/>
     <xsl:param name="name" as="xs:string"/>
     <xsl:param name="current-lang" as="xs:string"/>
     <xsl:sequence select="($base/*[name()=$name][lang($current-lang)], $base/*[name()=$name][not(@xml:lang)])[1]"/>
@@ -44,7 +51,7 @@
 
   <!-- select child elements with given name and current language or no language -->
   <xsl:function name="mirguidancepanel:select-all" as="element()*">
-    <xsl:param name="base" as="element()"/>
+    <xsl:param name="base" as="element()?"/>
     <xsl:param name="name" as="xs:string"/>
     <xsl:param name="current-lang" as="xs:string"/>
     <xsl:sequence select="($base/*[name()=$name][lang($current-lang)] | $base/*[name()=$name][not(@xml:lang)])"/>
