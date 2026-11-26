@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
-  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-  xmlns:mcrobject="http://www.mycore.de/xslt/object"
-  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="#all">
+                xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
+                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+                xmlns:mcrobject="http://www.mycore.de/xslt/object"
+                xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/mir/guidance-panel/functions/mirguidancepanel.xsl"/>
 
@@ -46,8 +46,8 @@
     <xsl:variable name="guidance" select="if ($can-read-object and $can-read-derivate and $has-main-file)
       then mcrderivate:get-file($derivate-id, $main-file)/guidance else ()"/>
     <xsl:if test="$guidance">
-      <xsl:variable name="title" select="mirguidancepanel:or-else(
-      mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang), $object-id)"/>
+      <xsl:variable name="title" select="mirguidancepanel:non-empty-or-else(
+        mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang), $object-id)"/>
       <xsl:variable name="bref-base" select="mirguidancepanel:rel-path-segment($guidance/@bref-base)"/>
       <xsl:where-populated>
         <div class="mir-guidance-banner mb-3">
@@ -132,27 +132,14 @@
     <xsl:param name="title" as="xs:string"/>
     <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($banner, 'link', $CurrentLang)"/>
-    <xsl:variable name="href">
-      <xsl:call-template name="choose-link-href">
-        <xsl:with-param name="derivate-id" select="$derivate-id"/>
-        <xsl:with-param name="main-file" select="$main-file"/>
-        <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="bref-base" select="$bref-base"/>
-        <xsl:with-param name="default" select="concat($WebApplicationBaseURL, 'receive/', $object-id)"/>
-      </xsl:call-template>
-    </xsl:variable>
+    <xsl:variable name="href" select="mirguidancepanel:choose-link-href($derivate-id, $main-file, $link,
+      $WebApplicationBaseURL, $bref-base, concat($WebApplicationBaseURL, 'receive/', $object-id))"/>
     <xsl:variable name="image" select="mirguidancepanel:select-one($banner, 'image', $CurrentLang)"/>
-    <xsl:variable name="src">
-      <xsl:call-template name="choose-image-src">
-        <xsl:with-param name="derivate-id" select="$derivate-id"/>
-        <xsl:with-param name="main-file" select="$main-file"/>
-        <xsl:with-param name="image" select="$image"/>
-        <xsl:with-param name="bref-base" select="$bref-base"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="alt" select="mirguidancepanel:or-else(normalize-space($image/@alt), $title)"/>
+    <xsl:variable name="src" select="mirguidancepanel:choose-images-src($derivate-id, $main-file, $image,
+      $WebApplicationBaseURL, $bref-base, '')"/>
+    <xsl:variable name="alt" select="mirguidancepanel:non-empty-or-else(normalize-space($image/@alt), $title)"/>
     <xsl:choose>
-      <xsl:when test="normalize-space($href)">
+      <xsl:when test="$href">
         <a class="mir-guidance-banner-image" href="{$href}">
           <img src="{$src}" class="card-img-top" alt="{$alt}"/>
         </a>
@@ -178,18 +165,12 @@
     <xsl:param name="title" as="xs:string"/>
     <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($about-button, 'link', $CurrentLang)"/>
-    <xsl:variable name="href">
-      <xsl:call-template name="choose-link-href">
-        <xsl:with-param name="derivate-id" select="$derivate-id"/>
-        <xsl:with-param name="main-file" select="$main-file"/>
-        <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="bref-base" select="$bref-base"/>
-      </xsl:call-template>
-    </xsl:variable>
+    <xsl:variable name="href" select="mirguidancepanel:choose-link-href($derivate-id, $main-file, $link,
+      $WebApplicationBaseURL, $bref-base, '')"/>
     <xsl:variable name="mode" select="($about-button/@mode, 'genre')[1]"/>
     <xsl:variable name="mods" select="$mycoreobject/metadata//mods:mods"/>
     <xsl:variable name="modsGenre" select="substring-after($mods/mods:genre[@type='intern']/@valueURI,'#')"/>
-    <xsl:variable name="genre" select="(about-button/@genre, $modsGenre)"/>
+    <xsl:variable name="genre" select="mirguidancepanel:non-empty-or-else(about-button/@genre, $modsGenre)"/>
     <xsl:variable name="label">
       <xsl:value-of select="mcri18n:translate('mir.guidancePanel.about')"/>
       <xsl:choose>
@@ -204,22 +185,22 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="type" select="($about-button/@type, 'primary')[1]"/>
-      <div class="mir-guidance-button-about mb-1">
-        <a href="{$href}" class="btn btn-{$type} w-100{if (normalize-space($href)) then '' else ' disabled'}">
-          <i aria-hidden="true" class="fas fa-info-circle"/>
-          <xsl:value-of select="$label"/>
-        </a>
-      </div>
+    <div class="mir-guidance-button-about mb-1">
+      <a href="{$href}" class="btn btn-{$type} w-100{if ($href) then '' else ' disabled'}">
+        <i class="fas fa-info-circle" aria-hidden="true"/>
+        <xsl:value-of select="$label"/>
+      </a>
+    </div>
   </xsl:template>
 
   <xsl:template name="render-guidance-panel-marketing-button">
     <xsl:param name="marketing-button" as="element(marketing-button)"/>
     <xsl:param name="marketing-url" as="xs:string"/>
     <xsl:variable name="type" select="($marketing-button/@type, 'primary')[1]"/>
-    <xsl:variable name="href" select="$marketing-url"/>
+    <xsl:variable name="href" select="normalize-space($marketing-url)"/>
     <div class="mir-guidance-button-marketing mb-1">
-      <a href="{$href}" class="btn btn-{$type} w-100{if (normalize-space($href)) then '' else ' disabled'}">
-        <i aria-hidden="true" class="fas fa-shopping-cart"/>
+      <a href="{$href}" class="btn btn-{$type} w-100{if ($href) then '' else ' disabled'}">
+        <i class="fas fa-shopping-cart" aria-hidden="true"/>
         <xsl:value-of select="mcri18n:translate('mir.guidancePanel.buyPrintedCopy')"/>
       </a>
     </div>
@@ -250,36 +231,20 @@
     </form>
   </xsl:template>
 
-  <xsl:template name="render-guidance-panel-rss-item">
-    <xsl:param name="object-id" as="xs:string"/>
-    <li>
-      <a href="{$WebApplicationBaseURL}receive/{$object-id}?XSL.Style=rss">
-        <i class="fas fa-rss" aria-hidden="true"/>
-        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.rss'))"/>
-      </a>
-    </li>
-  </xsl:template>
-
   <xsl:template name="render-guidance-panel-item">
     <xsl:param name="derivate-id" as="xs:string"/>
     <xsl:param name="main-file" as="xs:string"/>
     <xsl:param name="item" as="element(item)"/>
     <xsl:param name="bref-base" as="xs:string"/>
     <xsl:variable name="link" select="mirguidancepanel:select-one($item, 'link', $CurrentLang)"/>
-    <xsl:variable name="href">
-      <xsl:call-template name="choose-link-href">
-        <xsl:with-param name="derivate-id" select="$derivate-id"/>
-        <xsl:with-param name="main-file" select="$main-file"/>
-        <xsl:with-param name="link" select="$link"/>
-        <xsl:with-param name="bref-base" select="$bref-base"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="label" select="mirguidancepanel:or-else(
-    mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang), 'n/a')"/>
+    <xsl:variable name="href" select="mirguidancepanel:choose-link-href($derivate-id, $main-file, $link,
+      $WebApplicationBaseURL, $bref-base, '')"/>
+    <xsl:variable name="label" select="mirguidancepanel:non-empty-or-else(
+      mirguidancepanel:label($item/label, $CurrentLang, $DefaultLang), 'n/a')"/>
     <xsl:if test="normalize-space($label)">
       <li>
         <xsl:choose>
-          <xsl:when test="normalize-space($href)">
+          <xsl:when test="$href">
             <a href="{$href}">
               <xsl:value-of select="$label"/>
             </a>
@@ -292,66 +257,14 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="choose-link-href">
-    <xsl:param name="derivate-id" as="xs:string"/>
-    <xsl:param name="main-file" as="xs:string"/>
-    <xsl:param name="link" as="element(link)?"/>
-    <xsl:param name="bref-base" as="xs:string"/>
-    <xsl:param name="default" as="xs:string?"/>
-    <xsl:if test="count(($link/@href, $link/@bref, $link/@ref, $link/@file)) gt 1">
-      <xsl:message terminate="no" expand-text="yes">
-        Warning: Element link in file {$derivate-id}/{$main-file} has conflicting attributes:
-        {string-join(($link/@href, $link/@bref, $link/@ref, $link/@file)
-        /concat(name(), '=&quot;', normalize-space(.), '&quot;'), ' / ')}
-      </xsl:message>
-    </xsl:if>
-    <xsl:choose>
-      <xsl:when test="$link/@href">
-        <xsl:value-of select="$link/@href"/>
-      </xsl:when>
-      <xsl:when test="$link/@bref">
-        <xsl:value-of select="concat($WebApplicationBaseURL, $bref-base, mirguidancepanel:rel-path($link/@bref))"/>
-      </xsl:when>
-      <xsl:when test="$link/@ref">
-        <xsl:value-of select="concat($WebApplicationBaseURL, mirguidancepanel:rel-path($link/@ref))"/>
-      </xsl:when>
-      <xsl:when test="$link/@file">
-        <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
-        <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $link/@file)"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$default"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="choose-image-src">
-    <xsl:param name="derivate-id" as="xs:string"/>
-    <xsl:param name="main-file" as="xs:string"/>
-    <xsl:param name="image" as="element(image)?"/>
-    <xsl:param name="bref-base" as="xs:string"/>
-    <xsl:if test="count(($image/@href, $image/@bref, $image/@ref, $image/@file)) gt 1">
-      <xsl:message terminate="no" expand-text="yes">
-        Warning: Element image in file {$derivate-id}/{$main-file} has conflicting attributes:
-        {string-join(($image/@href, $image/@bref, $image/@ref, $image/@file)
-        /concat(name(), '=&quot;', normalize-space(.), '&quot;'), ' / ')}.
-      </xsl:message>
-    </xsl:if>
-    <xsl:choose>
-      <xsl:when test="$image/@href">
-        <xsl:value-of select="$image/@href"/>
-      </xsl:when>
-      <xsl:when test="$image/@bref">
-        <xsl:value-of select="concat($WebApplicationBaseURL, $bref-base, $image/@bref)"/>
-      </xsl:when>
-      <xsl:when test="$image/@ref">
-        <xsl:value-of select="concat($WebApplicationBaseURL, $image/@ref)"/>
-      </xsl:when>
-      <xsl:when test="$image/@file">
-        <xsl:variable name="servlet-path" select="'servlets/MCRFileNodeServlet/'"/>
-        <xsl:value-of select="concat($WebApplicationBaseURL, $servlet-path, $derivate-id, '/', $image/@file)"/>
-      </xsl:when>
-    </xsl:choose>
+  <xsl:template name="render-guidance-panel-rss-item">
+    <xsl:param name="object-id" as="xs:string"/>
+    <li>
+      <a href="{$WebApplicationBaseURL}receive/{$object-id}?XSL.Style=rss">
+        <i class="fas fa-rss" aria-hidden="true"/>
+        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.rss'))"/>
+      </a>
+    </li>
   </xsl:template>
 
 </xsl:stylesheet>

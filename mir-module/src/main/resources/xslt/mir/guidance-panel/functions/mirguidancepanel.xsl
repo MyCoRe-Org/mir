@@ -35,13 +35,13 @@
   </xsl:function>
 
   <!-- returns the fallback if the value is empty -->
-  <xsl:function name="mirguidancepanel:or-else" as="xs:string">
+  <xsl:function name="mirguidancepanel:non-empty-or-else" as="xs:string">
     <xsl:param name="value" as="xs:string" />
     <xsl:param name="fallback" as="xs:string" />
     <xsl:sequence select="($value[.], $fallback)[1]" />
   </xsl:function>
 
-  <!-- select first child element with given name and current language or no language -->
+  <!-- select first child element with given name and, preferably, current language or no language -->
   <xsl:function name="mirguidancepanel:select-one" as="element()?">
     <xsl:param name="base" as="element()?"/>
     <xsl:param name="name" as="xs:string"/>
@@ -99,6 +99,98 @@
       </xsl:if>
     </xsl:variable>
     <xsl:sequence select="($rel-path-segment)"/>
+  </xsl:function>
+
+  <!--
+    choose the href for a link element, considering, in order:
+    - the href-attribute as an absolute URL
+    - the bref-attribute as a relative URL in conjunction with the base URL provided as web-application-base-url
+      and the base path provided as bref-base
+    - the ref-attribute as a relative URL in conjunction with the base URL provided as web-application-base-url
+    - the file attribute for a file of the derivate in conjunction with the MCRDerivateContentTransformerServlet
+    - the default value provided as default
+  -->
+  <xsl:function name="mirguidancepanel:choose-link-href" as="xs:string">
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="main-file" as="xs:string"/>
+    <xsl:param name="link" as="element(link)?"/>
+    <xsl:param name="web-application-base-url" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
+    <xsl:param name="default" as="xs:string"/>
+    <xsl:if test="count(($link/@href, $link/@bref, $link/@ref, $link/@file)) gt 1">
+      <xsl:message terminate="no" expand-text="yes">
+        Warning: Element link in file {$derivate-id}/{$main-file} has conflicting attributes:
+        {string-join(($link/@href, $link/@bref, $link/@ref, $link/@file)
+        /concat(name(), '=&quot;', normalize-space(.), '&quot;'), ' / ')}
+      </xsl:message>
+    </xsl:if>
+    <xsl:variable name="href">
+      <xsl:choose>
+        <xsl:when test="$link/@href">
+          <xsl:value-of select="$link/@href"/>
+        </xsl:when>
+        <xsl:when test="$link/@bref">
+          <xsl:value-of select="concat($web-application-base-url, $bref-base, mirguidancepanel:rel-path($link/@bref))"/>
+        </xsl:when>
+        <xsl:when test="$link/@ref">
+          <xsl:value-of select="concat($web-application-base-url, mirguidancepanel:rel-path($link/@ref))"/>
+        </xsl:when>
+        <xsl:when test="$link/@file">
+          <xsl:variable name="servlet-path" select="'servlets/MCRDerivateContentTransformerServlet/'"/>
+          <xsl:value-of select="concat($web-application-base-url, $servlet-path, $derivate-id, '/', $link/@file)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$default"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:sequence select="(normalize-space($href))"/>
+  </xsl:function>
+
+  <!--
+    choose the src for an image element, considering, in order:
+    - the href-attribute as an absolute URL
+    - the bref-attribute as a relative URL in conjunction with the base URL provided as web-application-base-url
+      and the base path provided as bref-base
+    - the ref-attribute as a relative URL in conjunction with the base URL provided as web-application-base-url
+    - the file attribute for a file of the derivate in conjunction with the MCRFileNodeServlet
+    - the default value provided as default
+  -->
+  <xsl:function name="mirguidancepanel:choose-images-src" as="xs:string">
+    <xsl:param name="derivate-id" as="xs:string"/>
+    <xsl:param name="main-file" as="xs:string"/>
+    <xsl:param name="image" as="element(image)?"/>
+    <xsl:param name="web-application-base-url" as="xs:string"/>
+    <xsl:param name="bref-base" as="xs:string"/>
+    <xsl:param name="default" as="xs:string"/>
+    <xsl:if test="count(($image/@href, $image/@bref, $image/@ref, $image/@file)) gt 1">
+      <xsl:message terminate="no" expand-text="yes">
+        Warning: Element image in file {$derivate-id}/{$main-file} has conflicting attributes:
+        {string-join(($image/@href, $image/@bref, $image/@ref, $image/@file)
+        /concat(name(), '=&quot;', normalize-space(.), '&quot;'), ' / ')}.
+      </xsl:message>
+    </xsl:if>
+    <xsl:variable name="src">
+      <xsl:choose>
+        <xsl:when test="$image/@href">
+          <xsl:value-of select="$image/@href"/>
+        </xsl:when>
+        <xsl:when test="$image/@bref">
+          <xsl:value-of select="concat($web-application-base-url, $bref-base, $image/@bref)"/>
+        </xsl:when>
+        <xsl:when test="$image/@ref">
+          <xsl:value-of select="concat($web-application-base-url, $image/@ref)"/>
+        </xsl:when>
+        <xsl:when test="$image/@file">
+          <xsl:variable name="servlet-path" select="'servlets/MCRFileNodeServlet/'"/>
+          <xsl:value-of select="concat($web-application-base-url, $servlet-path, $derivate-id, '/', $image/@file)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$default"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:sequence select="(normalize-space($src))"/>
   </xsl:function>
 
 </xsl:stylesheet>
