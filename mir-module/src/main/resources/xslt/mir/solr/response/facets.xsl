@@ -218,8 +218,9 @@
     <xsl:param name="facet_name"/>
     <xsl:choose>
       <xsl:when test="$parameterValues">
+        <xsl:variable name="name" select="@name"/>
         <xsl:variable name="parameterValue"
-          select="string((/response/lst[@name='responseHeader']/lst[@name='params']/str[@name=concat('facet.label.', @name)])[1])"/>
+          select="string((/response/lst[@name='responseHeader']/lst[@name='params']/str[@name=concat('facet.label.', $name)])[1])"/>
         <xsl:choose>
           <xsl:when test="string-length($parameterValue)!=0">
             <xsl:value-of select="$parameterValue"/>

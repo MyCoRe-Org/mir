@@ -11,12 +11,13 @@
 
   <xsl:template match="/">
     <xsl:if test="mirguidancepanel:is-enabled()">
-      <xsl:variable name="root-ids" select="distinct-values(
-        mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods ! mirmods:root-ids(.))" />
+      <xsl:variable name="root-ids" select="distinct-values(mycoreobject/metadata//mods:mods ! mirmods:root-ids(.))" />
+      <xsl:variable name="marketing-url" select="mycoreobject/service/servflags/servflag[@type='marketing-url']"/>
       <div id="mir-guidance-panel">
         <xsl:for-each select="if (exists($root-ids)) then $root-ids else string(mycoreobject/@ID)">
           <xsl:call-template name="render-guidance-panels">
             <xsl:with-param name="object-id" select="." />
+            <xsl:with-param name="marketing-url" select="$marketing-url"/>
           </xsl:call-template>
         </xsl:for-each>
       </div>
