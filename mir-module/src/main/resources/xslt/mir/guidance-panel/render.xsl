@@ -188,7 +188,7 @@
     <div class="mir-guidance-button-about mb-1">
       <a href="{$href}" class="btn btn-{$type} w-100{if ($href) then '' else ' disabled'}">
         <i class="fas fa-info-circle" aria-hidden="true"/>
-        <xsl:value-of select="$label"/>
+        <xsl:value-of select="concat(' ', $label)"/>
       </a>
     </div>
   </xsl:template>
@@ -201,7 +201,7 @@
     <div class="mir-guidance-button-marketing mb-1">
       <a href="{$href}" class="btn btn-{$type} w-100{if ($href) then '' else ' disabled'}">
         <i class="fas fa-shopping-cart" aria-hidden="true"/>
-        <xsl:value-of select="mcri18n:translate('mir.guidancePanel.buyPrintedCopy')"/>
+        <xsl:value-of select="concat(' ', mcri18n:translate('mir.guidancePanel.buyPrintedCopy'))"/>
       </a>
     </div>
   </xsl:template>
