@@ -807,9 +807,10 @@
           <xsl:variable name="derivid" select="$derivate/@xlink:href" />
           <xsl:variable name="maindoc" select="$derivate/maindoc" />
           <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
+          <xsl:variable name="hasTiles" select="iview2:isCompletelyTiled($derivid)" />
 
           <xsl:choose>
-            <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
+            <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf' or $hasTiles">
               <div class="hit_icon">
                 <xsl:choose>
                   <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
