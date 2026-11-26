@@ -50,7 +50,7 @@
         mirguidancepanel:label($guidance/title/label, $CurrentLang, $DefaultLang), $object-id)"/>
       <xsl:variable name="bref-base" select="mirguidancepanel:rel-path-segment($guidance/@bref-base)"/>
       <xsl:where-populated>
-        <div class="mir-guidance-banner mb-3">
+        <div class="mir-guidance-banner mb-3 text-center">
           <xsl:for-each select="mirguidancepanel:select-one($guidance/banners, 'banner', $CurrentLang)">
             <xsl:call-template name="render-guidance-panel-banner">
               <xsl:with-param name="object-id" select="$object-id"/>
@@ -140,18 +140,18 @@
     <xsl:variable name="alt" select="mirguidancepanel:non-empty-or-else(normalize-space($image/@alt), $title)"/>
     <xsl:choose>
       <xsl:when test="$href">
-        <a class="mir-guidance-banner-image" href="{$href}">
-          <img src="{$src}" class="card-img-top" alt="{$alt}"/>
+        <a class="mir-guidance-banner-image d-inline-block" href="{$href}">
+          <img class="mw-100" src="{$src}" alt="{$alt}"/>
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <span class="mir-guidance-banner-image">
-          <img src="{$src}" class="card-img-top" alt="{$alt}"/>
+        <span class="mir-guidance-banner-image d-inline-block">
+          <img class="mw-100" src="{$src}" alt="{$alt}"/>
         </span>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:for-each select="mirguidancepanel:select-one($banner, 'small-print', $CurrentLang)">
-      <small class="mir-guidance-banner-small-print d-block text-center">
+      <small class="mir-guidance-banner-small-print d-block">
         <xsl:copy-of select="./node()"/>
       </small>
     </xsl:for-each>
