@@ -9,6 +9,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrobject="http://www.mycore.de/xslt/object"
+  xmlns:mirdedup="http://www.mycore.de/mir/xslt/dedup"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -22,59 +23,71 @@
 
   <xsl:template match="mycoreobject" mode="possibleDuplicates">
     <xsl:variable name="currentStatus" select="service/servstates/servstate[@classid='state']/@categid"/>
+    <xsl:variable name="maxListed" as="xs:integer"
+                  select="if (normalize-space($MIR.Workflow.Dedup.MaxListed) castable as xs:integer)
+                          then xs:integer(normalize-space($MIR.Workflow.Dedup.MaxListed))
+                          else 3"/>
     <xsl:if test="normalize-space($MIR.Workflow.Dedup) = 'true'
+                  and $maxListed gt 0
                   and $currentStatus = tokenize(normalize-space($MIR.Workflow.Dedup.States), '\s*,\s*')
                   and mcracl:check-permission((), 'manage-deduplication')">
       <xsl:variable name="filteredStates"
                     select="tokenize(normalize-space($MIR.Dedup.FilterDocumentsInStates), '\s*,\s*')"/>
       <!--
         Objects that no longer exist, that the current user may not read or that are in a filtered state are
-        neither listed nor counted. Every remaining object is loaded once, its title is kept for the list.
+        skipped. The candidates are only checked until MaxListed of them are found, every checked object is
+        loaded once and its title is kept for the list.
       -->
       <xsl:variable name="duplicates" as="element(duplicate)*">
-        <xsl:for-each select="document(concat('dedup:duplicates:', @ID))/duplicates/duplicate
-                              [mcracl:check-permission(@id, 'read')]">
-          <xsl:variable name="other" select="mcrobject:get(@id, false())/mycoreobject"/>
-          <xsl:if test="exists($other)
-                        and not($other/service/servstates/servstate[@classid='state']/@categid = $filteredStates)">
-            <xsl:variable name="mods" select="$other/metadata/def.modsContainer/modsContainer/mods:mods"/>
-            <duplicate id="{@id}"
-                       title="{normalize-space(($mods/mods:titleInfo[not(@type)], $mods/mods:titleInfo)[1]
-                                               /mods:title[1])}">
-              <xsl:copy-of select="criterion"/>
-            </duplicate>
-          </xsl:if>
-        </xsl:for-each>
+        <xsl:iterate select="document(concat('dedup:duplicates:', @ID))/duplicates/duplicate">
+          <xsl:param name="found" as="element(duplicate)*" select="()"/>
+          <xsl:on-completion select="$found"/>
+          <xsl:variable name="other" as="element(mycoreobject)?"
+                        select="if (mcracl:check-permission(@id, 'read'))
+                                then mcrobject:get(@id, false())/mycoreobject
+                                else ()"/>
+          <xsl:variable name="listed" as="element(duplicate)?">
+            <xsl:if test="exists($other)
+                          and not($other/service/servstates/servstate[@classid='state']/@categid = $filteredStates)">
+              <xsl:variable name="mods" select="$other/metadata/def.modsContainer/modsContainer/mods:mods"/>
+              <duplicate id="{@id}"
+                         title="{normalize-space(($mods/mods:titleInfo[not(@type)], $mods/mods:titleInfo)[1]
+                                                 /mods:title[1])}">
+                <xsl:copy-of select="criterion"/>
+              </duplicate>
+            </xsl:if>
+          </xsl:variable>
+          <xsl:choose>
+            <xsl:when test="count(($found, $listed)) ge $maxListed">
+              <xsl:break select="($found, $listed)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:next-iteration>
+                <xsl:with-param name="found" select="($found, $listed)"/>
+              </xsl:next-iteration>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:iterate>
       </xsl:variable>
       <xsl:if test="exists($duplicates)">
-        <xsl:variable name="maxListed" as="xs:integer"
-                      select="if (normalize-space($MIR.Workflow.Dedup.MaxListed) castable as xs:integer)
-                              then xs:integer(normalize-space($MIR.Workflow.Dedup.MaxListed))
-                              else 3"/>
         <div class="workflow-box mir-workflow-dedup">
           <p>
-            <xsl:value-of select="mcri18n:translate-with-params('mir.workflow.dedup.found',
-                                  string(count($duplicates)))"/>
+            <xsl:value-of select="mcri18n:translate('mir.workflow.dedup.found')"/>
           </p>
           <ul>
-            <xsl:for-each select="$duplicates[position() le $maxListed]">
+            <xsl:for-each select="$duplicates">
               <li>
                 <a href="{$WebApplicationBaseURL}receive/{@id}">
                   <xsl:value-of select="if (string-length(@title) gt 0) then @title else @id"/>
                 </a>
                 <small class="text-muted">
                   <xsl:text> (</xsl:text>
-                  <xsl:value-of select="string-join(distinct-values(criterion/@type), ', ')"/>
+                  <xsl:value-of select="string-join(for $type in distinct-values(criterion/@type)
+                                                    return mirdedup:criterion-label($type), ', ')"/>
                   <xsl:text>)</xsl:text>
                 </small>
               </li>
             </xsl:for-each>
-            <xsl:if test="count($duplicates) gt $maxListed">
-              <li>
-                <xsl:value-of select="mcri18n:translate-with-params('mir.workflow.dedup.more',
-                                      string(count($duplicates) - $maxListed))"/>
-              </li>
-            </xsl:if>
           </ul>
           <a class="btn btn-sm btn-primary" href="{$WebApplicationBaseURL}dedup/?id={@ID}&amp;showReturn=true">
             <xsl:value-of select="mcri18n:translate('mir.workflow.dedup.manage')"/>
@@ -83,5 +96,12 @@
       </xsl:if>
     </xsl:if>
   </xsl:template>
+
+  <!-- the criterion type translated via dedup.criterion.{type} of MyCoRe, or the type itself -->
+  <xsl:function name="mirdedup:criterion-label" as="xs:string">
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:variable name="key" select="concat('dedup.criterion.', $type)"/>
+    <xsl:sequence select="if (mcri18n:exists($key)) then mcri18n:translate($key) else $type"/>
+  </xsl:function>
 
 </xsl:stylesheet>

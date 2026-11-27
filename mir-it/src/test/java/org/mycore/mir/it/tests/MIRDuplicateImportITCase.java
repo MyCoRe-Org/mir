@@ -49,6 +49,7 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.google.gson.JsonElement;
@@ -57,7 +58,8 @@ import com.google.gson.JsonParser;
 /**
  * Tests the duplicate check of the identifier import: possible duplicates are shown on a confirmation page before the
  * editor opens, objects in the states configured by {@code MIR.Dedup.FilterDocumentsInStates} (default
- * {@code blocked,deleted}) are not.
+ * {@code blocked,deleted}) are not. Also tests the list of possible duplicates in the workflow box, which the
+ * integration test properties switch on.
  * <p>
  * Every test uses its own synthetic DOI and deletes the documents it created, so the tests do not depend on each
  * other. The application under test is configured without data sources for DOIs (see
@@ -75,6 +77,8 @@ public class MIRDuplicateImportITCase extends MIRITBase {
 
     private static final String DOI_DELETED = "10.1002/mir.it.deleted";
 
+    private static final String DOI_WORKFLOW = "10.1002/mir.it.workflow";
+
     private static final String TITLE_PUBLISHED = "Duplicate import IT published";
 
     private static final String TITLE_BLOCKED = "Duplicate import IT blocked";
@@ -84,6 +88,12 @@ public class MIRDuplicateImportITCase extends MIRITBase {
     private static final String TITLE_PUBLISHED_NEXT_TO_BLOCKED = "Duplicate import IT published, same DOI as blocked";
 
     private static final String TITLE_PUBLISHED_NEXT_TO_DELETED = "Duplicate import IT published, same DOI as deleted";
+
+    private static final String TITLE_WORKFLOW_PUBLISHED = "Duplicate workflow IT published";
+
+    private static final String TITLE_WORKFLOW_SUBMITTED = "Duplicate workflow IT submitted";
+
+    private static final By WORKFLOW_DUPLICATES = By.cssSelector(".mir-workflow-dedup");
 
     private static final Pattern OBJECT_ID_IN_URL = Pattern.compile("/receive/([^/?;#]+)");
 
@@ -133,6 +143,23 @@ public class MIRDuplicateImportITCase extends MIRITBase {
     public void testDeletedDuplicateIsNotListed() throws IOException, InterruptedException {
         assertOnlyPublishedDuplicateIsListed(DOI_DELETED, MIRStatus.gelöscht, TITLE_DELETED,
             TITLE_PUBLISHED_NEXT_TO_DELETED);
+    }
+
+    @Test
+    public void testWorkflowBoxListsPossibleDuplicates() {
+        createDocument(TITLE_WORKFLOW_PUBLISHED, DOI_WORKFLOW, MIRStatus.veröffentlicht);
+        String submittedId = createDocument(TITLE_WORKFLOW_SUBMITTED, DOI_WORKFLOW, MIRStatus.eingereicht);
+
+        // the page of the submitted document is shown after saving it
+        WebElement box = driver.waitAndFindElement(WORKFLOW_DUPLICATES);
+        List<WebElement> listed = box.findElements(By.cssSelector("li"));
+        Assert.assertEquals("Exactly the published document should be listed in the workflow box.", 1,
+            listed.size());
+        Assert.assertTrue("The published document should be listed in the workflow box.",
+            listed.get(0).getText().contains(TITLE_WORKFLOW_PUBLISHED));
+        String manageLink = box.findElement(By.cssSelector("a.btn")).getAttribute("href");
+        Assert.assertTrue("The workflow box should link to the duplicate management of the document: " + manageLink,
+            manageLink.contains("dedup/?id=" + submittedId));
     }
 
     /**
