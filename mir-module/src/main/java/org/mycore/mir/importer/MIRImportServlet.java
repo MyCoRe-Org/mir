@@ -31,11 +31,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.mycore.access.MCRAccessManager;
+import org.mycore.common.MCRException;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xsl.uriresolver.MCRURIResolver;
+import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.datamodel.metadata.MCRObjectService;
 import org.mycore.dedup.MCRDeDupNoDuplicateFlagEventHandler;
 import org.mycore.mods.MCRMODSWrapper;
@@ -56,8 +61,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *   <li>builds the {@code mycoreobject} from the imported metadata (identifier lookup in external
  *       databases) and stores it in the current session under a generated key,</li>
  *   <li>asks the deduplication component (via {@code dedup:duplicates-for-session:{key}}) for existing
- *       objects sharing a deduplication key,</li>
- *   <li>if none are found, redirects straight to the editor, loading the cached object from the
+ *       objects sharing a deduplication key, ignoring those that no longer exist, that the current user
+ *       may not read or that are in a state listed in {@code MIR.Dedup.FilterDocumentsInStates},</li>
+ *   <li>if none are found (or none is readable), redirects straight to the editor, loading the cached object from the
  *       session ({@code session:{key}}),</li>
  *   <li>otherwise renders a confirmation page listing the possible duplicates. Only when the user
  *       explicitly confirms that none of them is a duplicate the editor is opened. The confirmation is
@@ -86,6 +92,12 @@ public class MIRImportServlet extends MCRServlet {
     private static final String DUPLICATES_SESSION_KEY_PREFIX = "mir.importDuplicates.";
 
     private static final String DEFAULT_EDITOR = "editor-dynamic";
+
+    /** Object states (comma separated) whose objects are never presented as possible duplicates. */
+    private static final String FILTER_STATES_PROPERTY = "MIR.Dedup.FilterDocumentsInStates";
+
+    /** Permission required to mark objects as no duplicates, the same as for the duplicate management. */
+    private static final String MANAGE_DEDUPLICATION_PERMISSION = "manage-deduplication";
 
     @Override
     protected void doGetPost(MCRServletJob job) throws Exception {
@@ -128,12 +140,18 @@ public class MIRImportServlet extends MCRServlet {
         MCRSessionMgr.getCurrentSession().put(sessionKey, object);
         LOGGER.info("Cached imported object under session key {}", sessionKey);
 
+        List<String> filteredStates = MCRConfiguration2.getString(FILTER_STATES_PROPERTY)
+            .stream()
+            .flatMap(MCRConfiguration2::splitValue)
+            .toList();
         List<String> duplicateIds = MCRURIResolver.obtainInstance()
             .resolve("dedup:duplicates-for-session:" + sessionKey)
             .getChildren("duplicate")
             .stream()
             .map(duplicate -> duplicate.getAttributeValue("id"))
             .distinct()
+            .filter(id -> MCRAccessManager.checkPermission(id, MCRAccessManager.PERMISSION_READ))
+            .filter(id -> isPresentable(id, filteredStates))
             .toList();
 
         if (duplicateIds.isEmpty()) {
@@ -152,18 +170,56 @@ public class MIRImportServlet extends MCRServlet {
     }
 
     /**
+     * Checks whether a possible duplicate may be presented: the object must still exist and must not be in
+     * one of the filtered states. The deduplication keys of an object may outlive it, for example if it was
+     * deleted before the deduplication event handler was active, and an object may fail to load. Such
+     * entries are skipped with a warning instead of failing the import. The object is loaded at most once,
+     * and only if states are filtered.
+     *
+     * @param objectId the id of the possible duplicate
+     * @param filteredStates the states whose objects are never presented, may be empty
+     * @return true if the possible duplicate is presented to the user
+     */
+    private static boolean isPresentable(String objectId, List<String> filteredStates) {
+        try {
+            MCRObjectID mcrObjectID = MCRObjectID.getInstance(objectId);
+            if (!MCRMetadataManager.exists(mcrObjectID)) {
+                LOGGER.warn("Ignoring possible duplicate {}, the object does not exist", objectId);
+                return false;
+            }
+            if (filteredStates.isEmpty()) {
+                return true;
+            }
+            MCRCategoryID state = MCRMetadataManager.retrieveMCRObject(mcrObjectID).getService().getState();
+            return state == null || !filteredStates.contains(state.getId());
+        } catch (MCRException e) {
+            LOGGER.warn("Ignoring possible duplicate {}, the object could not be loaded", objectId, e);
+            return false;
+        }
+    }
+
+    /**
      * Records the confirmation of the user in the cached object: every object presented as a possible
      * duplicate is added as a service flag of the type configured by
      * {@link MCRDeDupNoDuplicateFlagEventHandler#FLAG_TYPE_PROPERTY}. The ids are taken from the session,
      * not from the request, so that only objects this servlet has actually shown can be marked. The flags
      * travel through the editor, which keeps the service part of the object untouched, and are evaluated
      * by {@link MCRDeDupNoDuplicateFlagEventHandler} when the object is stored.
+     * <p>
+     * Users without the permission {@value #MANAGE_DEDUPLICATION_PERMISSION} may continue the import, but
+     * nothing is marked: the possible duplicates then stay visible for those who are allowed to decide.
      *
      * @param importId the id of the import, i.e. the session key of the cached object without its prefix
      * @param cachedMcrObject the imported {@code mycoreobject} cached in the session
      */
     private static void markAsNoDuplicates(String importId, Element cachedMcrObject) {
         String duplicatesSessionKey = DUPLICATES_SESSION_KEY_PREFIX + importId;
+        if (!MCRAccessManager.checkPermission(MANAGE_DEDUPLICATION_PERMISSION)) {
+            MCRSessionMgr.getCurrentSession().deleteObject(duplicatesSessionKey);
+            LOGGER.info("Not marking the object imported under {} as no duplicate, missing permission '{}'",
+                SESSION_KEY_PREFIX + importId, MANAGE_DEDUPLICATION_PERMISSION);
+            return;
+        }
         List<String> objectIds = presentedDuplicates(duplicatesSessionKey);
         if (objectIds.isEmpty()) {
             return;

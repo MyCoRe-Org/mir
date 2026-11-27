@@ -22,6 +22,7 @@ import org.mycore.common.MCRException;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.mir.it.controller.MIRControllerFactory;
+import org.mycore.mir.it.controller.MIRImportController;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
@@ -37,6 +38,8 @@ public class MIRITBase extends MCRSeleniumTestBase {
     protected MIRPublishEditorController publishEditorController;
 
     protected MIRModsEditorController editorController;
+
+    protected MIRImportController importController;
 
     private static final String SOLR_USER = "admin";
 
@@ -72,6 +75,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
         userController = controllerFactory.createUserController();
         publishEditorController = controllerFactory.createPublishEditorController();
         editorController = controllerFactory.createModsEditorController();
+        importController = controllerFactory.createImportController();
     }
 
     @BeforeClass
