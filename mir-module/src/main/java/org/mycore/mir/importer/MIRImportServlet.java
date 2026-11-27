@@ -183,12 +183,12 @@ public class MIRImportServlet extends MCRServlet {
     private static boolean isPresentable(String objectId, List<String> filteredStates) {
         try {
             MCRObjectID mcrObjectID = MCRObjectID.getInstance(objectId);
-            if (filteredStates.isEmpty()) {
-                if (MCRMetadataManager.exists(mcrObjectID)) {
-                    return true;
-                }
+            if (!MCRMetadataManager.exists(mcrObjectID)) {
                 LOGGER.warn("Ignoring possible duplicate {}, the object does not exist", objectId);
                 return false;
+            }
+            if (filteredStates.isEmpty()) {
+                return true;
             }
             MCRCategoryID state = MCRMetadataManager.retrieveMCRObject(mcrObjectID).getService().getState();
             return state == null || !filteredStates.contains(state.getId());
