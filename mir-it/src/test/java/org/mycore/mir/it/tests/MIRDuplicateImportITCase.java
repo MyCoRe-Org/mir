@@ -18,8 +18,15 @@
 
 package org.mycore.mir.it.tests;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +50,9 @@ import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.WebElement;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  * Tests the duplicate check of the identifier import: possible duplicates are shown on a confirmation page before the
@@ -70,6 +80,10 @@ public class MIRDuplicateImportITCase extends MIRITBase {
     private static final String TITLE_BLOCKED = "Duplicate import IT blocked";
 
     private static final String TITLE_DELETED = "Duplicate import IT deleted";
+
+    private static final String TITLE_PUBLISHED_NEXT_TO_BLOCKED = "Duplicate import IT published, same DOI as blocked";
+
+    private static final String TITLE_PUBLISHED_NEXT_TO_DELETED = "Duplicate import IT published, same DOI as deleted";
 
     private static final Pattern OBJECT_ID_IN_URL = Pattern.compile("/receive/([^/?;#]+)");
 
@@ -110,17 +124,66 @@ public class MIRDuplicateImportITCase extends MIRITBase {
     }
 
     @Test
-    public void testBlockedDuplicateIsNotListed() {
-        createDocument(TITLE_BLOCKED, DOI_BLOCKED, MIRStatus.gesperrt);
-        Assert.assertEquals("A blocked document should not count as duplicate.", Result.EDITOR,
-            importIdentifier(DOI_BLOCKED));
+    public void testBlockedDuplicateIsNotListed() throws IOException, InterruptedException {
+        assertOnlyPublishedDuplicateIsListed(DOI_BLOCKED, MIRStatus.gesperrt, TITLE_BLOCKED,
+            TITLE_PUBLISHED_NEXT_TO_BLOCKED);
     }
 
     @Test
-    public void testDeletedDuplicateIsNotListed() {
-        createDocument(TITLE_DELETED, DOI_DELETED, MIRStatus.gelöscht);
-        Assert.assertEquals("A deleted document should not count as duplicate.", Result.EDITOR,
-            importIdentifier(DOI_DELETED));
+    public void testDeletedDuplicateIsNotListed() throws IOException, InterruptedException {
+        assertOnlyPublishedDuplicateIsListed(DOI_DELETED, MIRStatus.gelöscht, TITLE_DELETED,
+            TITLE_PUBLISHED_NEXT_TO_DELETED);
+    }
+
+    /**
+     * Creates a document in a filtered state and a published document with the same DOI. The deduplication API
+     * has to report them as a pair, which proves that a deduplication key was written for the filtered document.
+     * The import of that DOI must then only list the published document.
+     */
+    private void assertOnlyPublishedDuplicateIsListed(String doi, MIRStatus filteredStatus, String filteredTitle,
+        String publishedTitle) throws IOException, InterruptedException {
+        String filteredId = createDocument(filteredTitle, doi, filteredStatus);
+        String publishedId = createDocument(publishedTitle, doi, MIRStatus.veröffentlicht);
+        Assert.assertTrue("The deduplication API should report the " + filteredStatus.getValue()
+            + " document as possible duplicate of the published one.",
+            getPossibleDuplicates(filteredId).contains(publishedId));
+
+        Assert.assertEquals("The duplicate check should be shown for the published document.",
+            Result.DUPLICATE_CHECK, importIdentifier(doi));
+        List<WebElement> duplicates = importController.getListedDuplicates();
+        Assert.assertEquals("Only the published document should be listed, not the "
+            + filteredStatus.getValue() + " one.", 1, duplicates.size());
+        Assert.assertTrue("The published document should be listed.",
+            duplicates.get(0).getText().contains(publishedTitle));
+    }
+
+    /**
+     * Asks the deduplication API, as administrator, for the possible duplicates of an object. Unlike the import
+     * dialog, the API does not filter by object state.
+     *
+     * @param objectId the id of the object
+     * @return the ids of the objects that share a deduplication key with the given object
+     */
+    private List<String> getPossibleDuplicates(String objectId) throws IOException, InterruptedException {
+        String credentials = MIRUserController.ADMIN_LOGIN + ":" + MIRUserController.ADMIN_PASSWD;
+        HttpRequest request = HttpRequest
+            .newBuilder(URI.create(getAPPUrlString() + "/api/dedup/duplicates/" + objectId))
+            .header("Accept", "application/json")
+            .header("Authorization",
+                "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes(StandardCharsets.UTF_8)))
+            .GET()
+            .build();
+        HttpResponse<String> response = HttpClient.newHttpClient()
+            .send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        Assert.assertEquals("The deduplication API should answer: " + response.body(), 200,
+            response.statusCode());
+        List<String> otherIds = new ArrayList<>();
+        for (JsonElement pair : JsonParser.parseString(response.body()).getAsJsonArray()) {
+            String objectId1 = pair.getAsJsonObject().get("objectId1").getAsString();
+            String objectId2 = pair.getAsJsonObject().get("objectId2").getAsString();
+            otherIds.add(objectId.equals(objectId1) ? objectId2 : objectId1);
+        }
+        return otherIds;
     }
 
     private Result importIdentifier(String doi) {
@@ -131,7 +194,10 @@ public class MIRDuplicateImportITCase extends MIRITBase {
         return importController.waitForResult();
     }
 
-    private void createDocument(String title, String doi, MIRStatus status) {
+    /**
+     * Creates a document in the admin editor and returns its id.
+     */
+    private String createDocument(String title, String doi, MIRStatus status) {
         publishEditorController.openAdmin(null);
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article).collect(Collectors.toList()));
@@ -148,6 +214,8 @@ public class MIRDuplicateImportITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
         Matcher matcher = OBJECT_ID_IN_URL.matcher(driver.getCurrentUrl());
         Assert.assertTrue("The saved document should be shown: " + driver.getCurrentUrl(), matcher.find());
-        createdObjectIds.add(matcher.group(1));
+        String objectId = matcher.group(1);
+        createdObjectIds.add(objectId);
+        return objectId;
     }
 }
