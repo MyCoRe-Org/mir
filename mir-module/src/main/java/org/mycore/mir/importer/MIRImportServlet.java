@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.access.MCRAccessManager;
+import org.mycore.common.MCRException;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
@@ -149,9 +150,8 @@ public class MIRImportServlet extends MCRServlet {
             .stream()
             .map(duplicate -> duplicate.getAttributeValue("id"))
             .distinct()
-            .filter(MIRImportServlet::exists)
             .filter(id -> MCRAccessManager.checkPermission(id, MCRAccessManager.PERMISSION_READ))
-            .filter(id -> !isInState(id, filteredStates))
+            .filter(id -> isPresentable(id, filteredStates))
             .toList();
 
         if (duplicateIds.isEmpty()) {
@@ -170,26 +170,32 @@ public class MIRImportServlet extends MCRServlet {
     }
 
     /**
-     * Checks whether a possible duplicate still exists. The deduplication keys of an object may outlive it,
-     * for example if it was deleted before the deduplication event handler was active. Such entries are
-     * skipped instead of failing the import.
+     * Checks whether a possible duplicate may be presented: the object must still exist and must not be in
+     * one of the filtered states. The deduplication keys of an object may outlive it, for example if it was
+     * deleted before the deduplication event handler was active, and an object may fail to load. Such
+     * entries are skipped with a warning instead of failing the import. The object is loaded at most once,
+     * and only if states are filtered.
+     *
+     * @param objectId the id of the possible duplicate
+     * @param filteredStates the states whose objects are never presented, may be empty
+     * @return true if the possible duplicate is presented to the user
      */
-    private static boolean exists(String objectId) {
-        if (!MCRObjectID.isValid(objectId) || !MCRMetadataManager.exists(MCRObjectID.getInstance(objectId))) {
-            LOGGER.warn("Ignoring possible duplicate {}, the object does not exist", objectId);
+    private static boolean isPresentable(String objectId, List<String> filteredStates) {
+        try {
+            MCRObjectID mcrObjectID = MCRObjectID.getInstance(objectId);
+            if (filteredStates.isEmpty()) {
+                if (MCRMetadataManager.exists(mcrObjectID)) {
+                    return true;
+                }
+                LOGGER.warn("Ignoring possible duplicate {}, the object does not exist", objectId);
+                return false;
+            }
+            MCRCategoryID state = MCRMetadataManager.retrieveMCRObject(mcrObjectID).getService().getState();
+            return state == null || !filteredStates.contains(state.getId());
+        } catch (MCRException e) {
+            LOGGER.warn("Ignoring possible duplicate {}, the object could not be loaded", objectId, e);
             return false;
         }
-        return true;
-    }
-
-    private static boolean isInState(String objectId, List<String> states) {
-        if (states.isEmpty()) {
-            return false;
-        }
-        MCRCategoryID state = MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(objectId))
-            .getService()
-            .getState();
-        return state != null && states.contains(state.getId());
     }
 
     /**
